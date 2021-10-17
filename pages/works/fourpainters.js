@@ -10,14 +10,14 @@ import {
   Center
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, WorkImage, Meta } from '../../components/work'
+import { Title, WorkImage, Meta } from '../../components/pageItem'
 import P from '../../components/paragraph'
 import Layout from '../../components/layouts/article'
 
 const Work = () => (
   <Layout title="The four painters">
     <Container>
-      <Title>
+      <Title type="Works">
         The four painters <Badge>2015</Badge>
       </Title>
       <P>

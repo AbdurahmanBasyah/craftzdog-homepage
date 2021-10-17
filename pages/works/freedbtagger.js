@@ -11,13 +11,13 @@ import {
 } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, WorkImage, Meta } from '../../components/work'
+import { Title, WorkImage, Meta } from '../../components/pageItem'
 import P from '../../components/paragraph'
 
 const Work = () => (
   <Layout title="freeDBTagger">
     <Container>
-      <Title>
+      <Title type="Works">
         freeDBTagger <Badge>2004-2009</Badge>
       </Title>
       <Center my={6}>
