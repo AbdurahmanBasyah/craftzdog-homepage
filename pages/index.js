@@ -40,7 +40,7 @@ const Home = () => (
           <Heading as="h2" variant="page-title">
             M Abdurahman Basyah
           </Heading>
-          <p>Digital Craftsman ( Developer / Learner / High Achiever )</p>
+          <p>Developer / Learner / High Achiever</p>
         </Box>
         <Box
           flexShrink={0}
@@ -70,7 +70,7 @@ const Home = () => (
           business and technology, therefore, he took the opportunity
           to study at Information Systems, University of Indonesia. He loves coding, problem solving, and also music and food. In the future, he wants to be known as someone
           which is useful to many people so that he always takes
-          opportunities open so that he can continue to grow.
+          opportunities so that he can continue to grow.
           {/* <NextLink href="/works/inkdrop">
             <Link>Inkdrop</Link>
           </NextLink> */}
@@ -90,11 +90,27 @@ const Home = () => (
         </Heading>
         <BioSection>
           <BioYear>2002</BioYear>
-          Born in Kuala Lumpur, Malaysia.
+          Born in Kuala Lumpur, Malaysia
+        </BioSection>
+        <BioSection>
+          <BioYear>2011</BioYear>
+          Took part in an international mathematics competition for the very first time
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          Last year to participate in international mathematics competition before becoming an undergraduate student and also won a gold medal in Thailand, bronze medal in Vietnam, and bronze medal in China
         </BioSection>
         <BioSection>
           <BioYear>2020</BioYear>
           Enrolled in the Department of Information Systems, Faculty of Computer Science, University of Indonesia
+        </BioSection>
+        <BioSection>
+          <BioYear>2020</BioYear>
+          Selected as a product division intern at Akademis.id
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          First time being a business plan competition champion
         </BioSection>
       </Section>
 
