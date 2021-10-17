@@ -110,11 +110,11 @@ const Navbar = props => {
                   <MenuItem as={Link}>Works</MenuItem>
                 </NextLink>
                 <NextLink href="/awards" passHref>
-                  <MenuItem as={Link}>Posts</MenuItem>
+                  <MenuItem as={Link}>Awards</MenuItem>
                 </NextLink>
                 <MenuItem
                   as={Link}
-                  href="https://github.com/craftzdog/craftzdog-homepage"
+                  href="https://github.com/AbdurahmanBasyah/craftzdog-homepage"
                 >
                   View Source
                 </MenuItem>
