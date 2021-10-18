@@ -63,7 +63,7 @@ const Home = () => (
         </Box>
       </Box>
 
-      <Section delay={0.1}>
+      <Section delay={0.2}>
         <Heading as="h3" variant="section-title">
           Summary
         </Heading>
@@ -86,7 +86,7 @@ const Home = () => (
         </Box>
       </Section>
 
-      <Section delay={0.2}>
+      <Section delay={0.4}>
         <Heading as="h3" variant="section-title">
           Bio
         </Heading>
@@ -108,7 +108,7 @@ const Home = () => (
         </BioSection>
         <BioSection>
           <BioYear>2020</BioYear>
-          Selected as a product division intern at Akademis.id
+          Experienced first internship program at Akademis.id
         </BioSection>
         <BioSection>
           <BioYear>2021</BioYear>
@@ -116,18 +116,165 @@ const Home = () => (
         </BioSection>
       </Section>
 
-      <Section delay={0.3}>
+      <Section delay={0.6}>
         <Heading as="h3" variant="section-title">
           I ♥
         </Heading>
         <Paragraph>
-          Music, Video Games, Rubik, Cards, Magic Shows, Coding, You
+          Music, Video Games, Rubik, Cards, Magic, Geometry, Coding, You
         </Paragraph>
       </Section>
 
-      <Section delay={0.3}>
+      <Section delay={0.8}>
         <Heading as="h3" variant="section-title">
-          Find me on Internet
+          Awards
+        </Heading>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          3<sup>rd</sup> Place business plan at Business Plan Competition at USEEIC 2021
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          1<sup>st</sup> Place business plan at Business Plan Competition at UNJASMARTEXPO 2021
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Top 15 business plan at Business Plan Competition at IDEAS, FEB UGM
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          4<sup>th</sup> Place business plan at Business Plan Competition at JAKARTA, STUDENTS, INNOVATION
+        </BioSection>
+        <BioSection>
+          <BioYear>2020</BioYear>
+          Gold Award and First Place, 12th grade, at Kompetisi Matematika Nalaria Realistik 2020
+        </BioSection>
+        <BioSection>
+          <BioYear>2020</BioYear>
+          2<sup>nd</sup> Place mathematics competition at Olimpiade Update Science, Social, and Language Competition
+        </BioSection>
+        <BioSection>
+          <BioYear>2019</BioYear>
+          2<sup>nd</sup> Place mathematics competition at PARSIAL UIN Syarif Hidayatullah Jakarta
+        </BioSection>
+        <BioSection>
+          <BioYear>2019</BioYear>
+          3<sup>rd</sup> Place mathematics competition at OSN SMA Tingkat Kota Depok
+        </BioSection>
+        <BioSection>
+          <BioYear>2019</BioYear>
+          2<sup>nd</sup> Place Mathematics Team Competition LOGIKA UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          The Third Prize at 15th Chinese Southeast Mathematical Olympiad
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          Bronze Medal and First Prize Team Trophy at 15th Hanoi Open Mathematics Competition
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          Gold Award at Thailand International Mathematical Olympiad Final Round
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          1<sup>st</sup> Place mathematics competition at OSN SMA Tingkat Kota Depok
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          2<sup>nd</sup>Place Competition Of Mathematics And Science, SMAN 2 Depok
+        </BioSection>
+        <BioSection>
+          <BioYear>2018</BioYear>
+          3<sup>rd</sup> Place mathematics competition at Pelangi Matematika XXV Universitas Negeri Jakarta
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          Gold Award at Thailand International Mathematical Olympiad Heat Round
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          Certificate Of Distinction in the Euclid Contest
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          Certificate Of Distinction on the American Mathematics Contest
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          2<sup>nd</sup> Team-Blue Key stage III India International Mathematics Competition
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          2<sup>nd</sup> Up-Key stage III group contest India International Mathematics Competition
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          Champion Team-Key stage III team contest India International Mathematics Competition
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          Silver Medal-Key stage III individual contest India International Mathematics Competitio
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          3<sup>rd</sup> Place Mathematics Team Competition LOGIKA UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          2<sup>nd</sup> Place mathematics competition at Olimpiade Matematika Vektor Nasional Universitas Negeri Malang
+        </BioSection>
+        <BioSection>
+          <BioYear>2017</BioYear>
+          1<sup>st</sup> Place mathematics competition at Matematika Ria Pesta Sains Nasional
+        </BioSection>
+        <Box align="center" my={4}>
+          <NextLink href="/awards">
+            <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
+              My Achievements
+            </Button>
+          </NextLink>
+        </Box>
+      </Section>
+
+      <Section delay={1.0}>
+        <Heading as="h3" variant="section-title">
+          Experiences
+        </Heading>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Teaching Assistant of Discrete Mathematics
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Project Development at BEM Fasilkom UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Business Intelligence Special Interest Group at SISTEM Fasilkom UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Programming Foundation Mentor at Fasilkom UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2021</BioYear>
+          Vice Project Officer at Wisuda Virtual Fasilkom UI
+        </BioSection>
+        <BioSection>
+          <BioYear>2020</BioYear>
+          Developer Student Club Universitas Indonesia
+        </BioSection>
+        <BioSection>
+          <BioYear>2020</BioYear>
+          Selected as a product division intern at Akademis.id
+        </BioSection>
+      </Section>
+
+      <Section delay={1.2}>
+        <Heading as="h3" variant="section-title">
+          Find me on the Internet
         </Heading>
         <List>
           <ListItem>
@@ -214,14 +361,6 @@ const Home = () => (
             A Markdown note-taking app
           </GridItem>
         </SimpleGrid> */}
-
-        <Box align="center" my={4}>
-          <NextLink href="/awards">
-            <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
-              My Achievements
-            </Button>
-          </NextLink>
-        </Box>
       </Section>
     </Container>
   </Layout>

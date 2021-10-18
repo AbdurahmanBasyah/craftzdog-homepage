@@ -77,6 +77,9 @@ const Navbar = props => {
           <LinkItem href="/awards" path={path}>
             Awards
           </LinkItem>
+          <LinkItem href="/posts" path={path}>
+            Posts
+          </LinkItem>
           <LinkItem
             _target="_blank"
             href="https://github.com/AbdurahmanBasyah/craftzdog-homepage"
@@ -111,6 +114,9 @@ const Navbar = props => {
                 </NextLink>
                 <NextLink href="/awards" passHref>
                   <MenuItem as={Link}>Awards</MenuItem>
+                </NextLink>
+                <NextLink href="/posts" passHref>
+                  <MenuItem as={Link}>Posts</MenuItem>
                 </NextLink>
                 <MenuItem
                   as={Link}
