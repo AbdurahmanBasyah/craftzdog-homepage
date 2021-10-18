@@ -23,7 +23,7 @@ const Works = () => (
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section>
           <WorkGridItem id="SxCIntersummit" title="SxCIntersummit" thumbnail={SxC}>
-          A Grand Event consisting of a sequence of Pre-Event, PBC, Chambers, Virtual Company Visit, and Main Conference.
+            A Grand Event consisting of a sequence of Pre-Event, PBC, Chambers, Virtual Company Visit, and Main Conference.
           </WorkGridItem>
         </Section>
         <Section>

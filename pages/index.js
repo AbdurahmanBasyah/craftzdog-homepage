@@ -19,7 +19,9 @@ import Section from '../components/section'
 import {
   IoLogoTwitter,
   IoLogoInstagram,
-  IoLogoGithub
+  IoLogoGithub,
+  IoLogoLinkedin,
+  IoMail
 } from 'react-icons/io5'
 
 const Home = () => (
@@ -135,7 +137,29 @@ const Home = () => (
                 colorScheme="teal"
                 leftIcon={<Icon as={IoLogoGithub} />}
               >
-                @AbdurahmanBasyah
+                AbdurahmanBasyah
+              </Button>
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link href="mailto:abdurrahmanbasyah@gmail.com" target="_blank">
+              <Button
+                variant="ghost"
+                colorScheme="teal"
+                leftIcon={<Icon as={IoMail} />}
+              >
+                abdurrahmanbasyah@gmail.com
+              </Button>
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link href="https://linkedin.com/in/abduh962" target="_blank">
+              <Button
+                variant="ghost"
+                colorScheme="teal"
+                leftIcon={<Icon as={IoLogoLinkedin} />}
+              >
+                abduh962
               </Button>
             </Link>
           </ListItem>
@@ -194,7 +218,7 @@ const Home = () => (
         <Box align="center" my={4}>
           <NextLink href="/awards">
             <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
-              My Achievemensts
+              My Achievements
             </Button>
           </NextLink>
         </Box>
