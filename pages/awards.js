@@ -15,7 +15,7 @@ const Posts = () => (
   <Layout title="Awards">
     <Container>
       <Heading as="h3" fontSize={20} mb={4}>
-        My Awards and Achievements
+        My Awards and Achievements Summaries
       </Heading>
 
       <Section delay={0.3}>
