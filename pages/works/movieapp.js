@@ -14,7 +14,7 @@ const Work = () => (
   <Layout title="Movie App">
     <Container>
       <Title type="Works">
-        pichu*pichu <Badge>2010</Badge>
+        Movie App <Badge>2021</Badge>
       </Title>
       <P>
         A movie app that allows user to search for movies, add movies to bookmarked and liked section. Made with the support of API from IMDB. This is my first experience working with API, localstorage, and JSON.
