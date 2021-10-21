@@ -17,8 +17,7 @@ const Work = () => (
                 First Personal Website <Badge>2021</Badge>
             </Title>
             <P>
-                So, you can check a shop info as soon as you found a promising ramen
-                shop in a food magazine. Let&apos;s go out and have a delicious ramen!
+                Not only this is my first personal website, it{`'s`} also my first experience using bootstrap and jQuery after learning the basics of HTML, CSS, and JavaScript.
             </P>
 
             <List ml={4} my={4}>

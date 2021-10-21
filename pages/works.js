@@ -1,4 +1,4 @@
-import { Container, Heading, SimpleGrid, Divider } from '@chakra-ui/react'
+import { Container, Heading, SimpleGrid, Divider, Center } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import { WorkGridItem } from '../components/grid-item'
@@ -126,6 +126,11 @@ const Works = () => (
           </WorkGridItem>
         </Section>
       </SimpleGrid>
+      <Heading as="h3" fontSize={20} my={4}>
+        <Center>
+          More works in the close times
+        </Center>
+      </Heading>
     </Container>
   </Layout>
 )
