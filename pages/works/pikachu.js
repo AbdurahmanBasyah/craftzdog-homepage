@@ -3,8 +3,10 @@ import {
   Badge,
   List,
   ListItem,
+  Link
 } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { Title, WorkImage, Meta } from '../../components/pageItem'
 import P from '../../components/paragraph'
 
@@ -24,6 +26,12 @@ const Work = () => (
         <ListItem>
           <Meta>Made For</Meta>
           <span>Me</span>
+        </ListItem>
+        <ListItem>
+          <Meta>Source code</Meta>
+          <Link href="https://github.com/AbdurahmanBasyah/pikachu-grid">
+            Github Repositories<ExternalLinkIcon mx="2px" />
+          </Link>
         </ListItem>
       </List>
 

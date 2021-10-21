@@ -41,6 +41,12 @@ const Work = () => (
           <Meta>Stack</Meta>
           <span>ReactJS, Bootstrap</span>
         </ListItem>
+        <ListItem>
+          <Meta>Source code</Meta>
+          <Link href="https://github.com/AbdurahmanBasyah/TodoList">
+            Github Repositories<ExternalLinkIcon mx="2px" />
+          </Link>
+        </ListItem>
       </List>
 
       <WorkImage src="/images/works/todo_1.png" alt="todolist" text="Desktop view" />
