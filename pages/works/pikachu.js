@@ -16,7 +16,7 @@ const Work = () => (
       <Title type="Works">
         Grid of Pikachu <Badge>2021</Badge>
       </Title>
-      <P>Automatic audio file tagging tool using FreeDB for Windows</P>
+      <P>{`Just a pikachu. That's it`}</P>
 
       <List ml={4} my={4}>
         <ListItem>

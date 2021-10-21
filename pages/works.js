@@ -14,6 +14,7 @@ import sabilamall from '../public/images/works/sabilamall_1.png';
 import movieapp from '../public/images/works/movieapp_2.png';
 import pikachu from '../public/images/works/pikachu_1.png';
 import todo from '../public/images/works/todo_2.png';
+import personal from '../public/images/works/personal_1.png';
 
 const Works = () => (
   <Layout title="Works">
@@ -28,7 +29,7 @@ const Works = () => (
             A Grand Event consisting of a sequence of Pre-Event, PBC, Chambers, Virtual Company Visit, and Main Conference.
           </WorkGridItem>
         </Section>
-        <Section>
+        <Section delay={0.3}>
           <WorkGridItem
             id="sabilamall"
             title="Sabila Mall"
@@ -81,7 +82,7 @@ const Works = () => (
         </Section>
       </SimpleGrid> */}
 
-      <Section delay={0.4}>
+      <Section delay={0.6}>
         <Divider my={6} />
 
         <Heading as="h3" fontSize={20} mb={4}>
@@ -90,12 +91,12 @@ const Works = () => (
       </Section>
 
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={0.5}>
+        <Section delay={0.9}>
           <WorkGridItem id="movieapp" thumbnail={movieapp} title="Movie app">
             Movie app that allows user to add search, add and remove wishlist and liked movies
           </WorkGridItem>
         </Section>
-        <Section delay={0.5}>
+        <Section delay={1.2}>
           <WorkGridItem
             id="pikachu"
             thumbnail={pikachu}
@@ -106,13 +107,22 @@ const Works = () => (
         </Section>
       </SimpleGrid>
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={0.5}>
+        <Section delay={1.5}>
           <WorkGridItem
             id="todolist"
             thumbnail={todo}
             title="TODO list"
           >
             A simple responsive todo list app with the deadline date
+          </WorkGridItem>
+        </Section>
+        <Section delay={1.8}>
+          <WorkGridItem
+            id="personal"
+            thumbnail={personal}
+            title="First personal website"
+          >
+            First ever personal website
           </WorkGridItem>
         </Section>
       </SimpleGrid>

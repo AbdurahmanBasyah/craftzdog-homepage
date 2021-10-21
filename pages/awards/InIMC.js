@@ -11,7 +11,7 @@ const Award = () => (
                 India International Mathematics Competition <Badge>2017</Badge>
             </Title>
             <P>
-                InIMC might be the most memorable competition I’ve ever had. Individual contest made of 15 questions with the composition of 12 short answer questions and 3 essays. Therefore, the maximum possible scores is 12 x 5 + 3 * 20 = 120. Luckily, I{`'ve`} got 85 that made me get the silver medal. I{`t's`} also a matter of pride that I managed to come up with a solution that is different from the official one.
+                InIMC might be the most memorable competition I’ve ever had. Individual contest made of 15 questions with the composition of 12 short answer questions and 3 essays. Therefore, the maximum possible scores is 12 x 5 + 3 x 20 = 120. Luckily, I{`'ve`} got 85 that made me get the silver medal. I{`t's`} also a matter of pride that I managed to come up with a solution that is different from the official one.
             </P>
             <P>
                 Team contest consists of 10 problems to discuss with our team. With the maximum possible scores of 400, we have got scores of 320 that made us a champion in our groups (Blue). On the other hand, Group contests are calculated by summing the highest three individual contests from four participants in a team (3 silvers) and competing with the others. Overall contest, also known as grand prize, means accumulative from all individual scores and team contest scores. Our team achieved 633 scores in total, while the champion, Singapore A team, achieved 687.
