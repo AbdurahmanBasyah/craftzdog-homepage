@@ -262,6 +262,10 @@ const Home = () => {
           </Heading>
           <BioSection>
             <BioYear>2021</BioYear>
+            Information Technology at StudentxCEOs International Summit
+          </BioSection>
+          <BioSection>
+            <BioYear>2021</BioYear>
             Teaching Assistant of Discrete Mathematics
           </BioSection>
           <BioSection>
@@ -286,7 +290,7 @@ const Home = () => {
           </BioSection>
           <BioSection>
             <BioYear>2020</BioYear>
-            Selected as a product division intern at Akademis.id
+            Product division intern at Akademis.id
           </BioSection>
         </Section>
 

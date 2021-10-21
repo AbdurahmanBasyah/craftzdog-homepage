@@ -25,7 +25,7 @@ const Work = () => (
           <span>Windows/macOS/iOS/Android</span>
         </ListItem>
         <ListItem>
-          <Meta>Stack</Meta>
+          <Meta>Tools used</Meta>
           <span>NextJS, ChakraUI, Axios</span>
         </ListItem>
         <ListItem>

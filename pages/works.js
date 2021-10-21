@@ -3,15 +3,16 @@ import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import { WorkGridItem } from '../components/grid-item'
 
-import thumbFourPainters from '../public/images/works/the-four-painters_eyecatch.jpg'
-import thumbMenkiki from '../public/images/works/menkiki_eyecatch.png'
-import thumbModeTokyo from '../public/images/works/modetokyo_eyecatch.png'
-import thumbStyly from '../public/images/works/styly_eyecatch.png'
-import thumbFreeDBTagger from '../public/images/works/freedbtagger_eyecatch.png'
-import thumbAmembo from '../public/images/works/amembo_eyecatch.png'
+// import thumbFourPainters from '../public/images/works/the-four-painters_eyecatch.jpg'
+// import thumbMenkiki from '../public/images/works/menkiki_eyecatch.png'
+// import thumbModeTokyo from '../public/images/works/modetokyo_eyecatch.png'
+// import thumbStyly from '../public/images/works/styly_eyecatch.png'
+// import thumbFreeDBTagger from '../public/images/works/freedbtagger_eyecatch.png'
+// import thumbAmembo from '../public/images/works/amembo_eyecatch.png'
 import SxC from '../public/images/works/SxC_1.png';
 import sabilamall from '../public/images/works/sabilamall_1.png';
 import movieapp from '../public/images/works/movieapp_2.png';
+import pikachu from '../public/images/works/pikachu_1.png';
 
 const Works = () => (
   <Layout title="Works">
@@ -36,7 +37,7 @@ const Works = () => (
           </WorkGridItem>
         </Section>
 
-        <Section delay={0.1}>
+        {/* <Section delay={0.1}>
           <WorkGridItem
             id="fourpainters"
             title="The four painters"
@@ -51,10 +52,10 @@ const Works = () => (
             An app that suggests ramen(noodle) shops based on a given photo of
             the ramen you want to eat
           </WorkGridItem>
-        </Section>
+        </Section> */}
       </SimpleGrid>
 
-      <Section delay={0.2}>
+      {/* <Section delay={0.2}>
         <Divider my={6} />
 
         <Heading as="h3" fontSize={20} mb={4}>
@@ -77,7 +78,7 @@ const Works = () => (
             A VR Creative tools for fashion brands
           </WorkGridItem>
         </Section>
-      </SimpleGrid>
+      </SimpleGrid> */}
 
       <Section delay={0.4}>
         <Divider my={6} />
@@ -95,17 +96,11 @@ const Works = () => (
         </Section>
         <Section delay={0.5}>
           <WorkGridItem
-            id="freedbtagger"
-            thumbnail={thumbFreeDBTagger}
-            title="freeDBTagger"
+            id="pikachu"
+            thumbnail={pikachu}
+            title="Grid Pikachu"
           >
-            Automatic audio file tagging tool using FreeDB for Windows
-          </WorkGridItem>
-        </Section>
-        <Section delay={0.6}>
-          <WorkGridItem id="amembo" thumbnail={thumbAmembo} title="Amembo">
-            P2P private file sharing tool with MSN Messenger integration for
-            Windows
+            Just a pikachu
           </WorkGridItem>
         </Section>
       </SimpleGrid>
