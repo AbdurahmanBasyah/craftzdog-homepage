@@ -13,6 +13,7 @@ import SxC from '../public/images/works/SxC_1.png';
 import sabilamall from '../public/images/works/sabilamall_1.png';
 import movieapp from '../public/images/works/movieapp_2.png';
 import pikachu from '../public/images/works/pikachu_1.png';
+import todo from '../public/images/works/todo_2.png';
 
 const Works = () => (
   <Layout title="Works">
@@ -101,6 +102,17 @@ const Works = () => (
             title="Grid Pikachu"
           >
             Just a pikachu
+          </WorkGridItem>
+        </Section>
+      </SimpleGrid>
+      <SimpleGrid columns={[1, 1, 2]} gap={6}>
+        <Section delay={0.5}>
+          <WorkGridItem
+            id="todolist"
+            thumbnail={todo}
+            title="TODO list"
+          >
+            test
           </WorkGridItem>
         </Section>
       </SimpleGrid>
