@@ -91,7 +91,7 @@ const Works = () => (
 
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section delay={0.5}>
-          <WorkGridItem id="movieapp" thumbnail={movieapp} title="movieapp">
+          <WorkGridItem id="movieapp" thumbnail={movieapp} title="Movie app">
             Movie app that allows user to add search, add and remove wishlist and liked movies
           </WorkGridItem>
         </Section>
