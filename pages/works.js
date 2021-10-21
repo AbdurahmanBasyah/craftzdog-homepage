@@ -112,7 +112,7 @@ const Works = () => (
             thumbnail={todo}
             title="TODO list"
           >
-            test
+            A simple responsive todo list app with the deadline date
           </WorkGridItem>
         </Section>
       </SimpleGrid>
