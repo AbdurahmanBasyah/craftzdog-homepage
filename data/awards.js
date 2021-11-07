@@ -124,10 +124,5 @@ export const awards = [
         "id" : 25,
         "title" : "3rd Place business plan at Business Plan Competition at USEEIC 2021",
         "year" : "2021"
-    },
-    {
-        "id" : 26,
-        "title" : "1st place Business Plan Competition at HMJM UNSOED Business Plan Competition",
-        "year" : "2021"
-    },
+    }
 ]
