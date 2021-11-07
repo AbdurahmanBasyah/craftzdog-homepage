@@ -18,7 +18,7 @@ export const Title = ({ children, type }) => (
 )
 
 export const WorkImage = ({ src, alt, text }) => (<>
-  <Image borderRadius="lg" w="full" src={src} alt={alt} />
+  <Image borderRadius="lg" w="full" src={src} alt={alt}/>
   <Text textAlign="center" color="gray.500" mb={4}>{text}</Text>
   </>
 )

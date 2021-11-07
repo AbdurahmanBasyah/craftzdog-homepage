@@ -15,6 +15,7 @@ import movieapp from '../public/images/works/movieapp_2.png';
 import pikachu from '../public/images/works/pikachu_1.png';
 import todo from '../public/images/works/todo_2.png';
 import personal from '../public/images/works/personal_1.png';
+import covidapp from '../public/images/works/covid_2.png'
 
 const Works = () => (
   <Layout title="Works">
@@ -38,23 +39,6 @@ const Works = () => (
             Reseller and dropshipper platform
           </WorkGridItem>
         </Section>
-
-        {/* <Section delay={0.1}>
-          <WorkGridItem
-            id="fourpainters"
-            title="The four painters"
-            thumbnail={thumbFourPainters}
-          >
-            A video work generated with deep learning, imitating famous four
-            painters like Van Gogh
-          </WorkGridItem>
-        </Section>
-        <Section delay={0.1}>
-          <WorkGridItem id="menkiki" thumbnail={thumbMenkiki} title="Menkiki">
-            An app that suggests ramen(noodle) shops based on a given photo of
-            the ramen you want to eat
-          </WorkGridItem>
-        </Section> */}
       </SimpleGrid>
 
       {/* <Section delay={0.2}>
@@ -84,7 +68,6 @@ const Works = () => (
 
       <Section delay={0.6}>
         <Divider my={6} />
-
         <Heading as="h3" fontSize={20} mb={4}>
           Old works
         </Heading>
@@ -123,6 +106,20 @@ const Works = () => (
             title="First personal website"
           >
             First ever personal website
+          </WorkGridItem>
+        </Section>
+      </SimpleGrid>
+      <Section delay={2.1}>
+        <Divider my={6} />
+        <Heading as="h3" fontSize={20} mb={4}>
+          Other works
+        </Heading>
+      </Section>
+
+      <SimpleGrid columns={[1, 1, 2]} gap={6}>
+        <Section delay={2.4}>
+          <WorkGridItem id="covidapp" thumbnail={covidapp} title="Covid App">
+            Covid app consists of related information and discussion forums
           </WorkGridItem>
         </Section>
       </SimpleGrid>
