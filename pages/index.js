@@ -24,10 +24,11 @@ import {
   IoMail
 } from 'react-icons/io5'
 import { useState } from 'react'
-
+import { awards } from '../data/awards'
 const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5);
-  const totalAwards = 25;
+  const newAwards = [].concat(awards).reverse()
+  const totalAwards = awards.length;
 
   const handleMoreAwards = () => {
     if (numOfAwards >= totalAwards) {
@@ -141,106 +142,16 @@ const Home = () => {
           <Heading as="h3" variant="section-title">
             Awards
           </Heading>
-          <BioSection display={1 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2021</BioYear>
-            3<sup>rd</sup> Place business plan at Business Plan Competition at USEEIC 2021
-          </BioSection>
-          <BioSection display={2 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2021</BioYear>
-            1<sup>st</sup> Place business plan at Business Plan Competition at UNJASMARTEXPO 2021
-          </BioSection>
-          <BioSection display={3 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2021</BioYear>
-            Top 15 business plan at Business Plan Competition at IDEAS, FEB UGM
-          </BioSection>
-          <BioSection display={4 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2021</BioYear>
-            4<sup>th</sup> Place business plan at Business Plan Competition at JAKARTA, STUDENTS, INNOVATION
-          </BioSection>
-          <BioSection display={5 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2020</BioYear>
-            Gold Award and First Place, 12th grade, at Kompetisi Matematika Nalaria Realistik 2020
-          </BioSection>
-          <BioSection display={6 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2020</BioYear>
-            2<sup>nd</sup> Place mathematics competition at Olimpiade Update Science, Social, and Language Competition
-          </BioSection>
-          <BioSection display={7 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2019</BioYear>
-            2<sup>nd</sup> Place mathematics competition at PARSIAL UIN Syarif Hidayatullah Jakarta
-          </BioSection>
-          <BioSection display={8 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2019</BioYear>
-            3<sup>rd</sup> Place mathematics competition at OSN SMA Tingkat Kota Depok
-          </BioSection>
-          <BioSection display={9 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2019</BioYear>
-            2<sup>nd</sup> Place Mathematics Team Competition LOGIKA UI
-          </BioSection>
-          <BioSection display={10 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            The Third Prize at 15th Chinese Southeast Mathematical Olympiad
-          </BioSection>
-          <BioSection display={11 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            Bronze Medal and First Prize Team Trophy at 15th Hanoi Open Mathematics Competition
-          </BioSection>
-          <BioSection display={12 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            Gold Award at Thailand International Mathematical Olympiad Final Round
-          </BioSection>
-          <BioSection display={13 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            1<sup>st</sup> Place mathematics competition at OSN SMA Tingkat Kota Depok
-          </BioSection>
-          <BioSection display={14 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            2<sup>nd</sup>Place Competition Of Mathematics And Science, SMAN 2 Depok
-          </BioSection>
-          <BioSection display={15 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2018</BioYear>
-            3<sup>rd</sup> Place mathematics competition at Pelangi Matematika XXV Universitas Negeri Jakarta
-          </BioSection>
-          <BioSection display={16 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            Gold Award at Thailand International Mathematical Olympiad Heat Round
-          </BioSection>
-          <BioSection display={17 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            Certificate Of Distinction in the Euclid Contest
-          </BioSection>
-          <BioSection display={18 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            Certificate Of Distinction on the American Mathematics Contest
-          </BioSection>
-          <BioSection display={19 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            2<sup>nd</sup> Team-Blue Key stage III India International Mathematics Competition
-          </BioSection>
-          <BioSection display={20 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            2<sup>nd</sup> Up-Key stage III group contest India International Mathematics Competition
-          </BioSection>
-          <BioSection display={21 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            Champion Team-Key stage III team contest India International Mathematics Competition
-          </BioSection>
-          <BioSection display={22 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            Silver Medal-Key stage III individual contest India International Mathematics Competitio
-          </BioSection>
-          <BioSection display={23 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            3<sup>rd</sup> Place Mathematics Team Competition LOGIKA UI
-          </BioSection>
-          <BioSection display={24 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            2<sup>nd</sup> Place mathematics competition at Olimpiade Matematika Vektor Nasional Universitas Negeri Malang
-          </BioSection>
-          <BioSection display={25 <= numOfAwards ? 'block' : 'none'}>
-            <BioYear>2017</BioYear>
-            1<sup>st</sup> Place mathematics competition at Matematika Ria Pesta Sains Nasional
-          </BioSection>
+          {newAwards.map((el) => {
+            if (totalAwards - el.id < numOfAwards) {
+              return (
+                <BioSection key={el.id}>
+                  <BioYear>{el.year}</BioYear>
+                  {el.title}
+                </BioSection>
+              )
+            }
+          })}
           <Box my={4}>
             <Button colorScheme="teal" variant="ghost" onClick={() => handleMoreAwards()}>
               {numOfAwards < totalAwards ? "Load more" : "Load less"}
