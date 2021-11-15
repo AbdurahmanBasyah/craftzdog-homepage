@@ -243,7 +243,7 @@ const Home = () => {
                 </Button>
               </Link>
             </ListItem>
-            <ListItem>
+            {/* <ListItem>
               <Link href="https://twitter.com/yahhElahh" target="_blank">
                 <Button
                   variant="ghost"
@@ -253,7 +253,7 @@ const Home = () => {
                   @yahhElahh
                 </Button>
               </Link>
-            </ListItem>
+            </ListItem> */}
             <ListItem>
               <Link href="https://instagram.com/mabasyah" target="_blank">
                 <Button

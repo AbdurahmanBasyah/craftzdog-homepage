@@ -87,17 +87,17 @@ export const awards = [
     },
     {
         "id" : 18,
-        "title" : "3<sup>rd</sup> Place mathematics competition at OSN SMA Tingkat Kota Depok",
+        "title" : "3rd Place mathematics competition at OSN SMA Tingkat Kota Depok",
         "year" : "2019"
     },
     {
         "id" : 19,
-        "title" : "2<sup>nd</sup> Place mathematics competition at PARSIAL UIN Syarif Hidayatullah Jakarta",
+        "title" : "2nd Place mathematics competition at PARSIAL UIN Syarif Hidayatullah Jakarta",
         "year" : "2019"
     },
     {
         "id" : 20,
-        "title" : "2<sup>nd</sup> Place mathematics competition at Olimpiade Update Science, Social, and Language Competition",
+        "title" : "2nd Place mathematics competition at Olimpiade Update Science, Social, and Language Competition",
         "year" : "2020"
     },
     {
