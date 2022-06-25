@@ -17,7 +17,6 @@ import { BioSection, BioYear } from '../components/bio'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import {
-  IoLogoTwitter,
   IoLogoInstagram,
   IoLogoGithub,
   IoLogoLinkedin,
@@ -25,6 +24,8 @@ import {
 } from 'react-icons/io5'
 import { useState } from 'react'
 import { awards } from '../data/awards'
+import { useEffect } from 'react'
+import axios from 'axios'
 const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5);
   const newAwards = [].concat(awards).reverse()
@@ -37,6 +38,15 @@ const Home = () => {
       setNumOfAwards(numOfAwards + 5);
     }
   }
+  useEffect(() => {
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBio`, {}).then((res) => {
+        console.log(res)
+      }).catch((err) => {
+          console.error(err)
+      })
+  }, [])
+  
+  console.log(process.env.API_URL);
   return (
     <Layout>
       <Container>
