@@ -26,8 +26,10 @@ import { useState } from 'react'
 import { awards } from '../data/awards'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { isSuccess } from '../functions/api'
 const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5);
+  const [bios, setBios] = useState([])
   const newAwards = [].concat(awards).reverse()
   const totalAwards = awards.length;
 
@@ -39,14 +41,15 @@ const Home = () => {
     }
   }
   useEffect(() => {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBio`, {}).then((res) => {
-        console.log(res)
-      }).catch((err) => {
-          console.error(err)
-      })
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBios`, {}).then((res) => {
+      if (isSuccess(res)) {
+        setBios(res?.data?.data)
+      }
+    }).catch((err) => {
+      console.error(err)
+    })
   }, [])
-  
-  console.log(process.env.API_URL);
+
   return (
     <Layout>
       <Container>
@@ -113,30 +116,15 @@ const Home = () => {
           <Heading as="h3" variant="section-title">
             Bio
           </Heading>
-          <BioSection>
-            <BioYear>2002</BioYear>
-            Born in Kuala Lumpur, Malaysia
-          </BioSection>
-          <BioSection>
-            <BioYear>2011</BioYear>
-            Took part in an international mathematics competition for the very first time
-          </BioSection>
-          <BioSection>
-            <BioYear>2018</BioYear>
-            Last year to participate in international mathematics competition before becoming an undergraduate student
-          </BioSection>
-          <BioSection>
-            <BioYear>2020</BioYear>
-            Enrolled in the Department of Information Systems, Faculty of Computer Science, University of Indonesia
-          </BioSection>
-          <BioSection>
-            <BioYear>2020</BioYear>
-            Experienced first internship program at Akademis.id
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            First time being a business plan competition champion
-          </BioSection>
+          {bios.map((bio, index) => {
+            return (
+
+              <BioSection key={index}>
+                <BioYear>{bio.year}</BioYear>
+                {bio.name}
+              </BioSection>
+            )
+          })}
         </Section>
 
         <Section delay={0.6}>
