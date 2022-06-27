@@ -41,7 +41,7 @@ const Home = () => {
     }
   }
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBios`, {}).then((res) => {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/bios`, {}).then((res) => {
       if (isSuccess(res)) {
         setBios(res?.data?.data)
       }
