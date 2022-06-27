@@ -18,8 +18,10 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
+    Alert,
+    AlertIcon
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { isSuccess } from '../functions/api'
 import { BioSection, BioYear } from '../components/bio'
@@ -31,6 +33,16 @@ const AdminPage = () => {
     const [isError, setisError] = useState(false)
     const [isLoggedIn, setisLoggedIn] = useState(false)
     const [newData, setNewData] = useState(null)
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    useEffect(() => {
+        if (isSubmitted) {
+            setTimeout(() => {
+                setIsSubmitted(false)
+            }, 3000)
+        }
+    }, [isSubmitted])
+
 
     const loginHandler = () => {
         setIsSubmitting(true)
@@ -55,25 +67,31 @@ const AdminPage = () => {
     }
 
     const postAwardHandler = () => {
+        console.log(newData);
         setIsSubmitting(true)
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {
             "year": newData.year,
-            "name": newData.name
+            "description": newData.description
         }).then((res) => {
             if (isSuccess(res)) {
-                alert("Award added successfully")
+                setIsSubmitted(true)
             }
         }).then(() => {
             setIsSubmitting(false)
         }).catch((err) => {
             console.error(err)
+        }).finally(() => {
+            setNewData(null)
+            onCloseAwards()
         })
     }
 
-
-
     return (
         <Layout>
+            {isSubmitted && <Alert status='success' variant='solid'>
+                <AlertIcon />
+                Data uploaded to the server
+            </Alert>}
             <Modal isOpen={isOpenAwards} onClose={onCloseAwards}>
                 <ModalOverlay />
                 <ModalContent p="20px">
@@ -82,9 +100,9 @@ const AdminPage = () => {
                         <ModalHeader fontSize={"24px"}>New Award</ModalHeader>
                         <ModalBody>
                             <FormLabel mt="32px" id='year'>Year</FormLabel>
-                            <Input autoComplete={false} onChange={(e) => setNewData({ "year": e.target.value })} focusBorderColor="gray.500" colorScheme="gray" name="year" type='number' />
-                            <FormLabel mt="16px" htmlFor='username'>Description</FormLabel>
-                            <Input autoComplete={false} onChange={(e) => setNewData({ "description": e.target.value })} focusBorderColor="gray.500" colorScheme="gray" id='description' type='text' />
+                            <Input autoComplete={false} onChange={(e) => setNewData({ ...newData, year: e.target.value })} value={newData?.year} focusBorderColor="gray.500" colorScheme="gray" name="year" type='number' />
+                            <FormLabel mt="16px" htmlFor='description'>Description</FormLabel>
+                            <Input autoComplete={false} onChange={(e) => setNewData({ ...newData, description: e.target.value })} value={newData?.description} focusBorderColor="gray.500" colorScheme="gray" id='description' type='text' />
                         </ModalBody>
 
                         <ModalFooter mt="16px">
@@ -95,7 +113,9 @@ const AdminPage = () => {
                                 colorScheme="teal"
                                 type='submit'
                                 isLoading={isSubmitting}
-                                onClick={() => { postAwardHandler() }}>Submit</Button>
+                                onClick={() => {
+                                    postAwardHandler()
+                                }}>Submit</Button>
                         </ModalFooter>
                     </FormControl>
                 </ModalContent>
