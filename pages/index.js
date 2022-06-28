@@ -23,14 +23,13 @@ import {
   IoMail
 } from 'react-icons/io5'
 import { useState } from 'react'
-import { awards } from '../data/awards'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { isSuccess } from '../functions/api'
 const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5);
   const [bios, setBios] = useState([])
-  const newAwards = [].concat(awards).reverse()
+  const [awards, setAwards] = useState([])
   const totalAwards = awards.length;
 
   const handleMoreAwards = () => {
@@ -44,6 +43,13 @@ const Home = () => {
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/bios`, {}).then((res) => {
       if (isSuccess(res)) {
         setBios(res?.data?.data)
+      }
+    }).catch((err) => {
+      console.error(err)
+    })
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {}).then((res) => {
+      if (isSuccess(res)) {
+        setAwards(res?.data?.data)
       }
     }).catch((err) => {
       console.error(err)
@@ -140,12 +146,12 @@ const Home = () => {
           <Heading as="h3" variant="section-title">
             Awards
           </Heading>
-          {newAwards.map((el) => {
-            if (totalAwards - el.id < numOfAwards) {
+          {awards.map((el, idx) => {
+            if (idx < numOfAwards) {
               return (
-                <BioSection key={el.id}>
+                <BioSection key={idx}>
                   <BioYear>{el.year}</BioYear>
-                  {el.title}
+                  {el.description}
                 </BioSection>
               )
             }
