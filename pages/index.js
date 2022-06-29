@@ -30,6 +30,7 @@ const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5);
   const [bios, setBios] = useState([])
   const [awards, setAwards] = useState([])
+  const [experiences, setExperiences] = useState([])
   const totalAwards = awards.length;
 
   const handleMoreAwards = () => {
@@ -49,7 +50,15 @@ const Home = () => {
     })
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {}).then((res) => {
       if (isSuccess(res)) {
-        setAwards(res?.data?.data)
+        setAwards((res?.data?.data).reverse())
+      }
+    }).catch((err) => {
+      console.error(err)
+    })
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/experiences`, {}).then((res) => {
+      console.log(res);
+      if (isSuccess(res)) {
+        setExperiences((res?.data?.data).reverse())
       }
     }).catch((err) => {
       console.error(err)
@@ -127,7 +136,7 @@ const Home = () => {
 
               <BioSection key={index}>
                 <BioYear>{bio.year}</BioYear>
-                {bio.name}
+                {bio.description}
               </BioSection>
             )
           })}
@@ -175,38 +184,14 @@ const Home = () => {
           <Heading as="h3" variant="section-title">
             Experiences
           </Heading>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Information Technology at StudentxCEOs International Summit
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Teaching Assistant of Discrete Mathematics
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Project Development at BEM Fasilkom UI
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Business Intelligence Special Interest Group at SISTEM Fasilkom UI
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Programming Foundation Mentor at Fasilkom UI
-          </BioSection>
-          <BioSection>
-            <BioYear>2021</BioYear>
-            Vice Project Officer at Wisuda Virtual Fasilkom UI
-          </BioSection>
-          <BioSection>
-            <BioYear>2020</BioYear>
-            Developer Student Club Universitas Indonesia
-          </BioSection>
-          <BioSection>
-            <BioYear>2020</BioYear>
-            Product division intern at Akademis.id
-          </BioSection>
+          {experiences.map((experience, index) => {
+            return (
+              <BioSection key={index}>
+                <BioYear>{experience.year}</BioYear>
+                {experience.description}
+              </BioSection>
+            )
+          })}
         </Section>
 
         <Section delay={1.2}>

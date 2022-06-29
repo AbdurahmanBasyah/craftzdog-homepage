@@ -26,7 +26,7 @@ import axios from 'axios'
 import { isSuccess } from '../functions/api'
 import { BioSection, BioYear } from '../components/bio'
 const AdminPage = () => {
-    const { isOpen: isOpenAwards, onOpen: onOpenAwards, onClose: onCloseAwards } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -34,6 +34,7 @@ const AdminPage = () => {
     const [isLoggedIn, setisLoggedIn] = useState(false)
     const [newData, setNewData] = useState(null)
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [currentType, setCurrentType] = useState("")
 
     useEffect(() => {
         if (isSubmitted) {
@@ -66,24 +67,58 @@ const AdminPage = () => {
         })
     }
 
-    const postAwardHandler = () => {
-        console.log(newData);
+    const postHandler = () => {
         setIsSubmitting(true)
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {
-            "year": newData.year,
-            "description": newData.description
-        }).then((res) => {
-            if (isSuccess(res)) {
-                setIsSubmitted(true)
-            }
-        }).then(() => {
-            setIsSubmitting(false)
-        }).catch((err) => {
-            console.error(err)
-        }).finally(() => {
-            setNewData(null)
-            onCloseAwards()
-        })
+        if (currentType === "award") {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {
+                "year": newData.year,
+                "description": newData.description
+            }).then((res) => {
+                if (isSuccess(res)) {
+                    setIsSubmitted(true)
+                }
+            }).then(() => {
+                setIsSubmitting(false)
+            }).catch((err) => {
+                console.error(err)
+            }).finally(() => {
+                setNewData(null)
+                onClose()
+            })
+        } else if (currentType === "experience") {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/experiences`, {
+                "year": newData.year,
+                "description": newData.description
+            }).then((res) => {
+                if (isSuccess(res)) {
+                    setIsSubmitted(true)
+                }
+            }).then(() => {
+                setIsSubmitting(false)
+            }).catch((err) => {
+                console.error(err)
+            }).finally(() => {
+                setNewData(null)
+                onClose()
+            })
+        } else if (currentType === "bio") {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/bios`, {
+                "year": newData.year,
+                "description": newData.description
+            }).then((res) => {
+                if (isSuccess(res)) {
+                    setIsSubmitted(true)
+                }
+            }).then(() => {
+                setIsSubmitting(false)
+            }).catch((err) => {
+                console.error(err)
+            }).finally(() => {
+                setNewData(null)
+                onClose()
+            })
+        }
+
     }
 
     return (
@@ -92,12 +127,12 @@ const AdminPage = () => {
                 <AlertIcon />
                 Data uploaded to the server
             </Alert>}
-            <Modal isOpen={isOpenAwards} onClose={onCloseAwards}>
+            <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent p="20px">
                     <ModalCloseButton />
                     <FormControl>
-                        <ModalHeader fontSize={"24px"}>New Award</ModalHeader>
+                        <ModalHeader fontSize={"24px"} textTransform="capitalize">New {currentType}</ModalHeader>
                         <ModalBody>
                             <FormLabel mt="32px" id='year'>Year</FormLabel>
                             <Input autoComplete={false} onChange={(e) => setNewData({ ...newData, year: e.target.value })} value={newData?.year} focusBorderColor="gray.500" colorScheme="gray" name="year" type='number' />
@@ -106,7 +141,7 @@ const AdminPage = () => {
                         </ModalBody>
 
                         <ModalFooter mt="16px">
-                            <Button colorScheme='blue' mr={3} onClick={onCloseAwards}>
+                            <Button colorScheme='blue' mr={3} onClick={onClose}>
                                 Close
                             </Button>
                             <Button variant='ghost'
@@ -114,7 +149,7 @@ const AdminPage = () => {
                                 type='submit'
                                 isLoading={isSubmitting}
                                 onClick={() => {
-                                    postAwardHandler()
+                                    postHandler()
                                 }}>Submit</Button>
                         </ModalFooter>
                     </FormControl>
@@ -131,7 +166,10 @@ const AdminPage = () => {
                                 <Flex justify="space-between">
                                     <BioYear>Bios</BioYear>
                                     <Box>
-                                        <Button mr="8px">Add</Button>
+                                        <Button mr="8px" onClick={() => {
+                                            setCurrentType("bio");
+                                            onOpen()
+                                        }}>Add</Button>
                                         <Button>Edit</Button>
                                     </Box>
                                 </Flex>
@@ -140,7 +178,22 @@ const AdminPage = () => {
                                 <Flex justify="space-between">
                                     <BioYear>Awards</BioYear>
                                     <Box>
-                                        <Button mr="8px" onClick={onOpenAwards}>Add</Button>
+                                        <Button mr="8px" onClick={() => {
+                                            setCurrentType("award");
+                                            onOpen()
+                                        }}>Add</Button>
+                                        <Button>Edit</Button>
+                                    </Box>
+                                </Flex>
+                            </BioSection>
+                            <BioSection mt="16px">
+                                <Flex justify="space-between">
+                                    <BioYear>Experiences</BioYear>
+                                    <Box>
+                                        <Button mr="8px" onClick={() => {
+                                            setCurrentType("experience");
+                                            onOpen()
+                                        }}>Add</Button>
                                         <Button>Edit</Button>
                                     </Box>
                                 </Flex>
