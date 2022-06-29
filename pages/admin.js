@@ -35,6 +35,7 @@ const AdminPage = () => {
     const [newData, setNewData] = useState(null)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [currentType, setCurrentType] = useState("")
+    const [role, setRole] = useState("")
 
     useEffect(() => {
         if (isSubmitted) {
@@ -51,11 +52,11 @@ const AdminPage = () => {
             "username": username,
             "password": password
         }).then((res) => {
-            console.log(res);
             if (isSuccess(res)) {
                 if (res?.data?.success) {
                     setisError(false)
                     setisLoggedIn(true)
+                    setRole(res?.data?.role)
                 } else {
                     setisError(true)
                 }
@@ -69,7 +70,7 @@ const AdminPage = () => {
 
     const postHandler = () => {
         setIsSubmitting(true)
-        if (currentType === "award") {
+        if (currentType === "award" && role === "admin") {
             axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/awards`, {
                 "year": newData.year,
                 "description": newData.description
@@ -85,7 +86,7 @@ const AdminPage = () => {
                 setNewData(null)
                 onClose()
             })
-        } else if (currentType === "experience") {
+        } else if (currentType === "experience" && role === "admin") {
             axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/experiences`, {
                 "year": newData.year,
                 "description": newData.description
@@ -101,7 +102,7 @@ const AdminPage = () => {
                 setNewData(null)
                 onClose()
             })
-        } else if (currentType === "bio") {
+        } else if (currentType === "bio" && role === "admin") {
             axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/bios`, {
                 "year": newData.year,
                 "description": newData.description
@@ -117,6 +118,10 @@ const AdminPage = () => {
                 setNewData(null)
                 onClose()
             })
+        } else {
+            onClose()
+            setIsSubmitting(false)
+            setNewData(null)
         }
 
     }
