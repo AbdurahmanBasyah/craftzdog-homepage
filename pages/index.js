@@ -77,6 +77,7 @@ const Home = () => {
     }
   })
 
+  const color = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
 
   if (isLoading) {
     return <MotionConfig reducedMotion="user">
@@ -110,7 +111,7 @@ const Home = () => {
             mb={6}
             p={3}
             textAlign="center"
-            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+            bg={color}
           >
             Hello, Welcome to my personal web site
           </Box>
