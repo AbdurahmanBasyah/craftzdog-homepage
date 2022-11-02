@@ -84,19 +84,19 @@ const Home = () => {
       <Box zIndex="999999" position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
         <StyledDiv
           animate={{
-            width: ['100px', '200px', "200px", "100px", "100px", '100px', '200px', "200px", "100px", "100px", '100px', '100px', "200px", "100px", `${width / 2}px`, `${2 * width}px`],
-            height: ['100px', '200px', "200px", "100px", "100px", '100px', '200px', "200px", "100px", "100px", '100px', '100px', "200px", "100px", `${height / 2}px`, `${2 * height}px`],
+            width: ["100px", '100px', '200px', "200px", "100px", "100px", '100px', '100px', "200px", "100px", `${width / 2}px`, `${2 * width}px`],
+            height: ["100px", '100px', '200px', "200px", "100px", "100px", '100px', '100px', "200px", "100px", `${height / 2}px`, `${2 * height}px`],
             // scale: [1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 50, 100],
-            rotate: [0, 0, 270, 270, 0, 0, 0, 270, 270, 0, 0, 0, 270, 270, 0, 0],
-            borderRadius: ["20%", "20%", "50%", "50%", "20%", "20%", "20%", "50%", "50%", "20%", "20%", "20%", "50%", "50%", "20%", "50%"]
+            rotate: [0, 0, 0, 270, 270, 0, 0, 0, 270, 270, 0, 0],
+            borderRadius: ["20%", "20%", "20%", "50%", "50%", "20%", "20%", "20%", "50%", "50%", "20%", "50%"]
           }}
           transition={{
-            duration: 6,
+            duration: 4,
             ease: "easeInOut",
             times: [0.5, 0.4, 0.8, 0.5, 0.4, 0.8, 0.5, 0.4, 0.8, 0.9],
             repeat: null
           }}
-          bgColor="orange"
+          bgGradient="linear(to-r, #7928CA, #FF0080)"
           onAnimationComplete={() => { setIsLoading(false) }}
         >
         </StyledDiv>
