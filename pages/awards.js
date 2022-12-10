@@ -14,7 +14,7 @@ import inIMC from '../public/images/awards/InIMC_2.jpg'
 const Posts = () => (
   <Layout title="Awards">
     <Container>
-      <Heading as="h3" fontSize={20} mb={4}>
+      <Heading as="h3" fontSize={20} my={4}>
         My Awards and Achievements Summaries
       </Heading>
 
@@ -64,9 +64,7 @@ const Posts = () => (
         </SimpleGrid>
       </Section> */}
       <Heading as="h3" fontSize={20} my={4}>
-        <Center>
-          More posts in the near future
-        </Center>
+        <Center>More posts in the near future</Center>
       </Heading>
     </Container>
   </Layout>
