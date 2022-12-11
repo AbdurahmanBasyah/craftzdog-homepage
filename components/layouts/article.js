@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Head from 'next/head'
 import { GridItemStyle } from '../grid-item'
@@ -17,7 +18,7 @@ const Layout = ({ children, title }) => (
     transition={{ duration: 0.4, type: 'easeInOut' }}
     style={{ position: 'relative' }}
   >
-    <>
+    <Box cursor={'none'}>
       {title && (
         <Head>
           <title>{title} - M Abdurahman Basyah</title>
@@ -28,7 +29,7 @@ const Layout = ({ children, title }) => (
       {children}
 
       <GridItemStyle />
-    </>
+    </Box>
   </motion.article>
 )
 

@@ -1,4 +1,3 @@
-import NextLink from 'next/link'
 import Image from 'next/image'
 import {
   Box,
@@ -11,30 +10,27 @@ import { Global } from '@emotion/react'
 export const AwardGridItem = ({ text, id, title, thumbnail }) => {
   return (
     <Box w="100%" textAlign="center">
-      <NextLink href={`/awards/${id}`}>
-        <LinkBox cursor="pointer">
+        <LinkBox cursor="pointer" href>
           <Image
             src={thumbnail}
             alt={title}
             className="grid-item-thumbnail"
             placeholder="blur"
           />
-          <LinkOverlay href={`/works/${id}`}>
+          <LinkOverlay href={`/awards/${id}`}>
             <Text mt={2} fontSize={20}>
               {title}
             </Text>
           </LinkOverlay>
           <Text fontSize={14}>{text}</Text>
         </LinkBox>
-      </NextLink>
     </Box>
   )
 }
 
 export const WorkGridItem = ({ children, id, title, thumbnail }) => (
   <Box w="100%" textAlign="center">
-    <NextLink href={`/works/${id}`} passHref scroll={false}>
-      <LinkBox cursor="pointer">
+      <LinkBox>
         <Image
           src={thumbnail}
           alt={title}
@@ -48,7 +44,6 @@ export const WorkGridItem = ({ children, id, title, thumbnail }) => (
         </LinkOverlay>
         <Text fontSize={14}>{children}</Text>
       </LinkBox>
-    </NextLink>
   </Box>
 )
 
