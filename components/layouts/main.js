@@ -5,6 +5,7 @@ import { Box, Container } from '@chakra-ui/react'
 import Footer from '../footer'
 import VoxelDogLoader from '../voxel-dog-loader'
 import { useEffect } from 'react'
+import { useState } from 'react'
 
 const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
   ssr: false,
@@ -12,6 +13,7 @@ const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
 })
 
 const Main = ({ children, router }) => {
+  const [isHover, setIsHover] = useState(false)
   useEffect(() => {
     document.body.style.cursor = 'none'
     var cursor = document.querySelector('.cursor')
@@ -42,10 +44,10 @@ const Main = ({ children, router }) => {
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].style.cursor = 'none'
       buttons[i].addEventListener('mouseover', function () {
-        cursor.classList.add('hover')
+        setIsHover(true)
       })
       buttons[i].addEventListener('mouseout', function () {
-        cursor.classList.remove('hover')
+        setIsHover(false)
       })
     }
   }, [])
@@ -82,12 +84,13 @@ const Main = ({ children, router }) => {
 
         <Box
           className="cursor"
-          width="50px"
-          height="50px"
+          width={isHover ? '30px' : '50px'}
+          height={isHover ? '30px' : '50px'}
           borderRadius="full"
           border="1px solid #008080"
           transition="all .1s ease-out"
           position="fixed"
+          filter={isHover ? 'brightness(1.5)' : 'brightness(1)'}
           pointerEvents="none"
           cursor="none"
           left="0"
@@ -97,8 +100,8 @@ const Main = ({ children, router }) => {
         ></Box>
         <Box
           className="cursor2"
-          width="20px"
-          height="20px"
+          width={isHover ? '30px' : '20px'}
+          height={isHover ? '30px' : '20px'}
           borderRadius="full"
           backgroundColor="#008080"
           position="fixed"
