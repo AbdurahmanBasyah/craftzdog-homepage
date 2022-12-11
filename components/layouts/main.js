@@ -95,7 +95,7 @@ const Main = ({ children, router }) => {
           cursor="none"
           left="0"
           top="0"
-          zIndex={999}
+          zIndex={999999}
           transform={'translate(-50%, -50%)'}
         ></Box>
         <Box
@@ -105,7 +105,7 @@ const Main = ({ children, router }) => {
           borderRadius="full"
           backgroundColor="#008080"
           position="fixed"
-          zIndex={999}
+          zIndex={999999}
           cursor={'none'}
           transform={'translate(-50%, -50%)'}
           pointerEvents="none"

@@ -8,4 +8,7 @@ module.exports = withPWA({
     skipWaiting: true
   },
   swcMinify: true,
+  images: {
+    domains: ['deckofcardsapi.com'],
+  },
 })

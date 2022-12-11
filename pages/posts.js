@@ -1,25 +1,40 @@
-import NextLink from 'next/link'
 import {
-  Box,
   Heading,
-  Text,
   Container,
-  Divider,
-  Button
+  SimpleGrid,
 } from '@chakra-ui/react'
+import Section from '../components/section'
+import { PostGridItem } from '../components/grid-item'
+import cardThumbnail from '../public/images/posts/21CardMagic_1.jpg'
 
 const Posts = () => {
+
   return (
     <Container>
-      <Heading as="h1">Be back soon</Heading>
-      <Text>There will be more posts for you in this page.</Text>
-      <Divider my={6} />
+      {/* <Box>
+        {cards.map(card => {
+          return (
+            <Box key={card.code} m={2} d="inline-block">
+              <img src={card.image} alt={card.code} />
+            </Box>
+          )
+        })}
+      </Box> */}
+      <Heading as="h3" fontSize={20} mb={4}>
+        Posts
+      </Heading>
 
-      <Box my={6} align="center">
-        <NextLink href="/">
-          <Button colorScheme="teal">Return to home</Button>
-        </NextLink>
-      </Box>
+      <SimpleGrid columns={[1, 1, 2]} gap={6}>
+        <Section>
+          <PostGridItem
+            id="21CardsMagic"
+            title="21 Cards Magic"
+            thumbnail={cardThumbnail}
+          >
+            A magic trick that uses 21 cards. Based on the principle of mathematical modularity.
+          </PostGridItem>
+        </Section>
+      </SimpleGrid>
     </Container>
   )
 }
