@@ -28,10 +28,13 @@ const Math24 = () => {
   const [score, setScore] = useState(0)
   const [cardIsUsed, setCardIsUsed] = useState([false, false, false, false])
   const [numOfCardsUsed, setNumOfCardsUsed] = useState(0)
+
   //   0 = last selected is a number
   //   1 = last selected is an operator
   const [currentSelection, setCurrentSelection] = useState(1)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+
   const drawCards = () => {
     axios
       .get('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
@@ -82,7 +85,7 @@ const Math24 = () => {
         setCardIsUsed([false, false, false, false])
         get4Cards()
         onOpen()
-        return 
+        return
       }
       setNumOfCardsUsed(numOfCardsUsed + 1)
       setCurrentCalculation(result)
