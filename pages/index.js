@@ -152,6 +152,13 @@ const Home = () => {
           <Paragraph>
             Music, Video Games, Rubik, Cards, Magic, Geometry, Coding, You
           </Paragraph>
+          <Box align="center" my={4}>
+            <NextLink href="/posts">
+              <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
+                Check out my posts
+              </Button>
+            </NextLink>
+          </Box>
         </Section>
 
         <Section delay={0.8}>
