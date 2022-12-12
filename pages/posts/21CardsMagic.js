@@ -21,7 +21,7 @@ import Layout from '../../components/layouts/article'
 import { useState } from 'react'
 import axios from 'axios'
 
-const Award = () => {
+const Magic24 = () => {
   const [cards, setCards] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -202,4 +202,4 @@ const Award = () => {
   )
 }
 
-export default Award
+export default Magic24
