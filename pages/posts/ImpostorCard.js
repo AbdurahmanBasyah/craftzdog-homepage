@@ -27,10 +27,13 @@ const ImpostorCard = () => {
   const [isJoined, setIsJoined] = useState(false)
   const [isStarted, setIsStarted] = useState(false)
 
-  const socket = io("https://personal-be-production.up.railway.app", {
-    transports: ["websocket"],
-  })
-//   const socket = io("http://localhost:3001")
+    const socket = io("https://personal-be-production.up.railway.app", {
+      transports: ["websocket"],
+    })
+//   const socket = io('http://localhost:8080', {
+//     // withCredentials: true,
+//     transports: ['websocket']
+//   })
   useEffect(() => {
     socket.on('connect', () => {
       setPlayerId(socket.id)
@@ -257,10 +260,13 @@ const ImpostorCard = () => {
             <P>
               One card has been removed from the hand. Therefore, there are 25
               pairs and a card left in the deck. The player who has the last
-              card in the hand will lose the game. After every turn, paired card from the hand will be removed and
-              the remaining cards will be shuffled
+              card in the hand will lose the game. After every turn, paired card
+              from the hand will be removed and the remaining cards will be
+              shuffled
             </P>
-            <Heading as="h3" my="4">Ready to play? Let{`'s`} start!</Heading>
+            <Heading as="h3" my="4">
+              Ready to play? Let{`'s`} start!
+            </Heading>
 
             <Flex>
               <Button
