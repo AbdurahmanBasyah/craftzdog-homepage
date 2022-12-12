@@ -28,7 +28,7 @@ const ImpostorCard = () => {
   const [isStarted, setIsStarted] = useState(false)
 
   const socket = io("https://personal-be-production.up.railway.app", {
-    withCredentials: true,
+    transports: ["websocket"],
   })
 //   const socket = io("http://localhost:3001")
   useEffect(() => {
