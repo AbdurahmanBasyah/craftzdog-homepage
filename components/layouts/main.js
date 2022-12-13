@@ -100,6 +100,7 @@ const Main = ({ children, router }) => {
           zIndex={999999}
           transform={'translate(-50%, -50%)'}
           display={width < 768 ? 'none' : 'block'}
+          visibility={width < 768 ? 'hidden' : 'visible'}
         ></Box>
         <Box
           className="cursor2"
@@ -113,6 +114,7 @@ const Main = ({ children, router }) => {
           transform={'translate(-50%, -50%)'}
           pointerEvents="none"
           display={width < 768 ? 'none' : 'block'}
+          visibility={width < 768 ? 'hidden' : 'visible'}
           transition="width .3s, height .3s, opacity .3s"
         ></Box>
         <Footer />
