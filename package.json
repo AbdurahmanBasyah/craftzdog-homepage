@@ -26,6 +26,7 @@
         "react-icons": "^4.3.1",
         "socket.io": "^4.5.4",
         "socket.io-client": "^4.5.4",
+        "string-math": "^1.2.2",
         "three": "^0.133.1"
     },
     "devDependencies": {

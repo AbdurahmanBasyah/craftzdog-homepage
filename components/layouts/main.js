@@ -6,6 +6,7 @@ import Footer from '../footer'
 import VoxelDogLoader from '../voxel-dog-loader'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import useWindowSize from '../../hooks/useWindowSize'
 
 const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
   ssr: false,
@@ -14,6 +15,7 @@ const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
 
 const Main = ({ children, router }) => {
   const [isHover, setIsHover] = useState(false)
+  const {width} = useWindowSize();
   useEffect(() => {
     document.body.style.cursor = 'none'
     var cursor = document.querySelector('.cursor')
@@ -97,6 +99,7 @@ const Main = ({ children, router }) => {
           top="0"
           zIndex={999999}
           transform={'translate(-50%, -50%)'}
+          display={width < 768 ? 'none' : 'block'}
         ></Box>
         <Box
           className="cursor2"
@@ -109,6 +112,7 @@ const Main = ({ children, router }) => {
           cursor={'none'}
           transform={'translate(-50%, -50%)'}
           pointerEvents="none"
+          display={width < 768 ? 'none' : 'block'}
           transition="width .3s, height .3s, opacity .3s"
         ></Box>
         <Footer />

@@ -20,6 +20,7 @@ import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import { useState } from 'react'
 import axios from 'axios'
+import stringMath from 'string-math'
 
 const Math24 = () => {
   const [cards, setCards] = useState([])
@@ -33,7 +34,6 @@ const Math24 = () => {
   //   1 = last selected is an operator
   const [currentSelection, setCurrentSelection] = useState(1)
   const { isOpen, onOpen, onClose } = useDisclosure()
-
 
   const drawCards = () => {
     axios
@@ -54,43 +54,35 @@ const Math24 = () => {
     const last4Cards = cards.slice(-4)
     setCards(cards.slice(0, -4))
     setSelectedCards(last4Cards)
+    setCurrentSelection(1)
+    setCurrentCalculation('')
+    setNumOfCardsUsed(0)
+    setCardIsUsed([false, false, false, false])
   }
 
-  const calculateHandler = num2 => {
-    if (currentCalculation.split(' ').length === 3) {
-      const num1 = parseInt(currentCalculation.split(' ')[0])
-      const operator = currentCalculation.split(' ')[1]
-      let result = 0
-      switch (operator) {
-        case '+':
-          result = num1 + num2
-          break
-        case '-':
-          result = num1 - num2
-          break
-        case '*':
-          result = num1 * num2
-          break
-        case '/':
-          result = num1 / num2
-          break
-        default:
-          break
-      }
-      if (result === 24 && numOfCardsUsed === 2) {
-        setScore(score + 100)
-        setCurrentSelection(1)
-        setCurrentCalculation('')
-        setNumOfCardsUsed(0)
-        setCardIsUsed([false, false, false, false])
-        get4Cards()
-        onOpen()
-        return
-      }
-      setNumOfCardsUsed(numOfCardsUsed + 1)
+  const calculateHandler = () => {
+    var result = 0
+    try {
+      result = stringMath(currentCalculation)
       setCurrentCalculation(result)
-      return result
+    } catch (e) {
+      alert('Invalid calculation')
+      setCurrentSelection(1)
+      setCurrentCalculation('')
+      setNumOfCardsUsed(0)
+      setCardIsUsed([false, false, false, false])
     }
+    if (result === 24 && numOfCardsUsed === 4) {
+      setScore(score + 100)
+      setCurrentSelection(1)
+      setCurrentCalculation('')
+      setNumOfCardsUsed(0)
+      setCardIsUsed([false, false, false, false])
+      get4Cards()
+      onOpen()
+      return
+    }
+    return result
   }
 
   return (
@@ -152,6 +144,7 @@ const Math24 = () => {
               <Box display={'flex'} justifyContent="center">
                 {cards.map((card, index) => (
                   <Image
+                    _hover={{ outline: '2px solid #008080', borderRadius: 'md', transition: 'all 0.2s ease-in-out' }}
                     key={index}
                     ml={`-${63.5}px`}
                     maxW="64px"
@@ -170,55 +163,10 @@ const Math24 = () => {
             <Heading as="h3" variant="section-title">
               Calculations
             </Heading>
-            <Text>{currentCalculation}</Text>
-            <SimpleGrid columns={5} spacing={10}>
-              <Button
-                disabled={currentSelection === 1}
-                onClick={() => {
-                  setCurrentSelection(1)
-                  setCurrentCalculation(currentCalculation + ' + ')
-                }}
-              >
-                +
-              </Button>
-              <Button
-                disabled={currentSelection === 1}
-                onClick={() => {
-                  setCurrentSelection(1)
-                  setCurrentCalculation(currentCalculation + ' - ')
-                }}
-              >
-                -
-              </Button>
-              <Button
-                disabled={currentSelection === 1}
-                onClick={() => {
-                  setCurrentSelection(1)
-                  setCurrentCalculation(currentCalculation + ' * ')
-                }}
-              >
-                *
-              </Button>
-              <Button
-                disabled={currentSelection === 1}
-                onClick={() => {
-                  setCurrentSelection(1)
-                  setCurrentCalculation(currentCalculation + ' / ')
-                }}
-              >
-                /
-              </Button>
-              <Button
-                onClick={() => {
-                  setCurrentCalculation('')
-                  setCurrentSelection(1)
-                  setCardIsUsed([false, false, false, false])
-                  setNumOfCardsUsed(0)
-                }}
-              >
-                Clear
-              </Button>
-            </SimpleGrid>
+            <Heading as="h2" my="4" textAlign={'center'}>
+              {currentCalculation === '' ? '0' : currentCalculation}
+            </Heading>
+
             <SimpleGrid columns={2} spacing={10} placeItems="center">
               {selectedCards.map((card, index) => (
                 <Box key={index} m={2} d="inline-block">
@@ -236,7 +184,10 @@ const Math24 = () => {
                   />
                   <label htmlFor={card.code}>
                     <Image
-                      filter={cardIsUsed[index] ? 'grayscale(100%)' : ''}
+                      cursor={'none'}
+                      _hover={{ outline: '2px solid #008080', borderRadius: 'md', transition: 'all 0.2s ease-in-out' }}
+                      filter={currentSelection === 0 ? 'opacity(50%)' : ''}
+                      visibility={cardIsUsed[index] ? 'hidden' : 'visible'}
                       onClick={() => {
                         if (currentSelection === 1) {
                           if (!cardIsUsed[index]) {
@@ -248,26 +199,22 @@ const Math24 = () => {
                             if (card.value === 'KING') {
                               setCurrentSelection(0)
                               setCurrentCalculation(currentCalculation + '13')
-                              return calculateHandler(13)
                             } else if (card.value === 'QUEEN') {
                               setCurrentSelection(0)
                               setCurrentCalculation(currentCalculation + '12')
-                              return calculateHandler(12)
                             } else if (card.value === 'JACK') {
                               setCurrentSelection(0)
                               setCurrentCalculation(currentCalculation + '11')
-                              return calculateHandler(11)
                             } else if (card.value === 'ACE') {
                               setCurrentSelection(0)
                               setCurrentCalculation(currentCalculation + '1')
-                              return calculateHandler(1)
                             } else {
                               setCurrentSelection(0)
                               setCurrentCalculation(
                                 currentCalculation + card.value
                               )
-                              return calculateHandler(parseInt(card.value))
                             }
+                            setNumOfCardsUsed(numOfCardsUsed + 1)
                           }
                         }
                       }}
@@ -279,6 +226,100 @@ const Math24 = () => {
                   </label>
                 </Box>
               ))}
+            </SimpleGrid>
+            <SimpleGrid columns={4} gap={8} my="8" placeItems="center">
+              <Button
+                cursor={'none'}
+                colorScheme={currentSelection === 0 ? 'teal' : 'gray'}
+                variant={currentSelection === 0 ? 'solid' : 'outline'}
+                disabled={currentSelection === 1}
+                onClick={() => {
+                  setCurrentSelection(1)
+                  setCurrentCalculation(currentCalculation + ' + ')
+                }}
+              >
+                +
+              </Button>
+              <Button
+                cursor={'none'}
+                colorScheme={currentSelection === 0 ? 'teal' : 'gray'}
+                variant={currentSelection === 0 ? 'solid' : 'outline'}
+                disabled={currentSelection === 1}
+                onClick={() => {
+                  setCurrentSelection(1)
+                  setCurrentCalculation(currentCalculation + ' - ')
+                }}
+              >
+                -
+              </Button>
+              <Button
+                cursor={'none'}
+                colorScheme={currentSelection === 0 ? 'teal' : 'gray'}
+                variant={currentSelection === 0 ? 'solid' : 'outline'}
+                disabled={currentSelection === 1}
+                onClick={() => {
+                  setCurrentSelection(1)
+                  setCurrentCalculation(currentCalculation + ' * ')
+                }}
+              >
+                x
+              </Button>
+              <Button
+                cursor={'none'}
+                colorScheme={currentSelection === 0 ? 'teal' : 'gray'}
+                variant={currentSelection === 0 ? 'solid' : 'outline'}
+                disabled={currentSelection === 1}
+                onClick={() => {
+                  setCurrentSelection(1)
+                  setCurrentCalculation(currentCalculation + ' / ')
+                }}
+              >
+                :
+              </Button>
+
+              <Button
+                colorScheme={'teal'}
+                variant={'solid'}
+                cursor={'none'}
+                onClick={() => {
+                  setCurrentCalculation('')
+                  setCurrentSelection(1)
+                  setCardIsUsed([false, false, false, false])
+                  setNumOfCardsUsed(0)
+                }}
+              >
+                Clear
+              </Button>
+              <Button
+                colorScheme={'teal'}
+                variant={'solid'}
+                cursor={'none'}
+                onClick={() => {
+                  setCurrentCalculation(currentCalculation + ' ( ')
+                }}
+              >
+                {`(`}
+              </Button>
+              <Button
+                colorScheme={'teal'}
+                variant={'solid'}
+                cursor={'none'}
+                onClick={() => {
+                  setCurrentCalculation(currentCalculation + ' ) ')
+                }}
+              >
+                {`)`}
+              </Button>
+              <Button
+                colorScheme="orange"
+                variant={'solid'}
+                cursor={'none'}
+                onClick={() => {
+                  calculateHandler()
+                }}
+              >
+                Calculate
+              </Button>
             </SimpleGrid>
           </Box>
         )}
