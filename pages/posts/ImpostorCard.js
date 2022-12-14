@@ -13,9 +13,11 @@ import {
   ModalOverlay,
   ModalContent,
   ModalFooter,
-  ModalBody
+  ModalBody,
+  List,
+  ListItem
 } from '@chakra-ui/react'
-import { Title } from '../../components/pageItem'
+import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import { useState } from 'react'
 import { io } from 'socket.io-client'
@@ -65,7 +67,6 @@ const ImpostorCard = () => {
         }
         currentSocket.emit('join-room', data, id)
       })
-
 
       currentSocket?.on('player-joined', data => {
         // set join if new player is guest
@@ -254,6 +255,38 @@ const ImpostorCard = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+        <P>
+          <strong>Impostor Card Game</strong>{' '}
+          {`is a card game where you have to find
+              and avoid the impostor. The game is played with a standard deck of 52
+              cards with a card removed. The remaining 51 cards are shuffled and
+              dealt out evenly between two players.`}
+        </P>
+        <P>
+          {`The object of the game is to be the first player to get rid of all 
+              of your cards. To do this, you must find the impostor card and avoid
+              it. The impostor card is the only card that is not a pair. In every turn, 
+              you can take a card from the opponent's deck. If the card is a pair with any of the other cards in your pile,
+              you can discard it. If the card is not a pair, you have to keep it.`}
+        </P>
+        <P>
+          {`After each turns, the deck for both players will be shuffled. The game ends when one of the players has no cards left. The player with the last card loses.`}
+        </P>
+        <List ml={4} my={4}>
+          <ListItem>
+            <Meta>Type</Meta>
+            <span>Game</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Category</Meta>
+            <span>Multiplayer</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Number of Players</Meta>
+            <span>2</span>
+          </ListItem>
+        </List>
         {isStarted ? (
           <Box>
             <Heading as="h3" variant="section-title">
@@ -362,13 +395,6 @@ const ImpostorCard = () => {
           </Box>
         ) : (
           <>
-            <P>
-              One card has been removed from the hand. Therefore, there are 25
-              pairs and a card left in the deck. The player who has the last
-              card in the hand will lose the game. After every turn, paired card
-              from the hand will be removed and the remaining cards will be
-              shuffled
-            </P>
             {!isJoined && (
               <>
                 <Heading as="h3" my="4">
@@ -410,7 +436,8 @@ const ImpostorCard = () => {
                       my="4"
                       variant={'outline'}
                       ml="4"
-                      fontSize={'md'}
+                      fontSize={"20px"}
+                      size={'lg'}
                       onClick={() => handleStart()}
                     >
                       Start
