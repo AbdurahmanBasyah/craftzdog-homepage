@@ -7,7 +7,13 @@ import {
   Button,
   Image,
   Flex,
-  Input
+  Input,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalBody
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -19,6 +25,7 @@ import P from '../../components/paragraph'
 
 const ImpostorCard = () => {
   const [playerId, setPlayerId] = useState('')
+  const [roomId, setRoomId] = useState('')
   const [hostId, setHostId] = useState('')
   const [data, setData] = useState({})
   //   0 = neutral, 1 = host, 2 = guest
@@ -26,49 +33,108 @@ const ImpostorCard = () => {
   const [isCopied, setIsCopied] = useState(false)
   const [isJoined, setIsJoined] = useState(false)
   const [isStarted, setIsStarted] = useState(false)
+  const [currentSocket, setCurrentSocket] = useState(null)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [modalData, setModalData] = useState(null)
 
-    const socket = io("https://personal-be-production.up.railway.app", {
-      transports: ["websocket"],
-    })
-//   const socket = io('http://localhost:8080', {
-//     // withCredentials: true,
-//     transports: ['websocket']
-//   })
   useEffect(() => {
-    socket.on('connect', () => {
-      setPlayerId(socket.id)
+    const socket = io('https://personal-be-production.up.railway.app', {
+      transports: ['websocket']
     })
-  }, [])
+    // const socket = io('http://localhost:8080', {
+    //   // withCredentials: true,
+    //   transports: ['websocket']
+    // })
 
-  socket.on('user-connected', data => {
-    if (data?.hostId === playerId) {
-      setIsJoined(true)
-      setData(data)
-    } else if (data?.guestId === playerId) {
-      setIsJoined(true)
-      setData(data)
+    setCurrentSocket(socket)
+
+    return () => {
+      socket.disconnect()
     }
-  })
+  }, [])
+  useEffect(() => {
+    if (currentSocket) {
+      currentSocket?.on('connect', () => {
+        console.log('connected')
+        setPlayerId(currentSocket.id)
+        const id = generateRoomId()
+        const data = {
+          playerId: currentSocket.id,
+          roomId: id,
+          isHost: true
+        }
+        currentSocket.emit('join-room', data, id)
+      })
 
-  socket.on('start-game', data => {
-    setData(data)
-    setIsStarted(true)
-  })
 
-  socket.on('play-card', data => {
+      currentSocket?.on('player-joined', data => {
+        // set join if new player is guest
+        if (!data.isHost) {
+          setIsJoined(true)
+        }
+      })
+    }
+  }, [currentSocket])
+
+  currentSocket?.on('play-card', data => {
     const newData = {
       ...data,
       hostCards: shuffleCards(removePairedCards(data.hostCards)),
       guestCards: shuffleCards(removePairedCards(data.guestCards))
     }
-    console.log(newData?.hostCards.length)
-    if (newData?.hostCards.length === 0) {
-      console.log('guest win')
-    } else if (newData?.guestCards.length === 0) {
-      console.log('host win')
+    // guest hold the last card
+    // guest lose and host win
+    if (data?.hostCards.length === 0) {
+      if (isHost === 2) {
+        const modalData = {
+          title: 'You lose',
+          description: 'You have the impostor card, the impostor card is',
+          image: data?.guestCards[0]?.image
+        }
+        setModalData(modalData)
+        onOpen()
+      } else if (isHost === 1) {
+        const modalData = {
+          title: 'You win',
+          description:
+            'Your opponent has the impostor card, the impostor card is',
+          image: data?.guestCards[0]?.image
+        }
+        setModalData(modalData)
+        onOpen()
+      }
+
+      // host hold the last card
+      // host lose and guest win
+    } else if (data?.guestCards.length === 0) {
+      if (isHost === 1) {
+        const modalData = {
+          title: 'You lose',
+          description: 'You have the impostor card, the impostor card is',
+          image: data?.hostCards[0]?.image
+        }
+        setModalData(modalData)
+        onOpen()
+      } else if (isHost === 2) {
+        const modalData = {
+          title: 'You win',
+          description:
+            'Your opponent has the impostor card, the impostor card is',
+          image: data?.hostCards[0]?.image
+        }
+        setModalData(modalData)
+        onOpen()
+      }
     }
+    setIsStarted(true)
     setData(newData)
   })
+
+  const generateRoomId = () => {
+    const id = Math.floor(100000 + Math.random() * 900000).toString()
+    setRoomId(id)
+    return id
+  }
 
   const shuffleCards = cards => {
     for (let i = cards.length - 1; i > 0; i--) {
@@ -88,29 +154,43 @@ const ImpostorCard = () => {
             `https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=52`
           )
           .then(res => {
-            const newData = {
-              hostId: data.hostId,
-              guestId: data.guestId,
-              hostCards: removePairedCards(res.data.cards.slice(0, 26)),
-              guestCards: removePairedCards(res.data.cards.slice(26, 51)),
-              turn: data.hostId
+            const tempHostCards = removePairedCards(res.data.cards.slice(0, 26))
+            const tempGuestCards = removePairedCards(
+              res.data.cards.slice(26, 51)
+            )
+            // host gets more cards
+            if (tempHostCards.length > tempGuestCards.length) {
+              const newData = {
+                hostCards: tempHostCards,
+                guestCards: tempGuestCards,
+                lastTurn: playerId
+              }
+              setData(newData)
+              currentSocket.emit('start-game', newData, roomId)
+            } else {
+              const newData = {
+                hostCards: tempGuestCards,
+                guestCards: tempHostCards,
+                lastTurn: playerId
+              }
+              setIsHost(1)
+              setData(newData)
+              currentSocket.emit('start-game', newData, roomId)
             }
-            setData(newData)
-            socket.emit('start-game', newData)
           })
       })
   }
 
   const handleJoin = () => {
     const data = {
-      hostId: hostId,
-      guestId: playerId,
-      hostCards: [],
-      guestCards: [],
-      turn: hostId
+      playerId: currentSocket.id,
+      roomId: hostId,
+      isHost: false
     }
-    setData(data)
-    socket.emit('join-room', data)
+    setRoomId(hostId)
+    setIsJoined(true)
+    setIsHost(2)
+    currentSocket.emit('join-room', data, hostId)
   }
 
   const removePairedCards = cards => {
@@ -139,6 +219,41 @@ const ImpostorCard = () => {
         <Title type="Posts">
           Impostor Card <Badge>Game</Badge>
         </Title>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalBody
+              display={'flex'}
+              flexDirection="column"
+              alignItems={'center'}
+            >
+              <Heading as="h3" my="4" variant="section-title">
+                {modalData?.title}
+              </Heading>
+              <Text textAlign="center">{modalData?.description}</Text>
+              <Image
+                src={modalData?.image}
+                w="30%"
+                my="6"
+                alt="impostor card"
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="teal"
+                onClick={() => {
+                  onClose()
+                  setIsStarted(false)
+                  setData(null)
+                  setIsHost(0)
+                  setIsJoined(false)
+                }}
+              >
+                Play Again
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         {isStarted ? (
           <Box>
             <Heading as="h3" variant="section-title">
@@ -176,7 +291,7 @@ const ImpostorCard = () => {
                       ml={`-${40}px`}
                       maxW="64px"
                       onClick={() => {
-                        if (playerId === data.turn) {
+                        if (playerId !== data.lastTurn) {
                           const guestCards = [
                             ...removePairedCards([...data.guestCards, card])
                           ]
@@ -184,14 +299,11 @@ const ImpostorCard = () => {
                             data.hostCards.filter(c => c.code !== card.code)
                           )
                           const newData = {
-                            hostId: data.hostId,
-                            guestId: data.guestId,
                             hostCards: hostCards,
                             guestCards: guestCards,
-                            turn: data.hostId
+                            lastTurn: playerId
                           }
-                          setData(newData)
-                          socket.emit('play-card', newData)
+                          currentSocket.emit('play-card', newData, roomId)
                         } else {
                           alert('Not your turn')
                         }
@@ -216,7 +328,7 @@ const ImpostorCard = () => {
                         transition: 'all 0.2s ease-in-out'
                       }}
                       onClick={() => {
-                        if (playerId === data.turn) {
+                        if (playerId !== data.lastTurn) {
                           const hostCards = [
                             ...removePairedCards([...data.hostCards, card])
                           ]
@@ -224,14 +336,11 @@ const ImpostorCard = () => {
                             data.guestCards.filter(c => c.code !== card.code)
                           )
                           const newData = {
-                            hostId: data.hostId,
-                            guestId: data.guestId,
                             hostCards: hostCards,
                             guestCards: guestCards,
-                            turn: data.guestId
+                            lastTurn: playerId
                           }
-                          setData(newData)
-                          socket.emit('play-card', newData)
+                          currentSocket.emit('play-card', newData, roomId)
                         } else {
                           alert('Not your turn')
                         }
@@ -243,17 +352,13 @@ const ImpostorCard = () => {
                     />
                   ))}
             </Box>
-            <Text textAlign="center" my="2">
-              {playerId === data?.turn
-                ? 'Choose one card from your opponents deck'
-                : 'Wait for your opponent to play a card'}
-            </Text>
-            <Text>{`Host cards remaining: ${
-              removePairedCards(data?.hostCards).length
-            }`}</Text>
-            <Text>{`Guest cards remaining: ${
-              removePairedCards(data?.guestCards).length
-            }`}</Text>
+            {isStarted && (
+              <Text textAlign="center" my="2">
+                {playerId !== data?.lastTurn
+                  ? `Get one card from your opponent's deck`
+                  : 'Wait for your opponent to take a card'}
+              </Text>
+            )}
           </Box>
         ) : (
           <>
@@ -264,35 +369,39 @@ const ImpostorCard = () => {
               from the hand will be removed and the remaining cards will be
               shuffled
             </P>
-            <Heading as="h3" my="4">
-              Ready to play? Let{`'s`} start!
-            </Heading>
+            {!isJoined && (
+              <>
+                <Heading as="h3" my="4">
+                  Ready to play? Let{`'s`} start!
+                </Heading>
 
-            <Flex>
-              <Button
-                onClick={() => setIsHost(1)}
-                cursor={'none'}
-                colorScheme="teal"
-                my="4"
-              >
-                Host a game
-              </Button>
-              <Button
-                onClick={() => setIsHost(2)}
-                cursor={'none'}
-                colorScheme="teal"
-                my="4"
-                variant={'outline'}
-                ml="4"
-              >
-                Join a game
-              </Button>
-            </Flex>
+                <Flex>
+                  <Button
+                    onClick={() => setIsHost(1)}
+                    cursor={'none'}
+                    colorScheme="teal"
+                    my="4"
+                  >
+                    Host a game
+                  </Button>
+                  <Button
+                    onClick={() => setIsHost(2)}
+                    cursor={'none'}
+                    colorScheme="teal"
+                    my="4"
+                    variant={'outline'}
+                    ml="4"
+                  >
+                    Join a game
+                  </Button>
+                </Flex>
+              </>
+            )}
             {isHost === 1 && (
               <>
                 {isJoined ? (
-                  <Flex alignItems="center">
-                    <Text>
+                  <Flex alignItems="center" flexDirection="column">
+                    <Text my="8">
                       Your friend has joined the game, click start to begin
                     </Text>
                     <Button
@@ -301,7 +410,7 @@ const ImpostorCard = () => {
                       my="4"
                       variant={'outline'}
                       ml="4"
-                      fontSize={'xs'}
+                      fontSize={'md'}
                       onClick={() => handleStart()}
                     >
                       Start
@@ -311,7 +420,7 @@ const ImpostorCard = () => {
                   <Flex alignItems={'center'}>
                     <Text
                       fontSize={'sm'}
-                    >{`Invite your friend, here's your ID ${playerId}`}</Text>
+                    >{`Invite your friend, here's your room ID ${roomId}`}</Text>
                     <Button
                       cursor={'none'}
                       colorScheme="teal"
@@ -321,7 +430,7 @@ const ImpostorCard = () => {
                       fontSize={'xs'}
                       onClick={() => {
                         setIsCopied(true)
-                        navigator.clipboard.writeText(playerId)
+                        navigator.clipboard.writeText(roomId)
                       }}
                     >
                       {isCopied ? 'Copied' : 'Copy'}
@@ -333,13 +442,13 @@ const ImpostorCard = () => {
             {isHost === 2 && (
               <>
                 {isJoined ? (
-                  <Text>
+                  <Text textAlign="center" my="8">
                     You have joined the game, waiting for the host to start
                   </Text>
                 ) : (
                   <Flex alignItems={'center'}>
                     <Input
-                      placeholder="Enter your friend's ID"
+                      placeholder="Enter your friend's room ID"
                       color="teal"
                       _placeholder={{ color: 'inherit' }}
                       onChange={e => setHostId(e.target.value)}
