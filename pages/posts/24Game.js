@@ -66,7 +66,6 @@ const Math24 = () => {
   }
 
   const restartGame = () => {
-    setFinalScore(correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000))
     onOpen()
     setCards([])
     setIsStarted(false)
@@ -92,6 +91,7 @@ const Math24 = () => {
       setCardIsUsed([false, false, false, false])
       setCorrectAnswer(correctAnswer + 1)
       if (cards.length === 0) {
+        setFinalScore((correctAnswer + 1) * 100 - Math.floor((Date.now() - startTime) / 1000))
         restartGame()
       } else {
         get4Cards()
