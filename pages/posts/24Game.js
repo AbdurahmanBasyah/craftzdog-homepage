@@ -98,6 +98,18 @@ const Math24 = () => {
     return result
   }
 
+  const shareHandler = () => {
+    if(navigator.share) {
+      navigator.share({
+        title: '24 Game',
+        text: `I got ${correctAnswer} correct answers in 24 Game with ${Math.floor((correctAnswer / 13 * 100))}% accuracy and ${correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)} final score. Can you beat me?`,
+        url: 'https://abdurahmanbasyah.com/posts/24Game',
+      })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+    }
+  }
+
   return (
     <Layout title="24 Cards Game">
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -132,16 +144,16 @@ const Math24 = () => {
           </ModalBody>
 
           <ModalFooter>
-            {/* <Button
+            <Button
               cursor={'none'}
               colorScheme="cyan"
               mr={3}
               onClick={() => {
-                onClose()
+                shareHandler()
               }}
             >
-              Share to Twitter
-            </Button> */}
+              Share
+            </Button>
             <Button
               cursor={'none'}
               colorScheme="teal"
