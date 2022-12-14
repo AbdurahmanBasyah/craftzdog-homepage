@@ -11,10 +11,8 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
-  ModalBody,
-  ModalCloseButton
+  ModalBody
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -26,9 +24,11 @@ const Math24 = () => {
   const [cards, setCards] = useState([])
   const [selectedCards, setSelectedCards] = useState([])
   const [currentCalculation, setCurrentCalculation] = useState('')
-  const [score, setScore] = useState(0)
   const [cardIsUsed, setCardIsUsed] = useState([false, false, false, false])
   const [numOfCardsUsed, setNumOfCardsUsed] = useState(0)
+  const [isStarted, setIsStarted] = useState(false)
+  const [startTime, setStartTime] = useState(0)
+  const [correctAnswer, setCorrectAnswer] = useState(0)
 
   //   0 = last selected is a number
   //   1 = last selected is an operator
@@ -46,6 +46,9 @@ const Math24 = () => {
           )
           .then(res => {
             setCards(res.data.cards)
+            setIsStarted(true)
+            setStartTime(Date.now())
+            setCorrectAnswer(0)
           })
       })
   }
@@ -58,6 +61,13 @@ const Math24 = () => {
     setCurrentCalculation('')
     setNumOfCardsUsed(0)
     setCardIsUsed([false, false, false, false])
+  }
+
+  const restartGame = () => {
+    onOpen()
+    setCards([])
+    setIsStarted(false)
+    setSelectedCards([])
   }
 
   const calculateHandler = () => {
@@ -73,13 +83,16 @@ const Math24 = () => {
       setCardIsUsed([false, false, false, false])
     }
     if (result === 24 && numOfCardsUsed === 4) {
-      setScore(score + 100)
       setCurrentSelection(1)
       setCurrentCalculation('')
       setNumOfCardsUsed(0)
       setCardIsUsed([false, false, false, false])
-      get4Cards()
-      onOpen()
+      setCorrectAnswer(correctAnswer + 1)
+      if (cards.length === 0) {
+        restartGame()
+      } else {
+        get4Cards()
+      }
       return
     }
     return result
@@ -87,30 +100,52 @@ const Math24 = () => {
 
   return (
     <Layout title="24 Cards Game">
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Voala!! You got the 24</ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
-            <Text>New Score: {score}</Text>
+            <Heading as="h3"variant="section-title" textAlign="center">
+              STATISTICS
+            </Heading>
+            <Box display={"flex"} my="6"  justifyContent="center" gap="10">
+              <Box>
+                <Heading textAlign="center" as="h4">{correctAnswer}</Heading>
+                <Text textAlign="center">Correct Answer</Text>
+              </Box>
+              <Box>
+                <Heading textAlign="center" as="h4">
+                  {Math.floor((Date.now() - startTime) / 1000)}
+                </Heading>
+                <Text textAlign="center">Time</Text>
+              </Box>
+              <Box>
+                <Heading textAlign="center" as="h4">
+                  {Math.floor(correctAnswer / 13 * 100)}%
+                </Heading>
+                <Text textAlign="center">Accuracy</Text>
+              </Box>
+              <Box>
+                <Heading textAlign="center" as="h4">{correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)}</Heading>
+                <Text textAlign="center">Final Score</Text>
+              </Box>
+            </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button
+            {/* <Button
               cursor={'none'}
-              colorScheme="blue"
+              colorScheme="cyan"
               mr={3}
               onClick={() => {
                 onClose()
               }}
             >
-              Continue Playing
-            </Button>
+              Share to Twitter
+            </Button> */}
             <Button
               cursor={'none'}
+              colorScheme="teal"
               onClick={() => {
-                setCards([])
                 onClose()
               }}
             >
@@ -123,7 +158,7 @@ const Math24 = () => {
         <Title type="Posts">
           24 <Badge>Game</Badge>
         </Title>
-        {cards.length === 0 ? (
+        {!isStarted ? (
           <>
             <Heading as="h3">Ready to play? Let{`'s`} start!</Heading>
             <Button
@@ -132,7 +167,7 @@ const Math24 = () => {
               colorScheme="teal"
               my="4"
             >
-              Draw Cards
+              Shuffle Cards
             </Button>
           </>
         ) : (
@@ -144,7 +179,11 @@ const Math24 = () => {
               <Box display={'flex'} justifyContent="center">
                 {cards.map((card, index) => (
                   <Image
-                    _hover={{ outline: '2px solid #008080', borderRadius: 'md', transition: 'all 0.2s ease-in-out' }}
+                    _hover={{
+                      outline: '2px solid #008080',
+                      borderRadius: 'md',
+                      transition: 'all 0.2s ease-in-out'
+                    }}
                     key={index}
                     ml={`-${63.5}px`}
                     maxW="64px"
@@ -154,12 +193,29 @@ const Math24 = () => {
                   />
                 ))}
               </Box>
-              <Text my="3">{`Cards left: ${cards.length}`}</Text>
-              <Text my="3">{`Your score: ${score}`}</Text>
               <Text textAlign={'center'} my="3">
-                Click the cards to start a new round
+                {cards.length >= 4 && 'Click on the deck to get 4 new cards'}
               </Text>
+              <Box
+                display={'flex'}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Text my="3">{`Cards left: ${cards.length}`}</Text>
+                  <Text my="3">{`Correct Answer: ${correctAnswer}`}</Text>
+                </Box>
+                <Button
+                  cursor={'none'}
+                  onClick={restartGame}
+                  colorScheme="red"
+                  my="4"
+                >
+                  give up
+                </Button>
+              </Box>
             </Box>
+
             <Heading as="h3" variant="section-title">
               Calculations
             </Heading>
@@ -185,7 +241,11 @@ const Math24 = () => {
                   <label htmlFor={card.code}>
                     <Image
                       cursor={'none'}
-                      _hover={{ outline: '2px solid #008080', borderRadius: 'md', transition: 'all 0.2s ease-in-out' }}
+                      _hover={{
+                        outline: '2px solid #008080',
+                        borderRadius: 'md',
+                        transition: 'all 0.2s ease-in-out'
+                      }}
                       filter={currentSelection === 0 ? 'opacity(50%)' : ''}
                       visibility={cardIsUsed[index] ? 'hidden' : 'visible'}
                       onClick={() => {
