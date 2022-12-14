@@ -29,6 +29,7 @@ const Math24 = () => {
   const [isStarted, setIsStarted] = useState(false)
   const [startTime, setStartTime] = useState(0)
   const [correctAnswer, setCorrectAnswer] = useState(0)
+  const [finalScore, setFinalScore] = useState(0)
 
   //   0 = last selected is a number
   //   1 = last selected is an operator
@@ -48,6 +49,7 @@ const Math24 = () => {
             setCards(res.data.cards)
             setIsStarted(true)
             setStartTime(Date.now())
+            setFinalScore(0)
             setCorrectAnswer(0)
           })
       })
@@ -64,6 +66,7 @@ const Math24 = () => {
   }
 
   const restartGame = () => {
+    setFinalScore(correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000))
     onOpen()
     setCards([])
     setIsStarted(false)
@@ -99,14 +102,19 @@ const Math24 = () => {
   }
 
   const shareHandler = () => {
-    if(navigator.share) {
-      navigator.share({
-        title: '24 Game',
-        text: `I got ${correctAnswer} correct answers in 24 Game with ${Math.floor((correctAnswer / 13 * 100))}% accuracy and ${correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)} final score. Can you beat me?`,
-        url: 'https://abdurahmanbasyah.com/posts/24Game',
-      })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error));
+    if (navigator.share) {
+      navigator
+        .share({
+          title: '24 Game',
+          text: `I got ${correctAnswer} correct answers in 24 Game with ${Math.floor(
+            (correctAnswer / 13) * 100
+          )}% accuracy and ${
+            correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)
+          } final score. Can you beat me?`,
+          url: 'https://abdurahmanbasyah.com/posts/24Game'
+        })
+        .then(() => console.log('Successful share'))
+        .catch(error => console.log('Error sharing', error))
     }
   }
 
@@ -116,12 +124,14 @@ const Math24 = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalBody>
-            <Heading as="h3"variant="section-title" textAlign="center">
+            <Heading as="h3" variant="section-title" textAlign="center">
               STATISTICS
             </Heading>
-            <Box display={"flex"} my="6"  justifyContent="center" gap="10">
+            <Box display={'flex'} my="6" justifyContent="center" gap="10">
               <Box>
-                <Heading textAlign="center" as="h4">{correctAnswer}</Heading>
+                <Heading textAlign="center" as="h4">
+                  {correctAnswer}
+                </Heading>
                 <Text textAlign="center">Correct Answer</Text>
               </Box>
               <Box>
@@ -132,12 +142,14 @@ const Math24 = () => {
               </Box>
               <Box>
                 <Heading textAlign="center" as="h4">
-                  {Math.floor(correctAnswer / 13 * 100)}%
+                  {Math.floor((correctAnswer / 13) * 100)}%
                 </Heading>
                 <Text textAlign="center">Accuracy</Text>
               </Box>
               <Box>
-                <Heading textAlign="center" as="h4">{correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)}</Heading>
+                <Heading textAlign="center" as="h4">
+                  {finalScore}
+                </Heading>
                 <Text textAlign="center">Final Score</Text>
               </Box>
             </Box>
