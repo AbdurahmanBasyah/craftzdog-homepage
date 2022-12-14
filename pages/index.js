@@ -4,7 +4,6 @@ import {
   Container,
   Heading,
   Box,
-  Image,
   Button,
   List,
   ListItem,
@@ -16,6 +15,7 @@ import Paragraph from '../components/paragraph'
 import { BioSection, BioYear } from '../components/bio'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
+import Image from 'next/image'
 import {
   IoLogoInstagram,
   IoLogoGithub,
@@ -26,6 +26,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { isSuccess } from '../functions/api'
+import profile from '../public/images/profile.jpg'
 const Home = () => {
   const [numOfAwards, setNumOfAwards] = useState(5)
   const [bios, setBios] = useState([])
@@ -95,16 +96,21 @@ const Home = () => {
             ml={{ md: 6 }}
             textAlign="center"
           >
-            <Image
-              borderColor="whiteAlpha.800"
-              borderWidth={2}
-              borderStyle="solid"
-              maxWidth="100px"
-              display="inline-block"
-              borderRadius="full"
-              src="/images/profile.jpg"
-              alt="Profile image"
-            />
+            <Box
+                borderColor="whiteAlpha.800"
+                borderWidth={2}
+                borderStyle="solid"
+                maxWidth="100px"
+                display="inline-block"
+                overflow={'hidden'}
+                borderRadius="full">
+              <Image
+                src={profile}
+                width={100}
+                height={100}
+                alt="Profile image"
+              />
+            </Box>
           </Box>
         </Box>
         <Section delay={0.2}>
@@ -124,7 +130,7 @@ const Home = () => {
           </Paragraph>
           <Box align="center" my={4}>
             <NextLink href="/works">
-              <Button rightIcon={<ChevronRightIcon />}  colorScheme="teal">
+              <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
                 My portfolio
               </Button>
             </NextLink>
@@ -162,7 +168,6 @@ const Home = () => {
         </Section>
 
         <Section delay={0.8}>
-
           <Heading as="h3" variant="section-title">
             Awards
           </Heading>
