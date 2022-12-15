@@ -13,8 +13,7 @@ import {
   ModalFooter,
   ModalBody,
   Input,
-  Flex,
-  Circle
+  Flex
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
