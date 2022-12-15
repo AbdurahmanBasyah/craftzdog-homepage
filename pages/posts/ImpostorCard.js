@@ -61,6 +61,7 @@ const ImpostorCard = () => {
         console.log('connected')
         setPlayerId(currentSocket.id)
         const id = generateRoomId()
+        setRoomId(id)
         const data = {
           playerId: currentSocket.id,
           roomId: id,
