@@ -403,10 +403,10 @@ const KnightRiddle = () => {
         navigator.share({
           title: 'The Knight Riddle',
           text: text,
-          url: 'https://abdurahmanbasyah/posts/KnightRiddle'
+          url: 'https://abdurahmanbasyah.com/posts/KnightRiddle/'
         })
       } else {
-        text += 'https://abdurahmanbasyah/posts/KnightRiddle'
+        text += 'https://abdurahmanbasyah.com/posts/KnightRiddle/'
         // copy to clipboard
         navigator.clipboard.writeText(text)
         alert('Copied to clipboard!')
@@ -433,7 +433,7 @@ const KnightRiddle = () => {
         key={square.getSquare()}
         width={'40px'}
         height={'40px'}
-        border={!square.getVisited() ? '1px solid black' : ''}
+        border={square.getVisited ? 'none' : '1px solid black'}
         display="flex"
         justifyContent="center"
         alignItems="center"
