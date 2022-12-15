@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import ThemeToggleButton from './theme-toggle-button'
-import { IoLogoGithub } from 'react-icons/io5'
+// import { IoLogoGithub } from 'react-icons/io5'
 
 const LinkItem = ({ href, path, target, children, ...props }) => {
   const active = path === href
@@ -56,7 +56,6 @@ const Navbar = props => {
         maxW="container.md"
         wrap="wrap"
         align="center"
-        justify="space-between"
       >
         <Flex align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={'tighter'}>
@@ -69,6 +68,7 @@ const Navbar = props => {
           display={{ base: 'none', md: 'flex' }}
           width={{ base: 'full', md: 'auto' }}
           alignItems="center"
+          justifyContent="end"
           flexGrow={1}
           mt={{ base: 4, md: 0 }}
         >
@@ -84,7 +84,7 @@ const Navbar = props => {
           <LinkItem href="/admin" path={path}>
             Admin
           </LinkItem>
-          <LinkItem
+          {/* <LinkItem
             _target="_blank"
             href="https://github.com/AbdurahmanBasyah/craftzdog-homepage"
             path={path}
@@ -95,7 +95,7 @@ const Navbar = props => {
           >
             <IoLogoGithub />
             Source
-          </LinkItem>
+          </LinkItem> */}
         </Stack>
 
         <Box flex={1} align="right">
@@ -125,12 +125,12 @@ const Navbar = props => {
                 <NextLink href="/admin" passHref>
                   <MenuItem as={Link}>Admin</MenuItem>
                 </NextLink>
-                <MenuItem
+                {/* <MenuItem
                   as={Link}
                   href="https://github.com/AbdurahmanBasyah/craftzdog-homepage"
                 >
                   View Source
-                </MenuItem>
+                </MenuItem> */}
               </MenuList>
             </Menu>
           </Box>
