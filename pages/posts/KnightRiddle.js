@@ -431,8 +431,8 @@ const KnightRiddle = () => {
           }
         }}
         key={square.getSquare()}
-        width={'40px'}
-        height={'40px'}
+        width={{ base: '36px', md: '48px', lg: '60px' }}
+        height={{ base: '36px', md: '48px', lg: '60px' }}
         border={square.getVisited ? 'none' : '1px solid black'}
         display="flex"
         justifyContent="center"
