@@ -119,13 +119,14 @@ const Magic24 = () => {
           deck of cards and then ask you to think of a card. The magician will
           then ask you which column the card is in for three times
         </P>
-        <P>
+        <Text textAlign={"center"}>
           <br />
-          <br />
-          SPOILER ALERT!! If you don{`'`}t want to know the trick, please don
+          SPOILER ALERT!!<br /> If you don{`'`}t want to know the trick, please don
           {`'`}t read the explanation below.
           <br />
           <br />
+        </Text>
+        <P>
           The trick is to divide the deck of cards into three columns. The first
           column is the first card, the fourth card, the seventh card, the tenth
           card, the thirteenth card, the sixteenth card, the nineteenth card,

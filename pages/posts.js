@@ -1,4 +1,4 @@
-import { Heading, Container, SimpleGrid } from '@chakra-ui/react'
+import { Heading, Container, SimpleGrid, Divider } from '@chakra-ui/react'
 import Section from '../components/section'
 import { PostGridItem } from '../components/grid-item'
 import cardThumbnail from '../public/images/posts/21CardMagic_1.jpg'
@@ -33,7 +33,16 @@ const Posts = () => {
             mathematical modularity.
           </PostGridItem>
         </Section>
-        <Section>
+      </SimpleGrid>
+
+      <Section delay={0.3}>
+        <Divider my={6} />
+        <Heading as="h3" fontSize={20} mb={4}>
+          Games
+        </Heading>
+      </Section>
+      <SimpleGrid columns={[1, 1, 2]} gap={6}>
+        <Section delay={0.6}>
           <PostGridItem
             id="24Game"
             title="24 Game"
@@ -43,22 +52,24 @@ const Posts = () => {
             24 using the calculations of the 4 cards.
           </PostGridItem>
         </Section>
-        <Section>
+        <Section delay={0.9}>
           <PostGridItem
             id="ImpostorCard"
             title="Impostor Card Game"
             thumbnail={impostorThumbnail}
           >
-            A card game that requires 2 players. The player who has the impostor card loses the game.
+            A card game that requires 2 players. The player who has the impostor
+            card loses the game.
           </PostGridItem>
         </Section>
-        <Section>
+        <Section delay={1.2}>
           <PostGridItem
             id="KnightRiddle"
             title="Knight Riddle Game"
             thumbnail={knightThumbnail}
           >
-            A game that based on the principle of game theory. The goal is to always be able to move the knight to the next position.
+            A game that based on the principle of game theory. The goal is to
+            always be able to move the knight to the next position.
           </PostGridItem>
         </Section>
       </SimpleGrid>
