@@ -66,6 +66,9 @@ const Math24 = () => {
   }
 
   const restartGame = () => {
+    setFinalScore(
+      (correctAnswer) * 100 - Math.floor((Date.now() - startTime) / 1000)
+    )
     onOpen()
     setCards([])
     setIsStarted(false)
@@ -91,7 +94,6 @@ const Math24 = () => {
       setCardIsUsed([false, false, false, false])
       setCorrectAnswer(correctAnswer + 1)
       if (cards.length === 0) {
-        setFinalScore((correctAnswer + 1) * 100 - Math.floor((Date.now() - startTime) / 1000))
         restartGame()
       } else {
         get4Cards()
@@ -106,7 +108,9 @@ const Math24 = () => {
       navigator
         .share({
           title: '24 Game',
-          text: `I got ${correctAnswer} correct answers in 24 Game with  ${Math.floor((correctAnswer / 13) * 100)}% accuracy. My final score is ${finalScore}. Try to beat me!\n`,
+          text: `I got ${correctAnswer} correct answers in 24 Game with  ${Math.floor(
+            (correctAnswer / 13) * 100
+          )}% accuracy. My final score is ${finalScore}. Try to beat me!\n`,
           url: 'https://abdurahmanbasyah.com/posts/24Game'
         })
         .then(() => console.log('Successful share'))
