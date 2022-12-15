@@ -72,26 +72,26 @@ export class Square {
 
 const WHITE_SQUARE_STYLE = {
   backgroundColor: '#8a785d',
-  width: '50px',
-  height: '50px',
+  width: '40px',
+  height: '40px',
   border: '1px solid black',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '50px',
+  fontSize: '40px',
   color: 'black',
   cursor: 'none'
 }
 
 const BLACK_SQUARE_STYLE = {
   backgroundColor: '#573a2e',
-  width: '50px',
-  height: '50px',
+  width: '40px',
+  height: '40px',
   border: '1px solid black',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '50px',
+  fontSize: '40px',
   color: 'white',
   cursor: 'none'
 }
@@ -99,26 +99,26 @@ const BLACK_SQUARE_STYLE = {
 const CURRENT_SQUARE_STYLE = {
   backgroundColor: '#FFD700',
   filter: 'drop-shadow(0 0 0.75rem #FFD700)',
-  width: '50px',
-  height: '50px',
+  width: '40px',
+  height: '40px',
   border: '1px solid black',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '50px',
+  fontSize: '40px',
   color: 'white',
   cursor: 'none'
 }
 
 const VISITED_SQUARE_STYLE = {
   backgroundColor: 'transparent',
-  width: '50px',
-  height: '50px',
+  width: '40px',
+  height: '40px',
   // border: '1px solid black',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '50px',
+  fontSize: '40px',
   color: 'white',
   cursor: 'none'
 }
