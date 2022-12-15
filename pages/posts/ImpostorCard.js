@@ -286,7 +286,7 @@ const ImpostorCard = () => {
             <span>Both</span>
           </ListItem>
           <ListItem>
-            <Meta>Technology</Meta>
+            <Meta>Tech</Meta>
             <span>NextJS, Socket.io, Node.js, Express</span>
           </ListItem>
         </List>

@@ -12,13 +12,16 @@ import {
   ModalOverlay,
   ModalContent,
   ModalFooter,
-  ModalBody
+  ModalBody,
+  List,
+  ListItem
 } from '@chakra-ui/react'
-import { Title } from '../../components/pageItem'
+import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import { useState } from 'react'
 import axios from 'axios'
 import stringMath from 'string-math'
+import P from '../../components/paragraph'
 
 const Math24 = () => {
   const [cards, setCards] = useState([])
@@ -67,7 +70,7 @@ const Math24 = () => {
 
   const restartGame = () => {
     setFinalScore(
-      (correctAnswer) * 100 - Math.floor((Date.now() - startTime) / 1000)
+      correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)
     )
     onOpen()
     setCards([])
@@ -182,6 +185,51 @@ const Math24 = () => {
         <Title type="Posts">
           24 <Badge>Game</Badge>
         </Title>
+
+        <P>
+          24 is a card game where the player is given 4 cards and has to use
+          them to make a calculation that equals to 24. The player can use
+          addition, subtraction, multiplication, and division. The player can
+          also use brackets to change the order of operations. The player can
+          only use each card once.
+        </P>
+        <P>
+          {`24 game is a common mathematics game that is used to test the player's
+          ability to think logically and strategically.The game is also used to test the player's ability to
+          calculate numbers quickly and accurately.`}
+        </P>
+        <P>
+          {`A round is over when the player can no longer make a calculation that
+          equals to 24. The player can get a new set of cards by pressing the deck of cards.
+          The game is over when the player has used all the cards or end the game by pressing the
+          "Give up" button. The player's score is calculated by multiplying the
+          number of correct answers by 100 and subtracting the number of seconds
+          it took to finish the game. The player can also share their score to a
+          social media platform. Therefore, mathematically, the maximum score is
+          1300.`}
+        </P>
+        <List ml={4} my={4}>
+          <ListItem>
+            <Meta>Type</Meta>
+            <span>Game</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Category</Meta>
+            <span>Soloplayer</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Tags</Meta>
+            <span>Game, Soloplayer, Mathematics</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Number of Players</Meta>
+            <span>1</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Tech</Meta>
+            <span>React, Next.js, Chakra UI</span>
+          </ListItem>
+        </List>
         {!isStarted ? (
           <>
             <Heading as="h3">Ready to play? Let{`'s`} start!</Heading>
