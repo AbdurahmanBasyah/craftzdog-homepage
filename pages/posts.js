@@ -4,6 +4,7 @@ import { PostGridItem } from '../components/grid-item'
 import cardThumbnail from '../public/images/posts/21CardMagic_1.jpg'
 import cardGameThumbnail from '../public/images/posts/24CardGame_1.jpg'
 import impostorThumbnail from '../public/images/posts/ImpostorCard_1.jpg'
+import knightThumbnail from '../public/images/posts/KnightRiddle_1.jpg'
 
 const Posts = () => {
   return (
@@ -49,6 +50,15 @@ const Posts = () => {
             thumbnail={impostorThumbnail}
           >
             A card game that requires 2 players. The player who has the impostor card loses the game.
+          </PostGridItem>
+        </Section>
+        <Section>
+          <PostGridItem
+            id="KnightRiddle"
+            title="Knight Riddle Game"
+            thumbnail={knightThumbnail}
+          >
+            A game that based on the principle of game theory. The goal is to always be able to move the knight to the next position.
           </PostGridItem>
         </Section>
       </SimpleGrid>

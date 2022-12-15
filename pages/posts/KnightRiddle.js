@@ -13,9 +13,11 @@ import {
   ModalFooter,
   ModalBody,
   Input,
-  Flex
+  Flex,
+  List,
+  ListItem
 } from '@chakra-ui/react'
-import { Title } from '../../components/pageItem'
+import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import blackKnight from '../../public/images/posts/blackKnight.png'
 import { useState } from 'react'
@@ -24,6 +26,7 @@ import Image from 'next/image'
 import { io } from 'socket.io-client'
 import { generateRoomId } from '../../functions/generator'
 import useWindowSize from '../../hooks/useWindowSize'
+import P from '../../components/paragraph'
 
 // class Square
 export class Square {
@@ -534,24 +537,71 @@ const KnightRiddle = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+        <P>
+          <strong>Knight Riddle Game</strong> is a 2 player game where you and
+          your friend will take turns to move the knight. The goal is to always
+          be able to move the knight to a square that has not been visited yet.
+          The first player to be unable to move the knight loses.
+        </P>
+        <P>
+          This game is based on a mathematical game theory. The first player can
+          place the knight anywhere on the board, and then both players take
+          turns moving the knight. The first player to be unable to move the
+          knight loses. It all depends on the board shape, if the board is a 8x8
+          board, the second player will always win in the perfect game.
+        </P>
+        <P>
+          This game is best played on a laptop or desktop, but you can also play
+          it on your mobile phone. If you are playing on a mobile phone, you can
+          only move the knight by clicking on the square you want to move the
+          knight to. Can you find the game theory behind this game?
+        </P>
+        <List ml={4} my={4}>
+          <ListItem>
+            <Meta>Type</Meta>
+            <span>Game</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Category</Meta>
+            <span>Multiplayer</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Tags</Meta>
+            <span>Chess, Multiplayer, Game Theory</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Number of Players</Meta>
+            <span>2</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Who Should Win</Meta>
+            <span>Second Player</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Technology</Meta>
+            <span>NextJS, Socket.io, Node.js, Express</span>
+          </ListItem>
+        </List>
         {isJoined ? (
           <>
             {isHost ? (
-              <Box>
+              <Box textAlign={'center'}>
                 {data.lastTurn === undefined && (
                   <>
                     <Text>
-                      Your friend is joined the room. Now is your turn, place
+                      Your friend has joined the room. Now is your turn, place
                       your knight somewhere
                     </Text>
-
-                    <Image
-                      src={blackKnight}
-                      alt="black knight"
-                      draggable={isMobile ? false : true}
-                      onDragStart={isMobile ? null : e => drag(e)}
-                      id={'n'}
-                    />
+                    <Box w="fit-content" mx="auto">
+                      <Image
+                        src={blackKnight}
+                        alt="black knight"
+                        draggable={isMobile ? false : true}
+                        onDragStart={isMobile ? null : e => drag(e)}
+                        id={'n'}
+                      />
+                    </Box>
                   </>
                 )}
               </Box>
@@ -559,29 +609,31 @@ const KnightRiddle = () => {
               <Box>
                 {data.lastTurn === undefined && (
                   <>
-                    <Text>Waiting for your friend to make the first move</Text>
+                    <Text textAlign="center">
+                      Waiting for your friend to make the first move
+                    </Text>
                   </>
                 )}
               </Box>
             )}
             {data.lastTurn !== undefined &&
               data.lastTurn === currentSocket.id && (
-                <Text>
+                <Text textAlign={'center'}>
                   Waiting for your friend to make the next move, please wait...
                 </Text>
               )}
             {data.lastTurn !== undefined &&
               data.lastTurn !== currentSocket.id && (
-                <Text>
+                <Text textAlign={'center'}>
                   {`Your friend made a move, now is your turn to make a move`}
                 </Text>
               )}
           </>
         ) : (
           <>
-            <Flex>
-              <Box>
-                <Heading as="h3" className="section-titile">
+            <Flex alignItems={'center'}>
+              <Box textAlign="center">
+                <Heading as="h3" variant="section-title">
                   Be a host
                 </Heading>
                 <Text
@@ -602,13 +654,15 @@ const KnightRiddle = () => {
                   {isCopied ? 'Copied' : 'Copy'}
                 </Button>
               </Box>
-              <Text>or</Text>
-              <Box>
-                <Heading as="h3" className="section-titile">
+              <Text mx="4">or</Text>
+              <Box textAlign="center">
+                <Heading as="h3" variant="section-title">
                   Join a room
                 </Heading>
                 <Input
-                  placeholder="Room ID"
+                  placeholder="123xxx"
+                  color="teal"
+                  _placeholder={{ color: 'inherit' }}
                   value={joinRoom}
                   onChange={e => setJoinRoom(e.target.value)}
                 />

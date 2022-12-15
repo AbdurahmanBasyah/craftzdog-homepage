@@ -281,6 +281,14 @@ const ImpostorCard = () => {
             <Meta>Number of Players</Meta>
             <span>2</span>
           </ListItem>
+          <ListItem>
+            <Meta>Who Should Win</Meta>
+            <span>Both</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Technology</Meta>
+            <span>NextJS, Socket.io, Node.js, Express</span>
+          </ListItem>
         </List>
         {isStarted ? (
           <Box>
