@@ -24,6 +24,7 @@ import { io } from 'socket.io-client'
 import axios from 'axios'
 import { useEffect } from 'react'
 import P from '../../components/paragraph'
+import { generateRoomId } from '../../functions/generator'
 
 const ImpostorCard = () => {
   const [playerId, setPlayerId] = useState('')
@@ -130,12 +131,6 @@ const ImpostorCard = () => {
     setIsStarted(true)
     setData(newData)
   })
-
-  const generateRoomId = () => {
-    const id = Math.floor(100000 + Math.random() * 900000).toString()
-    setRoomId(id)
-    return id
-  }
 
   const shuffleCards = cards => {
     for (let i = cards.length - 1; i > 0; i--) {
