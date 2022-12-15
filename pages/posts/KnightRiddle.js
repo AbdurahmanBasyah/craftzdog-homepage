@@ -13,7 +13,8 @@ import {
   ModalFooter,
   ModalBody,
   Input,
-  Flex
+  Flex,
+  Circle
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -23,6 +24,7 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 import { io } from 'socket.io-client'
 import { generateRoomId } from '../../functions/generator'
+import useWindowSize from '../../hooks/useWindowSize'
 
 // class Square
 export class Square {
@@ -68,59 +70,6 @@ export class Square {
   toString() {
     return this.square
   }
-}
-
-const WHITE_SQUARE_STYLE = {
-  backgroundColor: '#8a785d',
-  width: '40px',
-  height: '40px',
-  border: '1px solid black',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '40px',
-  color: 'black',
-  cursor: 'none'
-}
-
-const BLACK_SQUARE_STYLE = {
-  backgroundColor: '#573a2e',
-  width: '40px',
-  height: '40px',
-  border: '1px solid black',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '40px',
-  color: 'white',
-  cursor: 'none'
-}
-
-const CURRENT_SQUARE_STYLE = {
-  backgroundColor: '#FFD700',
-  filter: 'drop-shadow(0 0 0.75rem #FFD700)',
-  width: '40px',
-  height: '40px',
-  border: '1px solid black',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '40px',
-  color: 'white',
-  cursor: 'none'
-}
-
-const VISITED_SQUARE_STYLE = {
-  backgroundColor: 'transparent',
-  width: '40px',
-  height: '40px',
-  // border: '1px solid black',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '40px',
-  color: 'white',
-  cursor: 'none'
 }
 
 const BLACK_SQUARES = [
@@ -194,6 +143,8 @@ const KnightRiddle = () => {
   const [isHost, setIsHost] = useState(null)
   const [isCopied, setIsCopied] = useState(false)
   const [modalData, setModalData] = useState(null)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   useEffect(() => {
     const socket = io('https://personal-be-production.up.railway.app', {
@@ -251,6 +202,7 @@ const KnightRiddle = () => {
       })
 
       currentSocket?.on('play-card', newData => {
+        console.log(newData)
         const toSquare = getSquareByName(newData.move.toSquare)
         const fromSquare = getSquareByName(newData.move.fromSquare)
         const piece = newData.move.piece
@@ -336,6 +288,42 @@ const KnightRiddle = () => {
     return possibleMoves
   }
 
+  const onClick = (e, square) => {
+    if (data.lastTurn !== currentSocket.id) {
+      const piece = 'n'
+      let fromSquare = null
+      for (let i = 0; i < data.squares.length; i++) {
+        if (data.squares[i].getPiece() === 'n') {
+          fromSquare = data.squares[i].getSquare()
+        }
+      }
+      const toSquare = square.getSquare()
+      if (fromSquare) {
+        const move = new Move(fromSquare, toSquare, piece)
+        console.log(move)
+        // check if move is valid
+        if (getSquareByName(fromSquare).getPossibleMoves().includes(toSquare)) {
+          // check if square is not visited
+          if (!square.getVisited()) {
+            getSquareByName(fromSquare).setPiece('')
+            const newData = {
+              move: move,
+              lastTurn: currentSocket.id
+            }
+            currentSocket.emit('play-card', newData, roomId)
+          }
+        }
+      } else {
+        const move = new Move(fromSquare, toSquare, piece)
+        const newData = {
+          move: move,
+          lastTurn: currentSocket.id
+        }
+        currentSocket.emit('play-card', newData, roomId)
+      }
+    }
+  }
+
   const onDrop = (e, square) => {
     e.preventDefault()
     if (data.lastTurn !== currentSocket.id) {
@@ -412,42 +400,70 @@ const KnightRiddle = () => {
       text += '\n'
       text += 'Can you beat me?'
       text += '\n'
-      navigator.share({
-        title: 'The Knight Riddle',
-        text: text,
-        url: 'https://abdurahmanbasyah/posts/KnightRiddle'
-      })
+      if (isMobile) {
+        navigator.share({
+          title: 'The Knight Riddle',
+          text: text,
+          url: 'https://abdurahmanbasyah/posts/KnightRiddle'
+        })
+      } else {
+        text += 'https://abdurahmanbasyah/posts/KnightRiddle'
+        // copy to clipboard
+        navigator.clipboard.writeText(text)
+        alert('Copied to clipboard!')
+      }
     }
   }
 
   const renderSquare = square => {
+    const currentSquare = data.squares.find(square => square.getPiece() === 'n')
     return (
       <Box
         id={square.getSquare()}
+        bgColor={() => {
+          if (square.getPiece() === 'n') {
+            return '#FFD700'
+          } else if (square.getVisited()) {
+            return 'transparent'
+          } else if (BLACK_SQUARES.includes(square.getSquare())) {
+            return '#573a2e'
+          } else {
+            return '#8a785d'
+          }
+        }}
         key={square.getSquare()}
-        position="relative"
-        // if piece is knight, set current square style. if square is visited, set visited square style. if square is black, set black square style. else set white square style
-        style={
-          square.getPiece() === 'n'
-            ? CURRENT_SQUARE_STYLE
-            : square.getVisited()
-            ? VISITED_SQUARE_STYLE
-            : BLACK_SQUARES.includes(square.getSquare())
-            ? BLACK_SQUARE_STYLE
-            : WHITE_SQUARE_STYLE
+        width={'40px'}
+        height={'40px'}
+        border={!square.getVisited() ? '1px solid black' : ''}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        cursor={square.getPiece() === 'n' ? 'grab' : 'pointer'}
+        filter={
+          square.getPiece() === 'n' ? 'drop-shadow(0 0 0.75rem #FFD700)' : ''
         }
         onDrop={e => onDrop(e, square)}
         onDragOver={e => e.preventDefault()}
-        onTouchEnd={e => onDrop(e, square)}
-        onTouchMove={e => e.preventDefault()}
+        onClick={e => onClick(e, square)}
       >
+        {currentSquare?.getPossibleMoves().includes(square.getSquare()) &&
+          !square.getVisited() && (
+            <Box
+              outline={'4px solid white'}
+              border="1px solid cyan"
+              width="6px"
+              height="6px"
+              color="cyan"
+              bgColor={'cyan'}
+              borderRadius="50%"
+            ></Box>
+          )}
         {square.getPiece() === 'n' && (
           <Image
             src={blackKnight}
             alt="black knight"
-            draggable={true}
-            onDragStart={e => drag(e)}
-            onTouchStart={e => drag(e)}
+            draggable={isMobile ? false : true}
+            onDragStart={isMobile ? null : e => drag(e)}
             id={square.getPiece()}
           />
         )}
@@ -521,7 +537,6 @@ const KnightRiddle = () => {
         </Modal>
         {isJoined ? (
           <>
-            {console.log(data.lastTurn)}
             {isHost ? (
               <Box>
                 {data.lastTurn === undefined && (
@@ -534,9 +549,8 @@ const KnightRiddle = () => {
                     <Image
                       src={blackKnight}
                       alt="black knight"
-                      draggable={true}
-                      onDragStart={e => drag(e)}
-                      onTouchStart={e => drag(e)}
+                      draggable={isMobile ? false : true}
+                      onDragStart={isMobile ? null : e => drag(e)}
                       id={'n'}
                     />
                   </>
