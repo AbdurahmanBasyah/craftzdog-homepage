@@ -13,7 +13,6 @@ export const AwardGridItem = ({ text, id, title, thumbnail }) => {
         _hover={{
           textDecoration: 'none'
         }}
-        color="white"
       >
         <>
           <Image
@@ -41,7 +40,6 @@ export const WorkGridItem = ({ children, id, title, thumbnail }) => (
       _hover={{
         textDecoration: 'none'
       }}
-      color="white"
     >
       <>
         <Image
@@ -68,7 +66,6 @@ export const PostGridItem = ({ children, id, title, thumbnail }) => (
       _hover={{
         textDecoration: 'none'
       }}
-      color="white"
     >
       <>
         <Image
