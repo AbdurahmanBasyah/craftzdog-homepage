@@ -196,13 +196,13 @@ const KnightRiddle = () => {
   const [modalData, setModalData] = useState(null)
 
   useEffect(() => {
-    // const socket = io('https://personal-be-production.up.railway.app', {
-    //   transports: ['websocket']
-    // })
-    const socket = io('http://localhost:8080', {
-      // withCredentials: true,
+    const socket = io('https://personal-be-production.up.railway.app', {
       transports: ['websocket']
     })
+    // const socket = io('http://localhost:8080', {
+    //   // withCredentials: true,
+    //   transports: ['websocket']
+    // })
 
     let tempSquares = []
     for (let i = 8; i >= 1; i--) {
