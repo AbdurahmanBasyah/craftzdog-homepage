@@ -1,68 +1,88 @@
 import Image from 'next/image'
-import {
-  Box,
-  Text,
-  LinkBox,
-  LinkOverlay,
-} from '@chakra-ui/react'
+import { Box, Text, LinkBox } from '@chakra-ui/react'
 import { Global } from '@emotion/react'
+import NextLink from 'next/link'
 
 export const AwardGridItem = ({ text, id, title, thumbnail }) => {
   return (
     <Box w="100%" textAlign="center">
-        <LinkBox cursor="pointer" href>
+      <LinkBox
+        as={NextLink}
+        href={`/awards/${id}`}
+        cursor={'none'}
+        _hover={{
+          textDecoration: 'none'
+        }}
+        color="white"
+      >
+        <>
           <Image
             src={thumbnail}
             alt={title}
             className="grid-item-thumbnail"
             placeholder="blur"
           />
-          <LinkOverlay href={`/awards/${id}`}>
-            <Text mt={2} fontSize={20}>
-              {title}
-            </Text>
-          </LinkOverlay>
+          <Text mt={2} fontSize={20}>
+            {title}
+          </Text>
           <Text fontSize={14}>{text}</Text>
-        </LinkBox>
+        </>
+      </LinkBox>
     </Box>
   )
 }
 
 export const WorkGridItem = ({ children, id, title, thumbnail }) => (
   <Box w="100%" textAlign="center">
-      <LinkBox>
+    <LinkBox
+      as={NextLink}
+      href={`/works/${id}`}
+      cursor={'none'}
+      _hover={{
+        textDecoration: 'none'
+      }}
+      color="white"
+    >
+      <>
         <Image
           src={thumbnail}
           alt={title}
           className="grid-item-thumbnail"
           placeholder="blur"
         />
-        <LinkOverlay href={`/works/${id}`}>
-          <Text mt={2} fontSize={20}>
-            {title}
-          </Text>
-        </LinkOverlay>
+        <Text mt={2} fontSize={20}>
+          {title}
+        </Text>
         <Text fontSize={14}>{children}</Text>
-      </LinkBox>
+      </>
+    </LinkBox>
   </Box>
 )
 
 export const PostGridItem = ({ children, id, title, thumbnail }) => (
   <Box w="100%" textAlign="center">
-      <LinkBox>
+    <LinkBox
+      as={NextLink}
+      href={`/posts/${id}`}
+      cursor={'none'}
+      _hover={{
+        textDecoration: 'none'
+      }}
+      color="white"
+    >
+      <>
         <Image
           src={thumbnail}
           alt={title}
           className="grid-item-thumbnail"
           placeholder="blur"
         />
-        <LinkOverlay href={`/posts/${id}`}>
-          <Text mt={2} fontSize={20}>
-            {title}
-          </Text>
-        </LinkOverlay>
+        <Text mt={2} fontSize={20}>
+          {title}
+        </Text>
         <Text fontSize={14}>{children}</Text>
-      </LinkBox>
+      </>
+    </LinkBox>
   </Box>
 )
 

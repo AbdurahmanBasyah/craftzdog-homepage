@@ -16,11 +16,15 @@ const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
 const Main = ({ children, router }) => {
   const [isHover, setIsHover] = useState(false)
   const { width } = useWindowSize()
+  const isMobile = width < 768
   useEffect(() => {
-    if (width >= 768) {
+    if (!isMobile) {
       document.body.style.cursor = 'none'
       var cursor = document.querySelector('.cursor')
       var cursorinner = document.querySelector('.cursor2')
+
+      cursor.style.display = 'block'
+      cursorinner.style.display = 'block'
 
       document.addEventListener('mousemove', function (e) {
         cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
@@ -54,6 +58,21 @@ const Main = ({ children, router }) => {
         })
       }
     }
+
+    const links = document.getElementsByTagName('a')
+    for (let i = 0; i < links.length; i++) {
+      links[i].style.cursor = 'none'
+      links[i].addEventListener('mouseover', function () {
+        setIsHover(true)
+      })
+      links[i].addEventListener('mouseout', function () {
+        setIsHover(false)
+      })
+    }
+
+    return () => {
+      document.body.style.cursor = 'auto'
+    }
   }, [])
 
   return (
@@ -85,39 +104,37 @@ const Main = ({ children, router }) => {
         <LazyVoxelDog />
 
         {children}
-        {width >= 768 && (
-          <>
-            <Box
-              className="cursor"
-              width={isHover ? '30px' : '50px'}
-              height={isHover ? '30px' : '50px'}
-              borderRadius="full"
-              border="1px solid #008080"
-              transition="all .1s ease-out"
-              position="fixed"
-              filter={isHover ? 'brightness(1.5)' : 'brightness(1)'}
-              pointerEvents="none"
-              cursor="none"
-              left="0"
-              top="0"
-              zIndex={999999}
-              transform={'translate(-50%, -50%)'}
-            ></Box>
-            <Box
-              className="cursor2"
-              width={isHover ? '30px' : '20px'}
-              height={isHover ? '30px' : '20px'}
-              borderRadius="full"
-              backgroundColor="#008080"
-              position="fixed"
-              zIndex={999999}
-              cursor={'none'}
-              transform={'translate(-50%, -50%)'}
-              pointerEvents="none"
-              transition="width .3s, height .3s, opacity .3s"
-            ></Box>
-          </>
-        )}
+        <Box
+          className="cursor"
+          width={isHover ? '30px' : '50px'}
+          height={isHover ? '30px' : '50px'}
+          borderRadius="full"
+          border="1px solid #008080"
+          transition="all .1s ease-out"
+          position="fixed"
+          filter={isHover ? 'brightness(1.5)' : 'brightness(1)'}
+          pointerEvents="none"
+          cursor="none"
+          left="0"
+          top="0"
+          display={'none'}
+          zIndex={999999}
+          transform={'translate(-50%, -50%)'}
+        ></Box>
+        <Box
+          className="cursor2"
+          width={isHover ? '30px' : '20px'}
+          height={isHover ? '30px' : '20px'}
+          borderRadius="full"
+          backgroundColor="#008080"
+          position="fixed"
+          zIndex={999999}
+          cursor={'none'}
+          display={'none'}
+          transform={'translate(-50%, -50%)'}
+          pointerEvents="none"
+          transition="width .3s, height .3s, opacity .3s"
+        ></Box>
         <Footer />
       </Container>
     </Box>
