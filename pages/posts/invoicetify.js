@@ -31,7 +31,7 @@ import { FaSpotify } from 'react-icons/fa'
 
 const Invoicetify = () => {
   const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
-  const REDIRECT_URI = 'http://localhost:3000/posts/invoicetify'
+  const REDIRECT_URI = 'https://abdurahmanbasyah.com/posts/invoicetify'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
 
@@ -168,10 +168,10 @@ const Invoicetify = () => {
     )
   }
 
-  const logout = () => {
-    window.localStorage.removeItem('token')
-    setToken('')
-  }
+//   const logout = () => {
+//     window.localStorage.removeItem('token')
+//     setToken('')
+//   }
 
   return (
     <Layout title="21 Cards Magic">
@@ -473,7 +473,7 @@ const Invoicetify = () => {
                 >
                   Download
                 </Button>
-                <Button onClick={logout}>Logout</Button>
+                {/* <Button onClick={logout}>Logout</Button> */}
               </Box>
             )}
           </>
