@@ -105,6 +105,7 @@ const Invoicetify = () => {
       let expire = new Date()
       expire.setHours(expire.getHours() + 1)
       window.location.hash = ''
+      window.location.href = REDIRECT_URI
       document.cookie = `token=${token ? token : ''}; expires=${
         expire.toUTCString()
       };`
@@ -257,6 +258,7 @@ const Invoicetify = () => {
                   textAlign={'center'}
                   as="h4"
                   variant={'section-title'}
+                  mt="0"
                 >
                   {`Invoice #${invoiceId}`}
                 </Heading>
