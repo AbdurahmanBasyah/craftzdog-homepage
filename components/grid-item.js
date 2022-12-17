@@ -41,18 +41,24 @@ export const WorkGridItem = ({ children, id, title, thumbnail }) => (
         textDecoration: 'none'
       }}
     >
-      <>
-        <Image
-          src={thumbnail}
-          alt={title}
-          className="grid-item-thumbnail"
-          placeholder="blur"
-        />
+      <Box
+        display={'flex'}
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Box>
+          <Image
+            src={thumbnail}
+            alt={title}
+            className="grid-item-thumbnail"
+            placeholder="blur"
+          />
+        </Box>
         <Text mt={2} fontSize={20}>
           {title}
         </Text>
         <Text fontSize={14}>{children}</Text>
-      </>
+      </Box>
     </LinkBox>
   </Box>
 )

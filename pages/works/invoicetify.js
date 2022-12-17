@@ -249,13 +249,12 @@ const Invoicetify = () => {
                   <Image
                     src="/images/works/invoicetify.png"
                     alt="Invoicetify Logo"
-                    width="150px"
-                    height="150px"
+                    width="120px"
+                    height="120px"
                   />
                 </Box>
                 <Heading
                   textAlign={'center'}
-                  mt="-30px"
                   as="h4"
                   variant={'section-title'}
                 >
