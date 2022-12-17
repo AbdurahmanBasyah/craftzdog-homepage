@@ -72,6 +72,16 @@ const Posts = () => {
             always be able to move the knight to the next position.
           </PostGridItem>
         </Section>
+        <Section delay={1.5}>
+          <PostGridItem
+            id="invoicetify"
+            title="Knight Riddle Game"
+            thumbnail={knightThumbnail}
+          >
+            A game that based on the principle of game theory. The goal is to
+            always be able to move the knight to the next position.
+          </PostGridItem>
+        </Section>
       </SimpleGrid>
     </Container>
   )
