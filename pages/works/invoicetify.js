@@ -30,8 +30,8 @@ import { FaSpotify } from 'react-icons/fa'
 
 const Invoicetify = () => {
   const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
-  const REDIRECT_URI = 'http://localhost:3000/works/invoicetify'
-  // const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
+  // const REDIRECT_URI = 'http://localhost:3000/works/invoicetify'
+  const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
 
