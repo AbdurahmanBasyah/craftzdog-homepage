@@ -22,11 +22,11 @@ import pikachu from '../public/images/works/pikachu_1.png'
 import todo from '../public/images/works/todo_2.png'
 import personal from '../public/images/works/personal_1.png'
 import covidapp from '../public/images/works/covid_2.png'
+import invoicetify from '../public/images/works/invoicetify.png'
 
 const Works = () => (
   <Layout title="Works">
     <Container>
-
       <Heading as="h3" fontSize={20} mb={4}>
         Works
       </Heading>
@@ -51,40 +51,19 @@ const Works = () => (
             Reseller and dropshipper platform
           </WorkGridItem>
         </Section>
+
+        <Section delay={0.6}>
+          <WorkGridItem
+            id="invoicetify"
+            title="Invoicetify"
+            thumbnail={invoicetify}
+          >
+            An invoice mockup of list of the most played songs on Spotify.
+          </WorkGridItem>
+        </Section>
       </SimpleGrid>
 
-      {/* <Section delay={0.2}>
-        <Divider my={6} />
-
-        <Heading as="h3" fontSize={20} mb={4}>
-          Collaborations
-        </Heading>
-      </Section>
-
-      <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={0.3}>
-          <WorkGridItem id="margelo" thumbnail={thumbMargelo} title="Margelo">
-            A website of the elite app development and contracting agency based
-            in Austria
-          </WorkGridItem>
-        </Section>
-        <Section delay={0.3}>
-          <WorkGridItem
-            id="modetokyo"
-            thumbnail={thumbModeTokyo}
-            title="mode.tokyo"
-          >
-            The mode magazine for understanding to personally enjoy Japan
-          </WorkGridItem>
-        </Section>
-        <Section delay={0.3}>
-          <WorkGridItem id="styly" thumbnail={thumbStyly} title="Styly">
-            A VR Creative tools for fashion brands
-          </WorkGridItem>
-        </Section>
-      </SimpleGrid> */}
-
-      <Section delay={0.6}>
+      <Section delay={0.9}>
         <Divider my={6} />
         <Heading as="h3" fontSize={20} mb={4}>
           Old works
@@ -92,25 +71,25 @@ const Works = () => (
       </Section>
 
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={0.9}>
+        <Section delay={1.2}>
           <WorkGridItem id="movieapp" thumbnail={movieapp} title="Movie app">
             Movie app that allows user to add search, add and remove wishlist
             and liked movies
           </WorkGridItem>
         </Section>
-        <Section delay={1.2}>
+        <Section delay={1.5}>
           <WorkGridItem id="pikachu" thumbnail={pikachu} title="Grid Pikachu">
             Just a pikachu
           </WorkGridItem>
         </Section>
       </SimpleGrid>
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={1.5}>
+        <Section delay={1.8}>
           <WorkGridItem id="todolist" thumbnail={todo} title="TODO list">
             A simple responsive todo list app with the deadline date
           </WorkGridItem>
         </Section>
-        <Section delay={1.8}>
+        <Section delay={2.1}>
           <WorkGridItem
             id="personal"
             thumbnail={personal}
@@ -120,7 +99,7 @@ const Works = () => (
           </WorkGridItem>
         </Section>
       </SimpleGrid>
-      <Section delay={2.1}>
+      <Section delay={2.4}>
         <Divider my={6} />
         <Heading as="h3" fontSize={20} mb={4}>
           Other works
@@ -128,7 +107,7 @@ const Works = () => (
       </Section>
 
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={2.4}>
+        <Section delay={2.7}>
           <WorkGridItem id="covidapp" thumbnail={covidapp} title="Covid App">
             Covid app consists of related information and discussion forums
           </WorkGridItem>

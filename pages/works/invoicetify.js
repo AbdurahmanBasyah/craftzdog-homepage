@@ -31,7 +31,7 @@ import { FaSpotify } from 'react-icons/fa'
 const Invoicetify = () => {
   const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
 //   const REDIRECT_URI = 'http://localhost:3000/posts/invoicetify'
-  const REDIRECT_URI = 'https://abdurahmanbasyah.com/posts/invoicetify'
+  const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
 
@@ -176,7 +176,7 @@ const Invoicetify = () => {
   return (
     <Layout title="21 Cards Magic">
       <Container>
-        <Title type="Posts">
+        <Title type="Works">
           Invoicetify <Badge>2022</Badge>
         </Title>
         {!token ? (
@@ -246,7 +246,7 @@ const Invoicetify = () => {
               >
                 <Box mx="auto" w="fit-content">
                   <Image
-                    src="/images/posts/invoicetify.png"
+                    src="/images/works/invoicetify.png"
                     alt="Invoicetify Logo"
                     width="150px"
                     height="150px"
@@ -454,7 +454,7 @@ const Invoicetify = () => {
                 <Text textAlign={'center'} fontWeight={'bold'}>
                   &copy; Invoicetify
                 </Text>
-                <Text textAlign={'center'}>bit.ly/invoicetify</Text>
+                <Text textAlign={'center'}>rebrand.ly/invoicetify</Text>
               </Box>
             )}
             {data && (

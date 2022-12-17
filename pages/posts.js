@@ -5,7 +5,6 @@ import cardThumbnail from '../public/images/posts/21CardMagic_1.jpg'
 import cardGameThumbnail from '../public/images/posts/24CardGame_1.jpg'
 import impostorThumbnail from '../public/images/posts/ImpostorCard_1.jpg'
 import knightThumbnail from '../public/images/posts/KnightRiddle_1.jpg'
-import invoicetify from '../public/images/posts/invoicetify.png'
 
 const Posts = () => {
   return (
@@ -67,25 +66,6 @@ const Posts = () => {
           >
             A game that based on the principle of game theory. The goal is to
             always be able to move the knight to the next position.
-          </PostGridItem>
-        </Section>
-      </SimpleGrid>
-
-      <Section delay={1.5}>
-        <Divider my={6} />
-        <Heading as="h3" fontSize={20} mb={4}>
-          Others
-        </Heading>
-      </Section>
-
-      <SimpleGrid columns={[1, 1, 2]} gap={6}>
-        <Section delay={1.8}>
-          <PostGridItem
-            id="invoicetify"
-            title="Invoicetify"
-            thumbnail={invoicetify}
-          >
-            An invoice mockup of list of the most played songs on Spotify.
           </PostGridItem>
         </Section>
       </SimpleGrid>
