@@ -30,8 +30,8 @@ import { FaSpotify } from 'react-icons/fa'
 
 const Invoicetify = () => {
   const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
-//   const REDIRECT_URI = 'http://localhost:3000/posts/invoicetify'
-  const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
+  const REDIRECT_URI = 'http://localhost:3000/works/invoicetify'
+  // const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
 
@@ -89,7 +89,10 @@ const Invoicetify = () => {
 
   useEffect(() => {
     const hash = window.location.hash
-    let token = window.localStorage.getItem('token')
+    let token = document.cookie
+      .split('; ')
+      ?.find(elem => elem.startsWith('token'))
+      ?.split('=')[1]
 
     if (!token && hash) {
       token = hash
@@ -98,8 +101,13 @@ const Invoicetify = () => {
         .find(elem => elem.startsWith('access_token'))
         .split('=')[1]
 
+      // expire after 1 hour
+      let expire = new Date()
+      expire.setHours(expire.getHours() + 1)
       window.location.hash = ''
-      window.localStorage.setItem('token', token)
+      document.cookie = `token=${token ? token : ''}; expires=${
+        expire.toUTCString()
+      };`
     }
 
     setToken(token)
@@ -120,7 +128,6 @@ const Invoicetify = () => {
         }
       )
       .then(res => {
-        console.log(res.data)
         setData(res.data)
       })
   }
@@ -133,7 +140,6 @@ const Invoicetify = () => {
         }
       })
       .then(res => {
-        console.log(res.data)
         setUser(res.data)
       })
   }
@@ -167,11 +173,6 @@ const Invoicetify = () => {
       priceAsNumberInt % 100
     )
   }
-
-//   const logout = () => {
-//     window.localStorage.removeItem('token')
-//     setToken('')
-//   }
 
   return (
     <Layout title="21 Cards Magic">
@@ -473,7 +474,6 @@ const Invoicetify = () => {
                 >
                   Download
                 </Button>
-                {/* <Button onClick={logout}>Logout</Button> */}
               </Box>
             )}
           </>
