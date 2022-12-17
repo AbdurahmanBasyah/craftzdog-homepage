@@ -25,7 +25,7 @@ const Posts = () => {
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section>
           <PostGridItem
-            id="21CardsMagic"
+            id="21cardsmagic"
             title="21 Cards Magic"
             thumbnail={cardThumbnail}
           >
@@ -44,7 +44,7 @@ const Posts = () => {
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section delay={0.6}>
           <PostGridItem
-            id="24Game"
+            id="24"
             title="24 Game"
             thumbnail={cardGameThumbnail}
           >
@@ -54,7 +54,7 @@ const Posts = () => {
         </Section>
         <Section delay={0.9}>
           <PostGridItem
-            id="ImpostorCard"
+            id="impostorcard"
             title="Impostor Card Game"
             thumbnail={impostorThumbnail}
           >
@@ -64,7 +64,7 @@ const Posts = () => {
         </Section>
         <Section delay={1.2}>
           <PostGridItem
-            id="KnightRiddle"
+            id="knightriddle"
             title="Knight Riddle Game"
             thumbnail={knightThumbnail}
           >
