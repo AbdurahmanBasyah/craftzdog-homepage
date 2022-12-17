@@ -16,21 +16,21 @@ import {
   ButtonGroup,
   Flex,
   Spacer,
-  Divider
+  Divider,
+  Image
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import NextLink from 'next/link'
-import Image from 'next/image'
-import logo from '../../public/images/posts/invoicetify.png'
 import { generateRoomId } from '../../functions/generator'
 import iso from 'iso-3166-1'
 import { FaSpotify } from 'react-icons/fa'
 
 const Invoicetify = () => {
   const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
+//   const REDIRECT_URI = 'http://localhost:3000/posts/invoicetify'
   const REDIRECT_URI = 'https://abdurahmanbasyah.com/posts/invoicetify'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
@@ -246,15 +246,15 @@ const Invoicetify = () => {
               >
                 <Box mx="auto" w="fit-content">
                   <Image
-                    src={logo}
+                    src="/images/posts/invoicetify.png"
                     alt="Invoicetify Logo"
-                    width={150}
-                    height={150}
+                    width="150px"
+                    height="150px"
                   />
                 </Box>
                 <Heading
                   textAlign={'center'}
-                  mt="-40px"
+                  mt="-30px"
                   as="h4"
                   variant={'section-title'}
                 >
