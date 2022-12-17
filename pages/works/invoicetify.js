@@ -121,7 +121,7 @@ const Invoicetify = () => {
   const getUserTopTracks = () => {
     axios
       .get(
-        `https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=${timeRange}`,
+        `https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=${timeRange}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -168,7 +168,7 @@ const Invoicetify = () => {
     // remove $ and . from price
     const priceAsNumber = priceAsDollar.replace('$', '').replace('.', '')
     // convert to number
-    const priceAsNumberInt = parseInt(priceAsNumber) * percentage
+    const priceAsNumberInt = parseInt(parseInt(priceAsNumber) * percentage)
     return formatPrice(
       Math.floor(priceAsNumberInt / 100),
       priceAsNumberInt % 100
@@ -383,8 +383,12 @@ const Invoicetify = () => {
                           lg: '12px'
                         }}
                       >
-                        Total <br /> Tax <br /> Grand Total <br /> Amount Paid{' '}
-                        <br /> Balance Due
+                        Total <br /> 
+                        Tax <br /> 
+                        Grand Total <br /> 
+                        Amount Paid
+                        <br /> 
+                        Balance Due
                       </Th>
                       <Th
                         isNumeric
