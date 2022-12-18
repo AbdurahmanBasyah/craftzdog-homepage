@@ -323,7 +323,11 @@ const Invoicetify = () => {
                         md: '12px',
                         lg: '14px'
                       }}
-                    >{`Client: ${user?.display_name}`}</Text>
+                    >
+                      {isGrouped
+                        ? `Employee name: ${user?.display_name}`
+                        : `Client: ${user?.display_name}`}
+                    </Text>
                     <Text
                       fontSize={{
                         base: '10px',
