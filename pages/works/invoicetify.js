@@ -68,9 +68,6 @@ const Invoicetify = () => {
             tracksGroupedByArtists[index].tracks.push(track)
           }
         })
-        console.log({
-          items: tracksGroupedByArtists
-        })
         setData({
           items: tracksGroupedByArtists
         })
@@ -184,9 +181,9 @@ const Invoicetify = () => {
     return `$${minutes}.${seconds < 10 ? '0' : ''}${seconds}`
   }
 
-  const trackDurationSum = data => {
+  const trackDurationSum = (data) => {
     let sum = 0
-    data.items.forEach(item => {
+    data?.forEach(item => {
       sum += item?.duration_ms ? parseInt(item?.duration_ms) : 0
       item.tracks?.forEach(track => {
         sum += parseInt(track?.duration_ms)
@@ -371,7 +368,7 @@ const Invoicetify = () => {
                           lg: '12px'
                         }}
                       >
-                        {isGrouped ? 'Supplier Name' : 'Item'}
+                        {isGrouped ? 'Supplier' : 'Item'}
                       </Th>
                       <Th
                         color="white"
@@ -398,6 +395,7 @@ const Invoicetify = () => {
                   </Thead>
                   <Tbody border={'1px solid #333333'}>
                     {data.items.map((item, index) => {
+                      console.log(item)
                       return (
                         <Tr
                           key={index}
@@ -421,7 +419,7 @@ const Invoicetify = () => {
                           >
                             {isGrouped
                               ? item.tracks?.map((item, index) => {
-                                  return <Text key={index}>{item.name}</Text>
+                                  return <Text key={index}>{`- ${item.name}`}</Text>
                                 })
                               : item.name}
                           </Td>
@@ -434,15 +432,7 @@ const Invoicetify = () => {
                             }}
                           >
                             {isGrouped
-                              ? item.tracks?.map((item, index) => {
-                                  return (
-                                    <Text key={index}>
-                                      {milisecondsToMinutesAndSeconds(
-                                        item.duration_ms
-                                      )}
-                                    </Text>
-                                  )
-                                })
+                              ? milisecondsToMinutesAndSeconds(trackDurationSum(item.tracks))
                               : milisecondsToMinutesAndSeconds(
                                   item.duration_ms
                                 )}
@@ -487,7 +477,7 @@ const Invoicetify = () => {
                           isNumeric
                         >
                           {`${milisecondsToMinutesAndSeconds(
-                            trackDurationSum(data)
+                            trackDurationSum(data.items)
                           )}`}
                         </Th>
                       ) : (
@@ -499,33 +489,33 @@ const Invoicetify = () => {
                           }}
                         >
                           {`${milisecondsToMinutesAndSeconds(
-                            trackDurationSum(data)
+                            trackDurationSum(data.items)
                           )}`}
                           <br />
                           {`${changeTimeToPrice(
                             milisecondsToMinutesAndSeconds(
-                              trackDurationSum(data)
+                              trackDurationSum(data.items)
                             ),
                             0.2
                           )}`}
                           <br />
                           {`${changeTimeToPrice(
                             milisecondsToMinutesAndSeconds(
-                              trackDurationSum(data)
+                              trackDurationSum(data.items)
                             ),
                             1.2
                           )}`}
                           <br />
                           {`${changeTimeToPrice(
                             milisecondsToMinutesAndSeconds(
-                              trackDurationSum(data)
+                              trackDurationSum(data.items)
                             ),
                             0.8
                           )}`}
                           <Divider />
                           {`${changeTimeToPrice(
                             milisecondsToMinutesAndSeconds(
-                              trackDurationSum(data)
+                              trackDurationSum(data.items)
                             ),
                             0.4
                           )}`}
