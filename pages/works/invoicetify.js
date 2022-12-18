@@ -17,7 +17,8 @@ import {
   Flex,
   Spacer,
   Divider,
-  Image
+  Image,
+  Icon
 } from '@chakra-ui/react'
 import { Title } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -26,14 +27,13 @@ import axios from 'axios'
 import NextLink from 'next/link'
 import { generateRoomId } from '../../functions/generator'
 import iso from 'iso-3166-1'
-import { FaSpotify } from 'react-icons/fa'
+import { FaSpotify, FaLayerGroup } from 'react-icons/fa'
 
 const Invoicetify = () => {
-  const CLIENT_ID = '54f496338b81497da7257d59f6036f79'
-  // const REDIRECT_URI = 'http://localhost:3000/works/invoicetify'
-  const REDIRECT_URI = 'https://abdurahmanbasyah.com/works/invoicetify'
-  const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
-  const RESPONSE_TYPE = 'token'
+  const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI
+  const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_SPOTIFY_AUTH_ENDPOINT
+  const RESPONSE_TYPE = process.env.NEXT_PUBLIC_SPOTIFY_RESPONSE_TYPE
 
   const SCOPE =
     'user-read-private user-read-email user-library-read user-read-recently-played user-top-read user-read-currently-playing user-read-playback-state user-modify-playback-state'
@@ -47,43 +47,71 @@ const Invoicetify = () => {
   })
   const [invoiceId, setInvoiceId] = useState('')
   const [user, setUser] = useState(null)
+  const [isGrouped, setIsGrouped] = useState(false)
 
   useEffect(() => {
-    const today = new Date()
-    setInvoiceId(generateRoomId())
-    switch (timeRange) {
-      case 'long_term':
-        setDates({
-          ...dates,
-          invoiceDate: '',
-          dueDate: today.toISOString().split('T')[0]
+    if (isGrouped) {
+      if (data && data.items[0].artist === undefined) {
+        let tracksGroupedByArtists = []
+        data.items.forEach(track => {
+          const artist = track.artists[0].name
+
+          const index = tracksGroupedByArtists.findIndex(
+            item => item.artist === artist
+          )
+          if (index === -1) {
+            tracksGroupedByArtists.push({
+              artist,
+              tracks: [track]
+            })
+          } else {
+            tracksGroupedByArtists[index].tracks.push(track)
+          }
         })
-        getUserTopTracks()
-        break
-      case 'medium_term':
-        const lastSixMonths = new Date(today)
-        lastSixMonths.setMonth(lastSixMonths.getMonth() - 6)
-        setDates({
-          ...dates,
-          dueDate: today.toISOString().split('T')[0],
-          invoiceDate: lastSixMonths.toISOString().split('T')[0]
+        console.log({
+          items: tracksGroupedByArtists
         })
-        getUserTopTracks()
-        break
-      case 'short_term':
-        const lastMonth = new Date(today)
-        lastMonth.setMonth(lastMonth.getMonth() - 1)
-        setDates({
-          ...dates,
-          dueDate: today.toISOString().split('T')[0],
-          invoiceDate: lastMonth.toISOString().split('T')[0]
+        setData({
+          items: tracksGroupedByArtists
         })
-        getUserTopTracks()
-        break
-      default:
-        break
+      }
+    } else {
+      const today = new Date()
+      setInvoiceId(generateRoomId())
+      switch (timeRange) {
+        case 'long_term':
+          setDates({
+            ...dates,
+            invoiceDate: '',
+            dueDate: today.toISOString().split('T')[0]
+          })
+          getUserTopTracks()
+          break
+        case 'medium_term':
+          const lastSixMonths = new Date(today)
+          lastSixMonths.setMonth(lastSixMonths.getMonth() - 6)
+          setDates({
+            ...dates,
+            dueDate: today.toISOString().split('T')[0],
+            invoiceDate: lastSixMonths.toISOString().split('T')[0]
+          })
+          getUserTopTracks()
+          break
+        case 'short_term':
+          const lastMonth = new Date(today)
+          lastMonth.setMonth(lastMonth.getMonth() - 1)
+          setDates({
+            ...dates,
+            dueDate: today.toISOString().split('T')[0],
+            invoiceDate: lastMonth.toISOString().split('T')[0]
+          })
+          getUserTopTracks()
+          break
+        default:
+          break
+      }
     }
-  }, [timeRange])
+  }, [timeRange, isGrouped])
 
   const ref = useRef()
 
@@ -106,9 +134,9 @@ const Invoicetify = () => {
       expire.setHours(expire.getHours() + 1)
       window.location.hash = ''
       window.location.href = REDIRECT_URI
-      document.cookie = `token=${token ? token : ''}; expires=${
-        expire.toUTCString()
-      };`
+      document.cookie = `token=${
+        token ? token : ''
+      }; expires=${expire.toUTCString()};`
     }
 
     setToken(token)
@@ -121,7 +149,7 @@ const Invoicetify = () => {
   const getUserTopTracks = () => {
     axios
       .get(
-        `https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=${timeRange}`,
+        `https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=${timeRange}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -130,6 +158,7 @@ const Invoicetify = () => {
       )
       .then(res => {
         setData(res.data)
+        return res.data
       })
   }
 
@@ -155,10 +184,13 @@ const Invoicetify = () => {
     return `$${minutes}.${seconds < 10 ? '0' : ''}${seconds}`
   }
 
-  const trackDurationSum = () => {
+  const trackDurationSum = data => {
     let sum = 0
-    data.items.forEach(track => {
-      sum += track.duration_ms
+    data.items.forEach(item => {
+      sum += item?.duration_ms ? parseInt(item?.duration_ms) : 0
+      item.tracks?.forEach(track => {
+        sum += parseInt(track?.duration_ms)
+      })
     })
     return sum
   }
@@ -211,29 +243,47 @@ const Invoicetify = () => {
           <>
             <ButtonGroup
               variant={'outline'}
-              spacing="6"
-              display={'flex'}
-              justifyContent={'center'}
+              gap={6}
+              placeItems={'center'}
+              display={'grid'}
+              gridTemplateColumns={'repeat(3, 1fr)'}
             >
               <Button
                 onClick={() => {
                   setTimeRange('short_term')
+                  setIsGrouped(false)
                 }}
-                colorScheme={timeRange === 'short_term' ? 'blue' : 'gray'}
+                colorScheme={timeRange === 'short_term' ? 'teal' : 'gray'}
               >
                 This month
               </Button>
               <Button
-                onClick={() => setTimeRange('long_term')}
-                colorScheme={timeRange === 'long_term' ? 'blue' : 'gray'}
+                onClick={() => {
+                  setTimeRange('medium_term')
+                  setIsGrouped(false)
+                }}
+                colorScheme={timeRange === 'medium_term' ? 'teal' : 'gray'}
+              >
+                Last six months
+              </Button>
+              <Button
+                onClick={() => {
+                  setTimeRange('long_term')
+                  setIsGrouped(false)
+                }}
+                colorScheme={timeRange === 'long_term' ? 'teal' : 'gray'}
               >
                 All time
               </Button>
+              <Box></Box>
               <Button
-                onClick={() => setTimeRange('medium_term')}
-                colorScheme={timeRange === 'medium_term' ? 'blue' : 'gray'}
+                onClick={() => {
+                  setIsGrouped(!isGrouped)
+                }}
+                colorScheme={isGrouped ? 'green' : 'gray'}
               >
-                Last six months
+                <Icon as={FaLayerGroup} mr="2" />
+                Group by artists
               </Button>
             </ButtonGroup>
             {data && (
@@ -265,7 +315,7 @@ const Invoicetify = () => {
                 <Flex>
                   <Box mb="4">
                     <Heading size={{ base: 'sm', md: 'md' }} my="3">
-                      Invoice To:
+                      {isGrouped ? 'Finalized by' : 'Invoice to'}
                     </Heading>
                     <Text
                       fontSize={{
@@ -294,9 +344,15 @@ const Invoicetify = () => {
                   >
                     <Text>
                       {dates?.invoiceDate &&
-                        `Date of Invoice: ${dates?.invoiceDate}`}
+                        (isGrouped
+                          ? `Date Created: ${dates?.invoiceDate}`
+                          : `Invoice Date: ${dates?.invoiceDate}`)}
                     </Text>
-                    <Text>{`Due Date: ${dates?.dueDate}`}</Text>
+                    <Text>
+                      {isGrouped
+                        ? `Date Finalized: ${dates?.dueDate}`
+                        : `Due Date: ${dates?.dueDate}`}
+                    </Text>
                   </Box>
                 </Flex>
                 <Box></Box>
@@ -311,7 +367,7 @@ const Invoicetify = () => {
                           lg: '12px'
                         }}
                       >
-                        Item
+                        {isGrouped ? 'Company Name' : 'Item'}
                       </Th>
                       <Th
                         color="white"
@@ -321,7 +377,7 @@ const Invoicetify = () => {
                           lg: '12px'
                         }}
                       >
-                        Description
+                        {isGrouped ? 'Items' : 'Description'}
                       </Th>
                       <Th
                         color="white"
@@ -337,126 +393,178 @@ const Invoicetify = () => {
                     </Tr>
                   </Thead>
                   <Tbody border={'1px solid #333333'}>
-                    {data.items.map((item, index) => (
-                      <Tr
-                        key={index}
-                        color={index % 2 === 0 ? 'whitesmoke' : 'inherit'}
-                      >
-                        <Td
-                          fontSize={{
-                            base: '8px',
-                            md: '10px',
-                            lg: '12px'
-                          }}
+                    {data.items.map((item, index) => {
+                      return (
+                        <Tr
+                          key={index}
+                          color={index % 2 === 0 ? 'whitesmoke' : 'inherit'}
                         >
-                          {item.name}
-                        </Td>
-                        <Td
-                          fontSize={{
-                            base: '8px',
-                            md: '10px',
-                            lg: '12px'
-                          }}
-                        >
-                          {item.artists[0].name}
-                        </Td>
-                        <Td
-                          isNumeric
-                          fontSize={{
-                            base: '8px',
-                            md: '10px',
-                            lg: '12px'
-                          }}
-                        >
-                          {milisecondsToMinutesAndSeconds(item.duration_ms)}
-                        </Td>
-                      </Tr>
-                    ))}
+                          <Td
+                            fontSize={{
+                              base: '8px',
+                              md: '10px',
+                              lg: '12px'
+                            }}
+                          >
+                            {isGrouped ? item.artist : item.name}
+                          </Td>
+                          <Td
+                            fontSize={{
+                              base: '8px',
+                              md: '10px',
+                              lg: '12px'
+                            }}
+                          >
+                            {isGrouped
+                              ? item.tracks?.map((item, index) => {
+                                  return <Text key={index}>{item.name}</Text>
+                                })
+                              : item.name}
+                          </Td>
+                          <Td
+                            isNumeric
+                            fontSize={{
+                              base: '8px',
+                              md: '10px',
+                              lg: '12px'
+                            }}
+                          >
+                            {isGrouped
+                              ? item.tracks?.map((item, index) => {
+                                  return (
+                                    <Text key={index}>
+                                      {milisecondsToMinutesAndSeconds(
+                                        item.duration_ms
+                                      )}
+                                    </Text>
+                                  )
+                                })
+                              : milisecondsToMinutesAndSeconds(
+                                  item.duration_ms
+                                )}
+                          </Td>
+                        </Tr>
+                      )
+                    })}
                   </Tbody>
                   <Tfoot>
                     <Tr>
                       <Th></Th>
-                      <Th
-                        fontSize={{
-                          base: '6px',
-                          md: '10px',
-                          lg: '12px'
-                        }}
-                      >
-                        Total <br /> 
-                        Tax <br /> 
-                        Grand Total <br /> 
-                        Amount Paid
-                        <br /> 
-                        Balance Due
-                      </Th>
-                      <Th
-                        isNumeric
-                        fontSize={{
-                          base: '6px',
-                          md: '10px',
-                          lg: '12px'
-                        }}
-                      >
-                        {`${milisecondsToMinutesAndSeconds(
-                          trackDurationSum()
-                        )}`}
-                        <br />
-                        {`${changeTimeToPrice(
-                          milisecondsToMinutesAndSeconds(trackDurationSum()),
-                          0.2
-                        )}`}
-                        <br />
-                        {`${changeTimeToPrice(
-                          milisecondsToMinutesAndSeconds(trackDurationSum()),
-                          1.2
-                        )}`}
-                        <br />
-                        {`${changeTimeToPrice(
-                          milisecondsToMinutesAndSeconds(trackDurationSum()),
-                          0.8
-                        )}`}
-                        <Divider />
-                        {`${changeTimeToPrice(
-                          milisecondsToMinutesAndSeconds(trackDurationSum()),
-                          0.4
-                        )}`}
-                      </Th>
+                      {isGrouped ? (
+                        <Th
+                          fontSize={{
+                            base: '6px',
+                            md: '10px'
+                          }}
+                        >
+                          Total
+                        </Th>
+                      ) : (
+                        <Th
+                          fontSize={{
+                            base: '6px',
+                            md: '10px'
+                          }}
+                        >
+                          Total <br />
+                          Tax <br />
+                          Grand Total <br />
+                          Amount Paid
+                          <br />
+                          Balance Due
+                        </Th>
+                      )}
+                      {isGrouped ? (
+                        <Th
+                          fontSize={{
+                            base: '6px',
+                            md: '10px'
+                          }}
+                          isNumeric
+                        >
+                          {`${milisecondsToMinutesAndSeconds(
+                            trackDurationSum(data)
+                          )}`}
+                        </Th>
+                      ) : (
+                        <Th
+                          isNumeric
+                          fontSize={{
+                            base: '6px',
+                            md: '10px'
+                          }}
+                        >
+                          {`${milisecondsToMinutesAndSeconds(
+                            trackDurationSum(data)
+                          )}`}
+                          <br />
+                          {`${changeTimeToPrice(
+                            milisecondsToMinutesAndSeconds(
+                              trackDurationSum(data)
+                            ),
+                            0.2
+                          )}`}
+                          <br />
+                          {`${changeTimeToPrice(
+                            milisecondsToMinutesAndSeconds(
+                              trackDurationSum(data)
+                            ),
+                            1.2
+                          )}`}
+                          <br />
+                          {`${changeTimeToPrice(
+                            milisecondsToMinutesAndSeconds(
+                              trackDurationSum(data)
+                            ),
+                            0.8
+                          )}`}
+                          <Divider />
+                          {`${changeTimeToPrice(
+                            milisecondsToMinutesAndSeconds(
+                              trackDurationSum(data)
+                            ),
+                            0.4
+                          )}`}
+                        </Th>
+                      )}
                     </Tr>
                   </Tfoot>
                 </Table>
-                <Box
-                  fontSize={{
-                    base: '8px',
-                    md: '10px',
-                    lg: '12px'
-                  }}
-                  my="6"
-                >
-                  <Text mb="2">
-                    <Text fontWeight={'bold'}>Terms & Conditions</Text>
-                  </Text>
-                  <Text>
-                    <Text fontWeight={'bold'}>Payment</Text>
-                  </Text>
-                  <Text mb="2">
-                    Payment is due within 15 days of receipt of invoice. Late
-                    payments will be subject to a 5% surcharge.
-                  </Text>
-                  <Text>
-                    <Text fontWeight={'bold'}>Refunds</Text>
-                  </Text>
-                  <Text mb="2">
-                    Refunds are only available within 30 days of purchase.
-                  </Text>
-                  <Text>
-                    <Text fontWeight={'bold'}>Privacy</Text>
-                  </Text>
-                  <Text mb="2">
-                    We will never share your personal information with anyone
-                    else.
-                  </Text>
-                </Box>
+                {!isGrouped && (
+                  <Box
+                    fontSize={{
+                      base: '8px',
+                      md: '10px',
+                      lg: '12px'
+                    }}
+                    my="6"
+                  >
+                    <Text mb="2">
+                      <Text fontWeight={'bold'}>Terms & Conditions</Text>
+                    </Text>
+                    <Text>
+                      <Text fontWeight={'bold'}>Payment</Text>
+                    </Text>
+                    <Text mb="2">
+                      Payment is due within 15 days of receipt of invoice. Late
+                      payments will be subject to a 5% surcharge.
+                    </Text>
+                    <Text>
+                      <Text fontWeight={'bold'}>Refunds</Text>
+                    </Text>
+                    <Text mb="2">
+                      Refunds are only available within 30 days of purchase.
+                    </Text>
+                    <Text>
+                      <Text fontWeight={'bold'}>Privacy</Text>
+                    </Text>
+                    <Text mb="2">
+                      We will never share your personal information with anyone
+                      else.
+                    </Text>
+                  </Box>
+                )}
+
                 <Text textAlign={'center'} fontWeight={'bold'}>
                   &copy; Invoicetify
                 </Text>
