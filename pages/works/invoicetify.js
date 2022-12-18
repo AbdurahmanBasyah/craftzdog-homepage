@@ -395,7 +395,6 @@ const Invoicetify = () => {
                   </Thead>
                   <Tbody border={'1px solid #333333'}>
                     {data.items.map((item, index) => {
-                      console.log(item)
                       return (
                         <Tr
                           key={index}
