@@ -371,7 +371,7 @@ const Invoicetify = () => {
                           lg: '12px'
                         }}
                       >
-                        {isGrouped ? 'Company Name' : 'Item'}
+                        {isGrouped ? 'Supplier Name' : 'Item'}
                       </Th>
                       <Th
                         color="white"
@@ -534,7 +534,24 @@ const Invoicetify = () => {
                     </Tr>
                   </Tfoot>
                 </Table>
-                {!isGrouped && (
+                {isGrouped ? (
+                  <Box
+                    fontSize={{
+                      base: '8px',
+                      md: '10px',
+                      lg: '12px'
+                    }}
+                    my="6"
+                  >
+                    <Text>
+                      <Text fontWeight={'bold'}>Notes</Text>
+                    </Text>
+                    <Text mb="2">
+                      This finalized purchase order list is for your records.
+                      Please keep this document for your records.
+                    </Text>
+                  </Box>
+                ) : (
                   <Box
                     fontSize={{
                       base: '8px',
@@ -569,6 +586,9 @@ const Invoicetify = () => {
                   </Box>
                 )}
 
+                <Text textAlign={'center'} fontWeight={'bold'} mb="2">
+                  Thank you for your business!
+                </Text>
                 <Text textAlign={'center'} fontWeight={'bold'}>
                   &copy; Invoicetify
                 </Text>
