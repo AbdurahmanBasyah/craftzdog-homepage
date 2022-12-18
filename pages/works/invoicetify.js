@@ -307,7 +307,7 @@ const Invoicetify = () => {
                   variant={'section-title'}
                   mt="0"
                 >
-                  {`Invoice #${invoiceId}`}
+                  {isGrouped ?`Purchase Order List` : `Invoice #${invoiceId}`}
                 </Heading>
                 <Flex>
                   <Box mb="4">
@@ -322,7 +322,7 @@ const Invoicetify = () => {
                       }}
                     >
                       {isGrouped
-                        ? `Employee name: ${user?.display_name}`
+                        ? `Employee: ${user?.display_name}`
                         : `Client: ${user?.display_name}`}
                     </Text>
                     <Text
