@@ -667,6 +667,7 @@ const KnightRiddle = () => {
                   onChange={e => setJoinRoom(e.target.value)}
                 />
                 <Button
+                  cursor={'none'}
                   colorScheme="teal"
                   my="4"
                   variant={'outline'}

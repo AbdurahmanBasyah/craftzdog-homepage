@@ -7,6 +7,10 @@ import VoxelDogLoader from '../voxel-dog-loader'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import useWindowSize from '../../hooks/useWindowSize'
+import cursor from '../../public/images/cursor.png'
+import run from '../../public/images/run.gif'
+import jump from '../../public/images/jump.gif'
+import Image from 'next/image'
 
 const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
   ssr: false,
@@ -15,6 +19,7 @@ const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
 
 const Main = ({ children, router }) => {
   const [isHover, setIsHover] = useState(false)
+  const [isScroll, setIsScroll] = useState(false)
   const { width } = useWindowSize()
   const isMobile = width < 768
   useEffect(() => {
@@ -26,23 +31,23 @@ const Main = ({ children, router }) => {
       cursor.style.display = 'block'
       cursorinner.style.display = 'block'
 
-      document.addEventListener('mousemove', function (e) {
+      window.addEventListener('mousemove', function (e) {
         cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
       })
 
-      document.addEventListener('mousemove', function (e) {
+      window.addEventListener('mousemove', function (e) {
         var x = e.clientX
         var y = e.clientY
         cursorinner.style.left = x + 'px'
         cursorinner.style.top = y + 'px'
       })
 
-      document.addEventListener('mousedown', function () {
+      window.addEventListener('mousedown', function () {
         cursor.classList.add('click')
         cursorinner.classList.add('cursorinnerhover')
       })
 
-      document.addEventListener('mouseup', function () {
+      window.addEventListener('mouseup', function () {
         cursor.classList.remove('click')
         cursorinner.classList.remove('cursorinnerhover')
       })
@@ -70,6 +75,14 @@ const Main = ({ children, router }) => {
       })
     }
 
+    window.addEventListener('scroll', () => setIsScroll(true))
+
+    // Use a debounce function to remove the class after the user stops scrolling
+    let debounce
+    window.addEventListener('scroll', () => {
+      clearTimeout(debounce)
+      debounce = setTimeout(() => setIsScroll(false), 100)
+    })
     return () => {
       document.body.style.cursor = 'auto'
     }
@@ -106,10 +119,8 @@ const Main = ({ children, router }) => {
         {children}
         <Box
           className="cursor"
-          width={isHover ? '30px' : '50px'}
-          height={isHover ? '30px' : '50px'}
           borderRadius="full"
-          border="1px solid #008080"
+          // border="1px solid #008080"
           transition="all .1s ease-out"
           position="fixed"
           filter={isHover ? 'brightness(1.5)' : 'brightness(1)'}
@@ -120,11 +131,23 @@ const Main = ({ children, router }) => {
           display={'none'}
           zIndex={999999}
           transform={'translate(-50%, -50%)'}
-        ></Box>
+          // width={isHover ? '30px' : '50px'}
+          // height={isHover ? '30px' : '50px'}
+        >
+          {(() => {
+            if (isHover) {
+              return <Image src={jump} alt="cursor" width={50} height={50} />
+            } else if (isScroll) {
+              return <Image src={run} alt="cursor" width={50} height={50} />
+            } else {
+              return <Image src={cursor} alt="cursor" width={50} height={50} />
+            }
+          })()}
+        </Box>
         <Box
           className="cursor2"
-          width={isHover ? '30px' : '20px'}
-          height={isHover ? '30px' : '20px'}
+          // width={isHover ? '30px' : '20px'}
+          // height={isHover ? '30px' : '20px'}
           borderRadius="full"
           backgroundColor="#008080"
           position="fixed"
