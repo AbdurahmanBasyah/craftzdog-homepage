@@ -97,13 +97,14 @@ const Home = () => {
             textAlign="center"
           >
             <Box
-                borderColor="whiteAlpha.800"
-                borderWidth={2}
-                borderStyle="solid"
-                maxWidth="100px"
-                display="inline-block"
-                overflow={'hidden'}
-                borderRadius="full">
+              borderColor="whiteAlpha.800"
+              borderWidth={2}
+              borderStyle="solid"
+              maxWidth="100px"
+              display="inline-block"
+              overflow={'hidden'}
+              borderRadius="full"
+            >
               <Image
                 src={profile}
                 width={100}
@@ -130,7 +131,11 @@ const Home = () => {
           </Paragraph>
           <Box align="center" my={4}>
             <NextLink href="/works">
-              <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                cursor={'none'}
+                colorScheme="teal"
+              >
                 My portfolio
               </Button>
             </NextLink>
@@ -160,7 +165,11 @@ const Home = () => {
           </Paragraph>
           <Box align="center" my={4}>
             <NextLink href="/posts">
-              <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                cursor={'none'}
+                colorScheme="teal"
+              >
                 Check out my posts
               </Button>
             </NextLink>
@@ -193,7 +202,11 @@ const Home = () => {
 
           <Box align="center" my={4}>
             <NextLink href="/awards">
-              <Button rightIcon={<ChevronRightIcon />} colorScheme="teal">
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                cursor="none"
+                colorScheme="teal"
+              >
                 My Achievements
               </Button>
             </NextLink>
@@ -225,6 +238,7 @@ const Home = () => {
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<Icon as={IoLogoGithub} />}
+                  cursor="none"
                 >
                   AbdurahmanBasyah
                 </Button>
@@ -235,6 +249,7 @@ const Home = () => {
                 <Button
                   variant="ghost"
                   colorScheme="teal"
+                  cursor="none"
                   leftIcon={<Icon as={IoMail} />}
                 >
                   abdurrahmanbasyah@gmail.com
@@ -246,6 +261,7 @@ const Home = () => {
                 <Button
                   variant="ghost"
                   colorScheme="teal"
+                  cursor="none"
                   leftIcon={<Icon as={IoLogoLinkedin} />}
                 >
                   abduh962
@@ -268,6 +284,7 @@ const Home = () => {
                 <Button
                   variant="ghost"
                   colorScheme="teal"
+                  cursor="none"
                   leftIcon={<Icon as={IoLogoInstagram} />}
                 >
                   @mabasyah
