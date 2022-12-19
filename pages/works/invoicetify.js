@@ -205,7 +205,7 @@ const Invoicetify = () => {
   }
 
   return (
-    <Layout title="21 Cards Magic">
+    <Layout title="Invoicetify">
       <Container>
         <Title type="Works">
           Invoicetify <Badge>2022</Badge>
