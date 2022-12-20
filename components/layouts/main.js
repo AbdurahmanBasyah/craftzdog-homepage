@@ -10,6 +10,7 @@ import useWindowSize from '../../hooks/useWindowSize'
 import cursor from '../../public/images/cursor.gif'
 import run from '../../public/images/run.gif'
 import jump from '../../public/images/jump.gif'
+import climb from '../../public/images/climb.gif'
 import Image from 'next/image'
 
 const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
@@ -19,6 +20,7 @@ const LazyVoxelDog = dynamic(() => import('../voxel-dog'), {
 
 const Main = ({ children, router }) => {
   const [isHover, setIsHover] = useState(false)
+  const [isMove, setIsMove] = useState(false)
   const [isScroll, setIsScroll] = useState(false)
   const { width } = useWindowSize()
   const isMobile = width < 768
@@ -26,31 +28,36 @@ const Main = ({ children, router }) => {
     if (!isMobile) {
       document.body.style.cursor = 'none'
       var cursor = document.querySelector('.cursor')
-      var cursorinner = document.querySelector('.cursor2')
+      // var cursorinner = document.querySelector('.cursor2')
 
       cursor.style.display = 'block'
-      cursorinner.style.display = 'block'
+      // cursorinner.style.display = 'block'
 
+      var timer
       window.addEventListener('mousemove', function (e) {
+        clearTimeout(timer)
         cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
+        setIsMove(true)
+
+        timer = setTimeout(() => setIsMove(false), 100)
       })
 
-      window.addEventListener('mousemove', function (e) {
-        var x = e.clientX
-        var y = e.clientY
-        cursorinner.style.left = x + 'px'
-        cursorinner.style.top = y + 'px'
-      })
+      // window.addEventListener('mousemove', function (e) {
+      //   var x = e.clientX
+      //   var y = e.clientY
+      //   cursorinner.style.left = x + 'px'
+      //   cursorinner.style.top = y + 'px'
+      // })
 
-      window.addEventListener('mousedown', function () {
-        cursor.classList.add('click')
-        cursorinner.classList.add('cursorinnerhover')
-      })
+      // window.addEventListener('mousedown', function () {
+      //   cursor.classList.add('click')
+      //   cursorinner.classList.add('cursorinnerhover')
+      // })
 
-      window.addEventListener('mouseup', function () {
-        cursor.classList.remove('click')
-        cursorinner.classList.remove('cursorinnerhover')
-      })
+      // window.addEventListener('mouseup', function () {
+      //   cursor.classList.remove('click')
+      //   cursorinner.classList.remove('cursorinnerhover')
+      // })
 
       const buttons = document.getElementsByTagName('button')
       for (let i = 0; i < buttons.length; i++) {
@@ -138,16 +145,18 @@ const Main = ({ children, router }) => {
             if (isHover) {
               return <Image src={jump} alt="cursor" width={50} height={50} />
             } else if (isScroll) {
+              return <Image src={climb} alt="cursor" width={50} height={50} />
+            } else if (isMove) {
               return <Image src={run} alt="cursor" width={50} height={50} />
             } else {
               return <Image src={cursor} alt="cursor" width={50} height={50} />
             }
           })()}
         </Box>
-        <Box
+        {/* <Box
           className="cursor2"
-          // width={isHover ? '30px' : '20px'}
-          // height={isHover ? '30px' : '20px'}
+          width={isHover ? '30px' : '20px'}
+          height={isHover ? '30px' : '20px'}
           borderRadius="full"
           backgroundColor="#008080"
           position="fixed"
@@ -157,7 +166,7 @@ const Main = ({ children, router }) => {
           transform={'translate(-50%, -50%)'}
           pointerEvents="none"
           transition="width .3s, height .3s, opacity .3s"
-        ></Box>
+        ></Box> */}
         <Footer />
       </Container>
     </Box>
