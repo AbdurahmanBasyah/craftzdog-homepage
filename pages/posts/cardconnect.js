@@ -2,12 +2,20 @@ import {
   Container,
   Badge,
   Box,
-  Text,
   Button,
   Image,
   Flex,
   List,
-  ListItem
+  ListItem,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalBody,
+  Heading,
+  useDisclosure,
+  Input
 } from '@chakra-ui/react'
 import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -16,6 +24,8 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import P from '../../components/paragraph'
 import useWindowSize from '../../hooks/useWindowSize'
+import { isSuccess } from '../../functions/api'
+import { useRef } from 'react'
 
 class Card {
   constructor(code, value, suit, image) {
@@ -85,10 +95,16 @@ class Card {
 }
 
 const CardConnect = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [cards, setCards] = useState([])
+  const [highScores, setHighScores] = useState([])
   const [currentCard, setCurrentCard] = useState(null)
+  const [score, setScore] = useState(0)
+  const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
   const isMobile = width < 768
+
+  const nameRef = useRef()
 
   const getCards = () => {
     axios
@@ -101,6 +117,7 @@ const CardConnect = () => {
         })
         setCards(cardList)
         setCurrentCard(null)
+        setScore(0)
       })
   }
 
@@ -131,7 +148,7 @@ const CardConnect = () => {
     for (let i = 0; i < 52; i++) {
       const card = cards[i]
       if (isMobile) {
-        if( i < 48){
+        if (i < 48) {
           card.setLocation((i % 6) + 1, Math.floor(i / 6 + 1))
         } else {
           card.setLocation(i - 48 + 2, 9)
@@ -148,10 +165,41 @@ const CardConnect = () => {
     }
 
     if (allCardFolded()) {
-      alert('You Win!')
-      getCards()
+      let isNewHighScore = false
+      for (let i = 0; i < highScores.length; i++) {
+        if (score > highScores[i].score) {
+          isNewHighScore = true
+          break
+        }
+      }
+      if (isNewHighScore || highScores.length < 3) {
+        setModalData({
+          score: score,
+          title: 'New high score!',
+          description: `Your score is ${score}! Enter your name to be featured on the leaderboard`,
+          isNewHighScore: true
+        })
+      } else {
+        setModalData({
+          score: score,
+          title: 'You won!',
+          description: `Your score is ${score}!`,
+          isNewHighScore: false
+        })
+      }
+      onOpen()
     }
   }, [cards])
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/scores/cardconnect`, {})
+      .then(res => {
+        if (isSuccess(res)) {
+          setHighScores(res?.data?.data?.cardconnect)
+        }
+      })
+  }, [])
 
   const getHint = () => {
     for (let i = 0; i < cards.length; i++) {
@@ -162,6 +210,7 @@ const CardConnect = () => {
           const path = djikstra(cards[i], cards[j])
           if (path.length > 0) {
             setCurrentCard(cards[i])
+            setScore(score - 5)
             setTimeout(() => {
               setCurrentCard(null)
             }, 1000)
@@ -193,6 +242,7 @@ const CardConnect = () => {
     setTimeout(() => {
       path[0].setFolded(true)
       path[path.length - 1].setFolded(true)
+      setScore(score + path.length - 1)
       setCards([...cards])
     }, 50 * path.length + 50)
   }
@@ -206,13 +256,81 @@ const CardConnect = () => {
   return (
     <Layout title="Card Connect">
       <Container>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalBody
+              display={'flex'}
+              flexDirection="column"
+              alignItems={'center'}
+            >
+              <Heading as="h3" my="4" variant="section-title">
+                {modalData?.title}
+              </Heading>
+              <Text textAlign="center" my="4">
+                {modalData?.description}
+              </Text>
+              {modalData?.isNewHighScore && (
+                <Input
+                  placeholder="Enter your name"
+                  ref={nameRef}
+                  value={nameRef.current?.value}
+                  my="4"
+                />
+              )}
+            </ModalBody>
+            <ModalFooter>
+              {/* <Button
+                cursor={'none'}
+                colorScheme="cyan"
+                mr={3}
+                onClick={() => {
+                  shareHandler()
+                }}
+              >
+                Share
+              </Button> */}
+              <Button
+                colorScheme="teal"
+                onClick={() => {
+                  onClose()
+                  setScore(0)
+                  getCards()
+                }}
+              >
+                Play Again
+              </Button>
+              {/* submit button */}
+              {modalData?.isNewHighScore && (
+                <Button
+                  ml="4"
+                  colorScheme="teal"
+                  variant={'outline'}
+                  onClick={() => {
+                    axios
+                      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
+                        game: 'cardconnect',
+                        username: nameRef.current.value,
+                        score: score
+                      })
+                      .then(res => {
+                        if (isSuccess(res)) {
+                          onClose()
+                          setScore(0)
+                          getCards()
+                        }
+                      })
+                  }}
+                >
+                  Submit
+                </Button>
+              )}
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Title type="Posts">
           Card Connect <Badge>Game</Badge>
         </Title>
-        <Text my="6" textAlign={'center'}>
-          This game is not responsive and not fully developed. Please play it on
-          a desktop.
-        </Text>
         <P>
           {`This is a card connect game. The goal is to connect all the cards with
           the same value. You can only connect two cards if there are no other cards
@@ -242,8 +360,15 @@ const CardConnect = () => {
           </ListItem>
         </List>
         <Flex m="4" alignItems={'center'} gap="6" justifyContent="center">
-          <Button onClick={getCards}>Get Cards</Button>
-          <Button onClick={getHint}>Get Hint</Button>
+          <Button onClick={getCards} colorScheme="teal" variant="outline">
+            Get Cards
+          </Button>
+          <Text fontSize="larger" fontWeight="bold" color="teal.500">
+            {score}
+          </Text>
+          <Button onClick={getHint} colorScheme="teal" variant="outline">
+            Hint
+          </Button>
         </Flex>
         <Box display="flex" flexWrap="wrap" justifyContent="center" gap={'6px'}>
           {cards.map((card, index) =>
