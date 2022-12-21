@@ -5,13 +5,17 @@ import {
   Text,
   Button,
   Image,
-  Flex
+  Flex,
+  List,
+  ListItem
 } from '@chakra-ui/react'
-import { Title } from '../../components/pageItem'
+import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import P from '../../components/paragraph'
+import useWindowSize from '../../hooks/useWindowSize'
 
 class Card {
   constructor(code, value, suit, image) {
@@ -83,6 +87,8 @@ class Card {
 const CardConnect = () => {
   const [cards, setCards] = useState([])
   const [currentCard, setCurrentCard] = useState(null)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const getCards = () => {
     axios
@@ -124,10 +130,18 @@ const CardConnect = () => {
     if (cards.length === 0) return
     for (let i = 0; i < 52; i++) {
       const card = cards[i]
-      if (i < 49) {
-        card.setLocation((i % 7) + 1, Math.floor(i / 7 + 1))
+      if (isMobile) {
+        if( i < 48){
+          card.setLocation((i % 6) + 1, Math.floor(i / 6 + 1))
+        } else {
+          card.setLocation(i - 48 + 2, 9)
+        }
       } else {
-        card.setLocation(i - 49 + 3, 8)
+        if (i < 49) {
+          card.setLocation((i % 7) + 1, Math.floor(i / 7 + 1))
+        } else {
+          card.setLocation(i - 49 + 3, 8)
+        }
       }
 
       card.setNeighbors(cards.filter(c => c !== card && c.isNeighbor(card)))
@@ -195,16 +209,38 @@ const CardConnect = () => {
         <Title type="Posts">
           Card Connect <Badge>Game</Badge>
         </Title>
-        <Text>
-          {`This is a card connect game. The goal is to connect all the cards with
-          the same value. You can only connect two cards if there are no other cards
-          between them. Connected cards will be folded. You can get a hint by clicking the "Get Hint" button. You can start a new game
-          by clicking the "Get Cards" button. Enjoy!`}
-        </Text>
         <Text my="6" textAlign={'center'}>
           This game is not responsive and not fully developed. Please play it on
           a desktop.
         </Text>
+        <P>
+          {`This is a card connect game. The goal is to connect all the cards with
+          the same value. You can only connect two cards if there are no other cards
+          between them. Connected cards will be folded. You can get a hint by clicking the "Get Hint" button. You can start a new game
+          by clicking the "Get Cards" button. This game used djikstra algorithm to find the shortest path between two cards. Enjoy!`}
+        </P>
+        <List ml={4} my={4}>
+          <ListItem>
+            <Meta>Type</Meta>
+            <span>Game</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Category</Meta>
+            <span>Soloplayer</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Tags</Meta>
+            <span>Game, Soloplayer, Fun</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Number of Players</Meta>
+            <span>1</span>
+          </ListItem>
+          <ListItem>
+            <Meta>Tech</Meta>
+            <span>React, Next.js, Chakra UI</span>
+          </ListItem>
+        </List>
         <Flex m="4" alignItems={'center'} gap="6" justifyContent="center">
           <Button onClick={getCards}>Get Cards</Button>
           <Button onClick={getHint}>Get Hint</Button>
@@ -215,8 +251,8 @@ const CardConnect = () => {
               <Box
                 key={index}
                 id={card?.getCode()}
-                width="64px"
-                height={'90px'}
+                width={{ base: '40px', md: '64px' }}
+                height={{ base: '56px', md: '90px' }}
                 filter={
                   currentCard === card ? 'drop-shadow(0 0 0.5rem #FFD700)' : ''
                 }
@@ -225,11 +261,8 @@ const CardConnect = () => {
               <Image
                 id={card?.getCode()}
                 key={index}
-                width="64px"
-                height={'90px'}
-                style={{
-                  aspectRatio: '5 / 7'
-                }}
+                width={{ base: '40px', md: '64px' }}
+                height={{ base: '56px', md: '90px' }}
                 src={card?.getImage()}
                 alt={card?.getCode()}
                 filter={
