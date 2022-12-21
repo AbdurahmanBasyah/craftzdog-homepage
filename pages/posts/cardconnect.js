@@ -159,6 +159,30 @@ const CardConnect = () => {
     alert('No moves left! Start a new game.')
   }
 
+  const flashThroughPath = path => {
+    for (let i = 0; i < path.length; i++) {
+      const el = document.getElementById(path[i].getCode())
+      setTimeout(() => {
+        el.style.backgroundColor = '#FFD700'
+        el.style.filter = 'brightness(1.5); opacity: 0.5; blur: 5px'
+        el.style.boxShadow = '0 0 10px 10px #FFD700'
+      }, 50 * i)
+    }
+    setTimeout(() => {
+      for (let i = 0; i < path.length; i++) {
+        const el = document.getElementById(path[i].getCode())
+        el.style.backgroundColor = 'transparent'
+        el.style.filter = 'brightness(1); opacity: 1; blur: 0px'
+        el.style.boxShadow = 'none'
+      }
+    }, 50 * path.length)
+    setTimeout(() => {
+      path[0].setFolded(true)
+      path[path.length - 1].setFolded(true)
+      setCards([...cards])
+    }, 50 * path.length + 50)
+  }
+
   const allCardFolded = () => {
     for (let i = 0; i < cards.length; i++) {
       if (!cards[i].getIsFolded()) return false
@@ -178,8 +202,8 @@ const CardConnect = () => {
           by clicking the "Get Cards" button. Enjoy!`}
         </Text>
         <Text my="6" textAlign={'center'}>
-          This game is not fully developed yet. I will add more features in the
-          future.
+          This game is not responsive and not fully developed. Please play it on
+          a desktop.
         </Text>
         <Flex m="4" alignItems={'center'} gap="6" justifyContent="center">
           <Button onClick={getCards}>Get Cards</Button>
@@ -193,6 +217,9 @@ const CardConnect = () => {
                 id={card?.getCode()}
                 width="64px"
                 height={'90px'}
+                filter={
+                  currentCard === card ? 'drop-shadow(0 0 0.5rem #FFD700)' : ''
+                }
               ></Box>
             ) : (
               <Image
@@ -219,8 +246,7 @@ const CardConnect = () => {
                     ) {
                       const path = djikstra(currentCard, card)
                       if (path.length > 0) {
-                        card.setFolded(true)
-                        currentCard.setFolded(true)
+                        flashThroughPath(path)
                       }
                       setCurrentCard(null)
                     } else {
