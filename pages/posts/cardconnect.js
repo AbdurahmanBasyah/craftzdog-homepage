@@ -16,7 +16,7 @@ import {
   Heading,
   useDisclosure,
   Input,
-  SimpleGrid,
+  SimpleGrid
 } from '@chakra-ui/react'
 import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -224,15 +224,13 @@ const CardConnect = () => {
                 el.style.filter = 'brightness(1.5); opacity: 0.5; blur: 5px'
                 el.style.boxShadow = '0 0 10px 10px #FFD700'
                 el.style.transition = 'all 0.5s ease'
-              }
-              , 1000 * i)
+              }, 1000 * i)
               setTimeout(() => {
                 el.style.backgroundColor = '#FFFFFF'
                 el.style.filter = 'brightness(1); opacity: 1; blur: 0px'
                 el.style.boxShadow = '0 0 0px 0px #FFFFFF'
                 el.style.transition = 'all 0.5s ease'
-              }
-              , 1000 * i + 500)
+              }, 1000 * i + 500)
             }
             setScore(score - 5)
             return
@@ -414,10 +412,10 @@ const CardConnect = () => {
               ></Box>
             ) : (
               <Image
+                key={index}
                 gridColumn={card.x}
                 gridRow={card.y}
                 id={card?.getCode()}
-                key={index}
                 src={card?.getImage()}
                 alt={card?.getCode()}
                 filter={
@@ -434,6 +432,28 @@ const CardConnect = () => {
                     ) {
                       const path = djikstra(currentCard, card)
                       if (path.length > 0) {
+                        const scoreElement = document.createElement('div')
+                        scoreElement.innerHTML = `+${path.length - 1}`
+                        scoreElement.style.position = 'absolute'
+                        scoreElement.style.top = '50%'
+                        scoreElement.style.left = '50%'
+                        scoreElement.style.transform = 'translate(-50%, -50%)'
+                        scoreElement.style.fontSize = '2rem'
+                        scoreElement.style.color = 'teal'
+                        scoreElement.style.fontWeight = 'bolder'
+                        scoreElement.style.zIndex = '100'
+                        document
+                          .getElementById(card.getCode())
+                          .parentElement.appendChild(scoreElement)
+                        setTimeout(() => {
+                          scoreElement.style.transform =
+                            'translate(-50%, -50%) scale(4)'
+                          scoreElement.style.opacity = '0'
+                          scoreElement.style.transition = 'all 1.5s ease-in-out'
+                        }, 0)
+                        setTimeout(() => {
+                          scoreElement.remove()
+                        }, 1500)
                         flashThroughPath(path)
                       }
                       setCurrentCard(null)
