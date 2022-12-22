@@ -103,6 +103,7 @@ const CardConnect = () => {
   const [score, setScore] = useState(0)
   const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const isMobile = width < 768
 
   const getCards = () => {
@@ -162,6 +163,10 @@ const CardConnect = () => {
 
       card.setNeighbors(cards.filter(c => c !== card && c.isNeighbor(card)))
     }
+    const el = document.getElementById('KH')
+    const height = el.clientHeight
+    const width =  height * 5 / 7
+    setDimensions({ width, height })
 
     if (allCardFolded()) {
       let isNewHighScore = false
@@ -228,7 +233,7 @@ const CardConnect = () => {
         el.style.backgroundColor = '#FFD700'
         el.style.filter = 'brightness(1.5); opacity: 0.5; blur: 5px'
         el.style.boxShadow = '0 0 10px 10px #FFD700'
-      }, 100 * i)
+      }, 50 * i)
     }
     setTimeout(() => {
       for (let i = 0; i < path.length; i++) {
@@ -237,13 +242,13 @@ const CardConnect = () => {
         el.style.filter = 'brightness(1); opacity: 1; blur: 0px'
         el.style.boxShadow = 'none'
       }
-    }, 100 * path.length)
+    }, 50 * path.length)
     setTimeout(() => {
       path[0].setFolded(true)
       path[path.length - 1].setFolded(true)
       setScore(score + path.length - 1)
       setCards([...cards])
-    }, 100 * path.length + 100)
+    }, 50 * path.length + 50)
   }
 
   const allCardFolded = () => {
@@ -379,34 +384,32 @@ const CardConnect = () => {
           {cards.map((card, index) =>
             card?.getIsFolded() ? (
               <Box
+                w={dimensions.width}
+                h={dimensions.height}
                 gridColumn={() => {
-                  if (isMobile) {
-                    if (index >= 48) {
-                      switch (index) {
-                        case 48:
-                          return '2'
-                        case 49:
-                          return '3'
-                        case 50:
-                          return '4'
-                        case 51:
-                          return '5'
-                        default:
-                          return 'auto'
-                      }
+                  if (index >= 48) {
+                    switch (index) {
+                      case 48:
+                        return '2'
+                      case 49:
+                        return '3'
+                      case 50:
+                        return '4'
+                      case 51:
+                        return '5'
+                      default:
+                        return (index % 6) + 1
                     }
                   } else {
-                    if (index >= 47) {
-                      switch (index) {
-                        case 49:
-                          return '3'
-                        case 50:
-                          return '4'
-                        case 51:
-                          return '5'
-                        default:
-                          return 'auto'
-                      }
+                    switch (index) {
+                      case 49:
+                        return '3'
+                      case 50:
+                        return '4'
+                      case 51:
+                        return '5'
+                      default:
+                        return (index % 7) + 1
                     }
                   }
                 }}
@@ -420,32 +423,28 @@ const CardConnect = () => {
               <Image
                 gridColumn={() => {
                   if (isMobile) {
-                    if (index >= 48) {
-                      switch (index) {
-                        case 48:
-                          return '2'
-                        case 49:
-                          return '3'
-                        case 50:
-                          return '4'
-                        case 51:
-                          return '5'
-                        default:
-                          return 'auto'
-                      }
+                    switch (index) {
+                      case 48:
+                        return '2'
+                      case 49:
+                        return '3'
+                      case 50:
+                        return '4'
+                      case 51:
+                        return '5'
+                      default:
+                        return (index % 6) + 1
                     }
                   } else {
-                    if (index >= 47) {
-                      switch (index) {
-                        case 49:
-                          return '3'
-                        case 50:
-                          return '4'
-                        case 51:
-                          return '5'
-                        default:
-                          return 'auto'
-                      }
+                    switch (index) {
+                      case 49:
+                        return '3'
+                      case 50:
+                        return '4'
+                      case 51:
+                        return '5'
+                      default:
+                        return (index % 7) + 1
                     }
                   }
                 }}
