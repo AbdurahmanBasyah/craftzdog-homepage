@@ -14,25 +14,30 @@ import {
   ModalFooter,
   ModalBody,
   List,
-  ListItem
+  ListItem,
+  Input
 } from '@chakra-ui/react'
 import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import stringMath from 'string-math'
 import P from '../../components/paragraph'
+import { isSuccess } from '../../functions/api'
 
 const Math24 = () => {
   const [cards, setCards] = useState([])
   const [selectedCards, setSelectedCards] = useState([])
   const [currentCalculation, setCurrentCalculation] = useState('')
+  const [highScores, setHighScores] = useState([])
   const [cardIsUsed, setCardIsUsed] = useState([false, false, false, false])
   const [numOfCardsUsed, setNumOfCardsUsed] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
   const [startTime, setStartTime] = useState(0)
   const [correctAnswer, setCorrectAnswer] = useState(0)
   const [finalScore, setFinalScore] = useState(0)
+  const [name, setName] = useState('')
+  const [modalData, setModalData] = useState(null)
 
   //   0 = last selected is a number
   //   1 = last selected is an operator
@@ -57,6 +62,17 @@ const Math24 = () => {
           })
       })
   }
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/scores/24`, {})
+      .then(res => {
+        if (isSuccess(res)) {
+          console.log(res?.data?.data?.['24'])
+          setHighScores(res?.data?.data?.['24'])
+        }
+      })
+  }, [])
 
   const get4Cards = () => {
     const last4Cards = cards.slice(-4)
@@ -97,6 +113,20 @@ const Math24 = () => {
       setCardIsUsed([false, false, false, false])
       setCorrectAnswer(correctAnswer + 1)
       if (cards.length === 0) {
+        let isNewHighScore = false
+        for (let i = 0; i < highScores.length; i++) {
+          if (finalScore > highScores[i].score) {
+            isNewHighScore = true
+            break
+          }
+        }
+        if (isNewHighScore || highScores.length < 3) {
+          setModalData({
+            title: 'New High Score!',
+            description: `You got ${finalScore} points! Enter your name to be featured on the leaderboard`,
+            isNewHighScore: true
+          })
+        }
         restartGame()
       } else {
         get4Cards()
@@ -127,6 +157,30 @@ const Math24 = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalBody>
+            <ModalBody
+              display={'flex'}
+              flexDirection="column"
+              alignItems={'center'}
+            >
+              {modalData?.isNewHighScore && (
+                <>
+                  <Heading as="h3" my="4" variant="section-title">
+                    {modalData?.title}
+                  </Heading>
+                  <Text textAlign="center" my="4">
+                    {modalData?.description}
+                  </Text>
+                  <Input
+                    placeholder="Enter your name"
+                    onChange={e => {
+                      setName(e.target.value)
+                    }}
+                    value={name}
+                    my="4"
+                  />
+                </>
+              )}
+            </ModalBody>
             <Heading as="h3" variant="section-title" textAlign="center">
               STATISTICS
             </Heading>
@@ -162,6 +216,7 @@ const Math24 = () => {
             <Button
               cursor={'none'}
               colorScheme="cyan"
+              variant={'outline'}
               mr={3}
               onClick={() => {
                 shareHandler()
@@ -170,6 +225,7 @@ const Math24 = () => {
               Share
             </Button>
             <Button
+              variant={'outline'}
               cursor={'none'}
               colorScheme="teal"
               onClick={() => {
@@ -178,6 +234,31 @@ const Math24 = () => {
             >
               New Game
             </Button>
+            {modalData?.isNewHighScore && (
+              <Button
+                ml={3}
+                cursor={'none'}
+                colorScheme="teal"
+                onClick={() => {
+                  axios
+                    .post(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
+                      game: '24',
+                      username: name,
+                      score: finalScore
+                    })
+                    .then(res => {
+                      if (isSuccess(res)) {
+                        onClose()
+                      }
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
+                }}
+              >
+                Submit
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
