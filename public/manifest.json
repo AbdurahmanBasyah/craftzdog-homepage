@@ -1,14 +1,13 @@
 {
-    "theme_color": "#f69435",
-    "background_color": "#f69435",
+    "theme_color": "#008080",
+    "background_color": "#008080",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "name": "Abdurahman Basyah",
-    "description": "Abduh's Personal Website",
+    "description": "Abdurahman Basyah",
     "short_name": "Abduh Web",
-    "icons": [
-        {
+    "icons": [{
             "src": "/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
