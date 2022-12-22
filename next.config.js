@@ -5,8 +5,10 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     register: true,
-    skipWaiting: true
+    skipWaiting: true,
+    disable: process.env.NODE_ENV === "development",
   },
+  reactStrictMode: true,
   swcMinify: true,
   images: {
     domains: ['deckofcardsapi.com'],

@@ -104,8 +104,9 @@ const Main = ({ children, router }) => {
         <meta name="author" content="craftzdog" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name='theme-color' content='#008080' />
+        <link rel="icon" href="apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#008080" />
         <meta name="twitter:title" content="Abdurahman Basyah" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@craftzdog" />
