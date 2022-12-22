@@ -11,7 +11,6 @@ module.exports = withPWA({
     runtimeCaching,
   },
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     domains: ['deckofcardsapi.com'],
   },
