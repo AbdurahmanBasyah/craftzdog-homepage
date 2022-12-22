@@ -115,9 +115,9 @@ const CardConnect = () => {
         cards.forEach(card => {
           cardList.push(new Card(card.code, card.value, card.suit, card.image))
         })
-        setCards(cardList)
         setCurrentCard(null)
         setScore(0)
+        setCards(cardList)
       })
   }
 
@@ -144,6 +144,7 @@ const CardConnect = () => {
   }
 
   useEffect(() => {
+    console.log(cards)
     if (cards.length === 0) return
     for (let i = 0; i < 52; i++) {
       const card = cards[i]
@@ -392,8 +393,8 @@ const CardConnect = () => {
                 w="full"
                 h="full"
                 minH={height}
-                gridColumn={card?.position?.y}
-                gridRow={card?.position?.x}
+                gridColumn={card.x}
+                gridRow={card.y}
                 key={index}
                 id={card?.getCode()}
                 filter={
@@ -402,8 +403,8 @@ const CardConnect = () => {
               ></Box>
             ) : (
               <Image
-                gridColumn={card?.position?.y}
-                gridRow={card?.position?.x}
+                gridColumn={card.x}
+                gridRow={card.y}
                 id={card?.getCode()}
                 key={index}
                 src={card?.getImage()}
