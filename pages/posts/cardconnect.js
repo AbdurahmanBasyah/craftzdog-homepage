@@ -103,7 +103,7 @@ const CardConnect = () => {
   const [score, setScore] = useState(0)
   const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [height, setHeight] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
   const getCards = () => {
@@ -163,10 +163,9 @@ const CardConnect = () => {
 
       card.setNeighbors(cards.filter(c => c !== card && c.isNeighbor(card)))
     }
-    const el = document.getElementById('KH')
-    const height = el.clientHeight
-    const width =  height * 5 / 7
-    setDimensions({ width, height })
+    const el = document.getElementById(cards[0].getCode())
+    const height = el.getBoundingClientRect().height.toFixed(2)
+    setHeight(height)
 
     if (allCardFolded()) {
       let isNewHighScore = false
@@ -390,35 +389,11 @@ const CardConnect = () => {
           {cards.map((card, index) =>
             card?.getIsFolded() ? (
               <Box
-                w={dimensions.width}
-                h={dimensions.height}
-                gridColumn={() => {
-                  if (index >= 48) {
-                    switch (index) {
-                      case 48:
-                        return '2'
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 6) + 1
-                    }
-                  } else {
-                    switch (index) {
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 7) + 1
-                    }
-                  }
-                }}
+                w="full"
+                h="full"
+                minH={height}
+                gridColumn={card?.position?.y}
+                gridRow={card?.position?.x}
                 key={index}
                 id={card?.getCode()}
                 filter={
@@ -427,33 +402,8 @@ const CardConnect = () => {
               ></Box>
             ) : (
               <Image
-                gridColumn={() => {
-                  if (isMobile) {
-                    switch (index) {
-                      case 48:
-                        return '2'
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 6) + 1
-                    }
-                  } else {
-                    switch (index) {
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 7) + 1
-                    }
-                  }
-                }}
+                gridColumn={card?.position?.y}
+                gridRow={card?.position?.x}
                 id={card?.getCode()}
                 key={index}
                 src={card?.getImage()}
