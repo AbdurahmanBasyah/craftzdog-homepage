@@ -25,7 +25,6 @@ import axios from 'axios'
 import P from '../../components/paragraph'
 import useWindowSize from '../../hooks/useWindowSize'
 import { isSuccess } from '../../functions/api'
-import { useRef } from 'react'
 
 class Card {
   constructor(code, value, suit, image) {
@@ -97,14 +96,13 @@ class Card {
 const CardConnect = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [cards, setCards] = useState([])
+  const [name, setName] = useState('')
   const [highScores, setHighScores] = useState([])
   const [currentCard, setCurrentCard] = useState(null)
   const [score, setScore] = useState(0)
   const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
   const isMobile = width < 768
-
-  const nameRef = useRef()
 
   const getCards = () => {
     axios
@@ -273,8 +271,10 @@ const CardConnect = () => {
               {modalData?.isNewHighScore && (
                 <Input
                   placeholder="Enter your name"
-                  ref={nameRef}
-                  value={nameRef.current?.value}
+                  onChange={e => {
+                    setName(e.target.value)
+                  }}
+                  value={name}
                   my="4"
                 />
               )}
@@ -291,6 +291,7 @@ const CardConnect = () => {
                 Share
               </Button> */}
               <Button
+                variant={'outline'}
                 colorScheme="teal"
                 onClick={() => {
                   onClose()
@@ -305,12 +306,11 @@ const CardConnect = () => {
                 <Button
                   ml="4"
                   colorScheme="teal"
-                  variant={'outline'}
                   onClick={() => {
                     axios
                       .post(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
                         game: 'cardconnect',
-                        username: nameRef.current.value,
+                        username: name,
                         score: score
                       })
                       .then(res => {
