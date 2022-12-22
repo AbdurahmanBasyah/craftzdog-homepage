@@ -241,7 +241,7 @@ const Math24 = () => {
                 colorScheme="teal"
                 onClick={() => {
                   axios
-                    .post(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
+                    .put(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
                       game: '24',
                       username: name,
                       score: finalScore
@@ -360,7 +360,25 @@ const Math24 = () => {
                 </Box>
                 <Button
                   cursor={'none'}
-                  onClick={restartGame}
+                  onClick={() => {
+                    let isNewHighScore = false
+                    let final = correctAnswer * 100 - Math.floor((Date.now() - startTime) / 1000)
+                    for (let i = 0; i < highScores.length; i++) {
+                      if (final > highScores[i].score) {
+                        isNewHighScore = true
+                        break
+                      }
+                    }
+                    console.log(finalScore, highScores);
+                    if (isNewHighScore || highScores.length < 3) {
+                      setModalData({
+                        title: 'New High Score!',
+                        description: `You got ${final} points! Enter your name to be featured on the leaderboard`,
+                        isNewHighScore: true
+                      })
+                    }
+                    restartGame()
+                  }}
                   colorScheme="red"
                   my="4"
                 >

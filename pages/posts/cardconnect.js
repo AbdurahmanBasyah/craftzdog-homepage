@@ -329,7 +329,7 @@ const CardConnect = () => {
                   colorScheme="teal"
                   onClick={() => {
                     axios
-                      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
+                      .put(`${process.env.NEXT_PUBLIC_API_URL}/api/scores`, {
                         game: 'cardconnect',
                         username: name,
                         score: score
