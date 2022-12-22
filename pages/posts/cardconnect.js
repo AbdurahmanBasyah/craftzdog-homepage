@@ -16,7 +16,7 @@ import {
   Heading,
   useDisclosure,
   Input,
-  SimpleGrid
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -103,7 +103,6 @@ const CardConnect = () => {
   const [score, setScore] = useState(0)
   const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
-  const [height, setHeight] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
   const getCards = () => {
@@ -164,9 +163,6 @@ const CardConnect = () => {
 
       card.setNeighbors(cards.filter(c => c !== card && c.isNeighbor(card)))
     }
-    const el = document.getElementById(cards[0].getCode())
-    const height = el.getBoundingClientRect().height.toFixed(2)
-    setHeight(height)
 
     if (allCardFolded()) {
       let isNewHighScore = false
@@ -219,11 +215,26 @@ const CardConnect = () => {
         if (cards[i].getValue() === cards[j].getValue()) {
           const path = djikstra(cards[i], cards[j])
           if (path.length > 0) {
-            setCurrentCard(cards[i])
+            console.log(path)
+            // add blink effect 3 times
+            for (let i = 0; i < 3; i++) {
+              const el = document.getElementById(path[0].getCode())
+              setTimeout(() => {
+                el.style.backgroundColor = '#FFD700'
+                el.style.filter = 'brightness(1.5); opacity: 0.5; blur: 5px'
+                el.style.boxShadow = '0 0 10px 10px #FFD700'
+                el.style.transition = 'all 0.5s ease'
+              }
+              , 1000 * i)
+              setTimeout(() => {
+                el.style.backgroundColor = '#FFFFFF'
+                el.style.filter = 'brightness(1); opacity: 1; blur: 0px'
+                el.style.boxShadow = '0 0 0px 0px #FFFFFF'
+                el.style.transition = 'all 0.5s ease'
+              }
+              , 1000 * i + 500)
+            }
             setScore(score - 5)
-            setTimeout(() => {
-              setCurrentCard(null)
-            }, 1000)
             return
           }
         }
@@ -259,7 +270,9 @@ const CardConnect = () => {
 
   const allCardFolded = () => {
     for (let i = 0; i < cards.length; i++) {
-      if (!cards[i].getIsFolded()) return false
+      if (!cards[i].getIsFolded()) {
+        return false
+      }
     }
     return true
   }
@@ -307,8 +320,6 @@ const CardConnect = () => {
                 colorScheme="teal"
                 onClick={() => {
                   onClose()
-                  setScore(0)
-                  getCards()
                 }}
               >
                 Play Again
@@ -384,6 +395,7 @@ const CardConnect = () => {
         </Flex>
         <SimpleGrid
           columns={isMobile ? 6 : 7}
+          gridAutoRows="1fr"
           spacing={isMobile ? 2 : 4}
           placeItems="center"
         >
@@ -392,7 +404,6 @@ const CardConnect = () => {
               <Box
                 w="full"
                 h="full"
-                minH={height}
                 gridColumn={card.x}
                 gridRow={card.y}
                 key={index}
