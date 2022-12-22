@@ -104,7 +104,7 @@ const CardConnect = () => {
   const [modalData, setModalData] = useState(null)
   const { width } = useWindowSize()
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const isMobile = width < 768
+  const [isMobile, setIsMobile] = useState(false)
 
   const getCards = () => {
     axios
@@ -203,6 +203,12 @@ const CardConnect = () => {
           setHighScores(res?.data?.data?.cardconnect)
         }
       })
+
+    if (width < 768) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
   }, [])
 
   const getHint = () => {
@@ -421,33 +427,33 @@ const CardConnect = () => {
               ></Box>
             ) : (
               <Image
-                gridColumn={() => {
-                  if (isMobile) {
-                    switch (index) {
-                      case 48:
-                        return '2'
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 6) + 1
-                    }
-                  } else {
-                    switch (index) {
-                      case 49:
-                        return '3'
-                      case 50:
-                        return '4'
-                      case 51:
-                        return '5'
-                      default:
-                        return (index % 7) + 1
-                    }
-                  }
-                }}
+                // gridColumn={() => {
+                //   if (isMobile) {
+                //     switch (index) {
+                //       case 48:
+                //         return '2'
+                //       case 49:
+                //         return '3'
+                //       case 50:
+                //         return '4'
+                //       case 51:
+                //         return '5'
+                //       default:
+                //         return (index % 6) + 1
+                //     }
+                //   } else {
+                //     switch (index) {
+                //       case 49:
+                //         return '3'
+                //       case 50:
+                //         return '4'
+                //       case 51:
+                //         return '5'
+                //       default:
+                //         return (index % 7) + 1
+                //     }
+                //   }
+                // }}
                 id={card?.getCode()}
                 key={index}
                 src={card?.getImage()}
