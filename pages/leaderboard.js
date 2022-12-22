@@ -67,7 +67,7 @@ const Leaderboard = () => {
                 <Section key={index} delay={index * 0.3}>
                   <Heading
                     as="h1"
-                    size="3xl"
+                    size={{base:"2xl", md:"3xl"}}
                     mb={4}
                     textAlign="center"
                     color={'teal'}
@@ -150,7 +150,7 @@ const Leaderboard = () => {
                                 position={'absolute'}
                                 left="50%"
                                 transform={'translateX(-50%)'}
-                                top="40%"
+                                top="38%"
                                 fontSize={'2xl'}
                                 color={'white'}
                                 fontWeight={'bold'}
