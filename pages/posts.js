@@ -20,7 +20,7 @@ const Posts = () => {
         })}
       </Box> */}
       <Heading as="h3" fontSize={20} mb={4}>
-        Posts
+        Magic
       </Heading>
 
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
