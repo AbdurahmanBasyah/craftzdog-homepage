@@ -15,7 +15,8 @@ import {
   ModalBody,
   Heading,
   useDisclosure,
-  Input
+  Input,
+  SimpleGrid
 } from '@chakra-ui/react'
 import { Title, Meta } from '../../components/pageItem'
 import Layout from '../../components/layouts/article'
@@ -227,7 +228,7 @@ const CardConnect = () => {
         el.style.backgroundColor = '#FFD700'
         el.style.filter = 'brightness(1.5); opacity: 0.5; blur: 5px'
         el.style.boxShadow = '0 0 10px 10px #FFD700'
-      }, 50 * i)
+      }, 100 * i)
     }
     setTimeout(() => {
       for (let i = 0; i < path.length; i++) {
@@ -236,13 +237,13 @@ const CardConnect = () => {
         el.style.filter = 'brightness(1); opacity: 1; blur: 0px'
         el.style.boxShadow = 'none'
       }
-    }, 50 * path.length)
+    }, 100 * path.length)
     setTimeout(() => {
       path[0].setFolded(true)
       path[path.length - 1].setFolded(true)
       setScore(score + path.length - 1)
       setCards([...cards])
-    }, 50 * path.length + 50)
+    }, 100 * path.length + 100)
   }
 
   const allCardFolded = () => {
@@ -370,24 +371,86 @@ const CardConnect = () => {
             Hint
           </Button>
         </Flex>
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={'6px'}>
+        <SimpleGrid
+          columns={isMobile ? 6 : 7}
+          spacing={isMobile ? 2 : 4}
+          placeItems="center"
+        >
           {cards.map((card, index) =>
             card?.getIsFolded() ? (
               <Box
+                gridColumn={() => {
+                  if (isMobile) {
+                    if (index >= 48) {
+                      switch (index) {
+                        case 48:
+                          return '2'
+                        case 49:
+                          return '3'
+                        case 50:
+                          return '4'
+                        case 51:
+                          return '5'
+                        default:
+                          return 'auto'
+                      }
+                    }
+                  } else {
+                    if (index >= 47) {
+                      switch (index) {
+                        case 49:
+                          return '3'
+                        case 50:
+                          return '4'
+                        case 51:
+                          return '5'
+                        default:
+                          return 'auto'
+                      }
+                    }
+                  }
+                }}
                 key={index}
                 id={card?.getCode()}
-                width={{ base: '40px', md: '64px' }}
-                height={{ base: '56px', md: '90px' }}
                 filter={
                   currentCard === card ? 'drop-shadow(0 0 0.5rem #FFD700)' : ''
                 }
               ></Box>
             ) : (
               <Image
+                gridColumn={() => {
+                  if (isMobile) {
+                    if (index >= 48) {
+                      switch (index) {
+                        case 48:
+                          return '2'
+                        case 49:
+                          return '3'
+                        case 50:
+                          return '4'
+                        case 51:
+                          return '5'
+                        default:
+                          return 'auto'
+                      }
+                    }
+                  } else {
+                    if (index >= 47) {
+                      switch (index) {
+                        case 49:
+                          return '3'
+                        case 50:
+                          return '4'
+                        case 51:
+                          return '5'
+                        default:
+                          return 'auto'
+                      }
+                    }
+                  }
+                }}
                 id={card?.getCode()}
                 key={index}
-                width={{ base: '40px', md: '64px' }}
-                height={{ base: '56px', md: '90px' }}
                 src={card?.getImage()}
                 alt={card?.getCode()}
                 filter={
@@ -418,7 +481,7 @@ const CardConnect = () => {
               />
             )
           )}
-        </Box>
+        </SimpleGrid>
       </Container>
     </Layout>
   )
