@@ -1,8 +1,6 @@
 import {
   Container,
   Badge,
-  List,
-  ListItem,
   Button,
   Box,
   SimpleGrid,
