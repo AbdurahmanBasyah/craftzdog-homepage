@@ -90,6 +90,12 @@ const Game41 = () => {
     })
 
     currentSocket.on('play-card', data => {
+      if (
+        data.cards.length === 0 &&
+        data.players.every(player => player.cardsShown.length === 4)
+      ) {
+        currentSocket.emit('end-game', data, value)
+      }
       for (let index = 0; index < data.players.length; index++) {
         const player = data.players[index]
         if (player.id === currentUser?.id) {
@@ -209,7 +215,11 @@ const Game41 = () => {
               alignItems={'center'}
             >
               <Heading as="h2" my="4" variant="section-title">
-                {calculateCardsShown(currentUser?.cardsShown) === 41
+                {gameData?.players.every(
+                  otherPlayer =>
+                    calculateCardsShown(currentUser?.cardsShown) >=
+                    calculateCardsShown(otherPlayer.cardsShown)
+                )
                   ? 'You Won'
                   : 'You Lost'}
               </Heading>
@@ -227,7 +237,12 @@ const Game41 = () => {
                         my="4"
                         variant="section-title"
                         color={
-                          calculateCardsShown(player.cardsShown) === 41
+                          // player cards shown is bigger than every other player
+                          gameData?.players.every(
+                            otherPlayer =>
+                              calculateCardsShown(player.cardsShown) >=
+                              calculateCardsShown(otherPlayer.cardsShown)
+                          )
                             ? 'green.500'
                             : 'red.500'
                         }
@@ -272,188 +287,205 @@ const Game41 = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
-        {gameData === null && <><Heading as="h3" my="4">
-          Ready to play? Let{`'s`} start!
-        </Heading>
-        <Tabs colorScheme={'teal'} isFitted variant="soft-rounded">
-          {currentUser === null && <TabList mb="1em">
-            <Tab onClick={() => setCurrentUser(null)}>Create a Room</Tab>
-            <Tab onClick={() => setCurrentUser(null)}>Be a Guest</Tab>
-          </TabList>}
-          <TabPanels>
-            <TabPanel>
-              {currentUser === null ? (
-                <Flex justifyContent={'center'}>
-                  <Input
-                    placeholder="Enter your name"
-                    w="full"
-                    mr="4"
-                    onChange={e => {
-                      setName(e.target.value)
-                    }}
-                    colorScheme="teal"
-                    color={'teal'}
-                    borderColor={'teal'}
-                  />
-                  <Button
-                    onClick={() => {
-                      const playerId = generateRoomId()
-                      const player = new Player(name, playerId, true, 'jump')
-                      setCurrentUser(player)
-                    }}
-                    colorScheme={'teal'}
-                    variant="outline"
-                  >
-                    Save
-                  </Button>
-                </Flex>
-              ) : (
-                <Flex alignItems="center" flexDirection={'column'}>
-                  <Text
-                    textAlign={'center'}
-                    fontSize="xl"
-                    fontWeight="bold"
-                    color="gray.500"
-                  >
-                    Hello {currentUser.name}! You are the host of this room. You
-                    can share this room id to your friends so they can join the
-                    game.
-                  </Text>
-                  {value === '' ? (
-                    <Button
-                      mt="8"
-                      mx={'auto'}
-                      colorScheme="teal"
-                      variant={'outline'}
-                      onClick={() => {
-                        const roomId = generateRoomId()
-                        setValue(roomId)
-                        currentSocket.emit('join-room', currentUser, roomId)
-                      }}
-                    >
-                      Generate Room Id
-                    </Button>
+        {gameData === null && (
+          <>
+            <Heading as="h3" my="4">
+              Ready to play? Let{`'s`} start!
+            </Heading>
+            <Tabs colorScheme={'teal'} isFitted variant="soft-rounded">
+              {currentUser === null && (
+                <TabList mb="1em">
+                  <Tab onClick={() => setCurrentUser(null)}>Create a Room</Tab>
+                  <Tab onClick={() => setCurrentUser(null)}>Be a Guest</Tab>
+                </TabList>
+              )}
+              <TabPanels>
+                <TabPanel>
+                  {currentUser === null ? (
+                    <Flex justifyContent={'center'}>
+                      <Input
+                        placeholder="Enter your name"
+                        w="full"
+                        mr="4"
+                        onChange={e => {
+                          setName(e.target.value)
+                        }}
+                        colorScheme="teal"
+                        color={'teal'}
+                        borderColor={'teal'}
+                      />
+                      <Button
+                        onClick={() => {
+                          const playerId = generateRoomId()
+                          const player = new Player(
+                            name,
+                            playerId,
+                            true,
+                            'jump'
+                          )
+                          setCurrentUser(player)
+                        }}
+                        colorScheme={'teal'}
+                        variant="outline"
+                      >
+                        Save
+                      </Button>
+                    </Flex>
                   ) : (
-                    <>
+                    <Flex alignItems="center" flexDirection={'column'}>
                       <Text
+                        textAlign={'center'}
                         fontSize="xl"
                         fontWeight="bold"
                         color="gray.500"
-                        textAlign="center"
-                        alignItems={'center'}
-                        my="3"
-                        textTransform={'uppercase'}
                       >
-                        Room id: <b>{value}</b>
+                        Hello {currentUser.name}! You are the host of this room.
+                        You can share this room id to your friends so they can
+                        join the game.
                       </Text>
-                      <Button
-                        size={'sm'}
+                      {value === '' ? (
+                        <Button
+                          mt="8"
+                          mx={'auto'}
+                          colorScheme="teal"
+                          variant={'outline'}
+                          onClick={() => {
+                            const roomId = generateRoomId()
+                            setValue(roomId)
+                            currentSocket.emit('join-room', currentUser, roomId)
+                          }}
+                        >
+                          Generate Room Id
+                        </Button>
+                      ) : (
+                        <>
+                          <Text
+                            fontSize="xl"
+                            fontWeight="bold"
+                            color="gray.500"
+                            textAlign="center"
+                            alignItems={'center'}
+                            my="3"
+                            textTransform={'uppercase'}
+                          >
+                            Room id: <b>{value}</b>
+                          </Text>
+                          <Button
+                            size={'sm'}
+                            colorScheme="teal"
+                            variant={'outline'}
+                            onClick={onCopy}
+                          >
+                            {hasCopied ? 'Copied!' : 'Copy'}
+                          </Button>
+                        </>
+                      )}
+                    </Flex>
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {currentUser === null ? (
+                    <Flex justifyContent={'center'}>
+                      <Input
+                        placeholder="Enter your name"
+                        w="full"
+                        mr="4"
+                        onChange={e => {
+                          setName(e.target.value)
+                        }}
                         colorScheme="teal"
-                        variant={'outline'}
-                        onClick={onCopy}
+                        color={'teal'}
+                        borderColor={'teal'}
+                      />
+                      <Button
+                        onClick={() => {
+                          const playerId = generateRoomId()
+                          const player = new Player(
+                            name,
+                            playerId,
+                            false,
+                            'jump'
+                          )
+                          setCurrentUser(player)
+                        }}
+                        colorScheme={'teal'}
+                        variant="outline"
                       >
-                        {hasCopied ? 'Copied!' : 'Copy'}
+                        Save
                       </Button>
+                    </Flex>
+                  ) : (
+                    <>
+                      <Text
+                        textAlign={'center'}
+                        fontSize="xl"
+                        fontWeight="bold"
+                        color="gray.500"
+                      >
+                        Hello, <b>{currentUser.name}</b>! Please enter the room
+                        id to join the game.
+                      </Text>
+                      <Flex justifyContent={'center'} mt="8">
+                        <Input
+                          placeholder="Enter room id"
+                          w="full"
+                          mr="4"
+                          onChange={e => {
+                            setValue(e.target.value)
+                          }}
+                          colorScheme="teal"
+                          color={'teal'}
+                          borderColor={'teal'}
+                        />
+                        <Button
+                          colorScheme={'teal'}
+                          variant="outline"
+                          onClick={() => {
+                            console.log(currentSocket)
+                            currentSocket.emit('join-room', currentUser, value)
+                          }}
+                        >
+                          Join
+                        </Button>
+                      </Flex>
                     </>
                   )}
-                </Flex>
-              )}
-            </TabPanel>
-            <TabPanel>
-              {currentUser === null ? (
-                <Flex justifyContent={'center'}>
-                  <Input
-                    placeholder="Enter your name"
-                    w="full"
-                    mr="4"
-                    onChange={e => {
-                      setName(e.target.value)
-                    }}
-                    colorScheme="teal"
-                    color={'teal'}
-                    borderColor={'teal'}
-                  />
-                  <Button
-                    onClick={() => {
-                      const playerId = generateRoomId()
-                      const player = new Player(name, playerId, false, 'jump')
-                      setCurrentUser(player)
-                    }}
-                    colorScheme={'teal'}
-                    variant="outline"
-                  >
-                    Save
-                  </Button>
-                </Flex>
-              ) : (
-                <>
-                  <Text
-                    textAlign={'center'}
-                    fontSize="xl"
-                    fontWeight="bold"
-                    color="gray.500"
-                  >
-                    Hello, <b>{currentUser.name}</b>! Please enter the room id
-                    to join the game.
-                  </Text>
-                  <Flex justifyContent={'center'} mt="8">
-                    <Input
-                      placeholder="Enter room id"
-                      w="full"
-                      mr="4"
-                      onChange={e => {
-                        setValue(e.target.value)
-                      }}
-                      colorScheme="teal"
-                      color={'teal'}
-                      borderColor={'teal'}
-                    />
-                    <Button
-                      colorScheme={'teal'}
-                      variant="outline"
-                      onClick={() => {
-                        currentSocket.emit('join-room', currentUser, value)
-                      }}
-                    >
-                      Join
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-        {players.length > 0 && (
-          <Box
-            textAlign={'center'}
-            fontSize="xl"
-            fontWeight="bold"
-            color="gray.500"
-          >
-            {currentUser && !currentUser.isHost && (
-              <Text>Waiting for the host to start the game</Text>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+            {players.length > 0 && (
+              <Box
+                textAlign={'center'}
+                fontSize="xl"
+                fontWeight="bold"
+                color="gray.500"
+              >
+                {currentUser && !currentUser.isHost && (
+                  <Text>Waiting for the host to start the game</Text>
+                )}
+                <Text>Players in this room: {players.length}</Text>
+                {players.map(player => {
+                  return <Text key={player.id}>{player.name}</Text>
+                })}
+              </Box>
             )}
-            <Text>Players in this room: {players.length}</Text>
-            {players.map(player => {
-              return <Text key={player.id}>{player.name}</Text>
-            })}
-          </Box>
+            <Button
+              mt="8"
+              mx={'25%'}
+              colorScheme="teal"
+              variant={'outline'}
+              size={'lg'}
+              textTransform={'uppercase'}
+              onClick={startGame}
+              w="50%"
+              disabled={
+                players.length < 2 || !currentUser?.isHost || players.length > 4
+              }
+            >
+              Start
+            </Button>
+          </>
         )}
-        <Button
-          mt="8"
-          mx={'25%'}
-          colorScheme="teal"
-          variant={'outline'}
-          size={'lg'}
-          textTransform={'uppercase'}
-          onClick={startGame}
-          w="50%"
-          disabled={
-            players.length < 2 || !currentUser?.isHost || players.length > 4
-          }
-        >
-          Start
-        </Button></>}
 
         <Flex justifyContent={'center'}>
           <SimpleGrid columns={7} w="full" spacing="20" placeItems="center">
@@ -621,14 +653,21 @@ const Game41 = () => {
               })}
 
             <Box gridRow="2" gridColumn="4" whiteSpace={'nowrap'}>
-              {gameData !== null && <Text color="teal" fontWeight="bold" fontSize="xl" transform={"translateY(-20px)"}>
-                {getPlayerFromGameData(gameData?.currentTurn)?.name ===
-                currentUser?.name
-                  ? 'Your Turn'
-                  : `Waiting for ${
-                      getPlayerFromGameData(gameData?.currentTurn)?.name
-                    } to make a move`}
-              </Text>}
+              {gameData !== null && (
+                <Text
+                  color="teal"
+                  fontWeight="bold"
+                  fontSize="xl"
+                  transform={'translateY(-20px)'}
+                >
+                  {getPlayerFromGameData(gameData?.currentTurn)?.name ===
+                  currentUser?.name
+                    ? 'Your Turn'
+                    : `Waiting for ${
+                        getPlayerFromGameData(gameData?.currentTurn)?.name
+                      } to make a move`}
+                </Text>
+              )}
               <Box
                 display={'flex'}
                 justifyContent="center"
