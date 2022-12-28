@@ -6,6 +6,7 @@ import cardGameThumbnail from '../public/images/posts/24CardGame_1.jpg'
 import impostorThumbnail from '../public/images/posts/ImpostorCard_1.jpg'
 import knightThumbnail from '../public/images/posts/KnightRiddle_1.jpg'
 import cardConnectThumbnail from '../public/images/posts/cardconnect_1.png'
+import fourtyOneThumbnail from '../public/images/posts/41_1.jpg'
 
 const Posts = () => {
   return (
@@ -76,7 +77,13 @@ const Posts = () => {
             thumbnail={cardConnectThumbnail}
           >
             A mini game that uses a full deck of cards. The goal is to connect
-            all the cards with the same value. 
+            all the cards with the same value.
+          </PostGridItem>
+        </Section>
+        <Section delay={1.5}>
+          <PostGridItem id="41" title="41 Game" thumbnail={fourtyOneThumbnail}>
+            A game that uses 4 cards. The first player to get the number 41 wins
+            the game.
           </PostGridItem>
         </Section>
       </SimpleGrid>
