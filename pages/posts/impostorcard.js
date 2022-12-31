@@ -41,7 +41,7 @@ const ImpostorCard = () => {
   const [modalData, setModalData] = useState(null)
 
   useEffect(() => {
-    const socket = io('https://personal-be-production.up.railway.app', {
+    const socket = io(process.env.NEXT_PUBLIC_API_URL, {
       transports: ['websocket']
     })
     // const socket = io('http://localhost:8080', {
@@ -440,7 +440,7 @@ const ImpostorCard = () => {
                       my="4"
                       variant={'outline'}
                       ml="4"
-                      fontSize={"20px"}
+                      fontSize={'20px'}
                       size={'lg'}
                       onClick={() => handleStart()}
                     >

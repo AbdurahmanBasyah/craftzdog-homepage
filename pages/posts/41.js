@@ -52,7 +52,7 @@ const Game41 = () => {
   const [players, setPlayers] = useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
   useEffect(() => {
-    const socket = io('https://personal-be-production.up.railway.app', {
+    const socket = io(process.env.NEXT_PUBLIC_API_URL, {
       transports: ['websocket']
     })
     // const socket = io('http://localhost:8080', {

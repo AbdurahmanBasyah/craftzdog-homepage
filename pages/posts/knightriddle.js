@@ -149,7 +149,7 @@ const KnightRiddle = () => {
   const isMobile = width < 768
 
   useEffect(() => {
-    const socket = io('https://personal-be-production.up.railway.app', {
+    const socket = io(process.env.NEXT_PUBLIC_API_URL, {
       transports: ['websocket']
     })
     // const socket = io('http://localhost:8080', {
