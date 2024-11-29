@@ -131,9 +131,8 @@ const Invoicetify = () => {
       expire.setHours(expire.getHours() + 1)
       window.location.hash = ''
       window.location.href = REDIRECT_URI
-      document.cookie = `token=${
-        token ? token : ''
-      }; expires=${expire.toUTCString()};`
+      document.cookie = `token=${token ? token : ''
+        }; expires=${expire.toUTCString()};`
     }
 
     setToken(token)
@@ -307,7 +306,7 @@ const Invoicetify = () => {
                   variant={'section-title'}
                   mt="0"
                 >
-                  {isGrouped ?`Purchase Order List` : `Invoice #${invoiceId}`}
+                  {isGrouped ? `Purchase Order List` : `Invoice #${invoiceId}`}
                 </Heading>
                 <Flex>
                   <Box mb="4">
@@ -331,9 +330,8 @@ const Invoicetify = () => {
                         md: '12px',
                         lg: '14px'
                       }}
-                    >{`Location: ${
-                      iso.whereAlpha2(user?.country).country
-                    }`}</Text>
+                    >{`Location: ${iso.whereAlpha2(user?.country).country
+                      }`}</Text>
                   </Box>
                   <Spacer />
                   <Box
@@ -418,9 +416,9 @@ const Invoicetify = () => {
                           >
                             {isGrouped
                               ? item.tracks?.map((item, index) => {
-                                  return <Text key={index}>{`- ${item.name}`}</Text>
-                                })
-                              : item.name}
+                                return <Text key={index}>{`- ${item.name}`}</Text>
+                              })
+                              : item.artists[0].name}
                           </Td>
                           <Td
                             isNumeric
@@ -433,8 +431,8 @@ const Invoicetify = () => {
                             {isGrouped
                               ? milisecondsToMinutesAndSeconds(trackDurationSum(item.tracks))
                               : milisecondsToMinutesAndSeconds(
-                                  item.duration_ms
-                                )}
+                                item.duration_ms
+                              )}
                           </Td>
                         </Tr>
                       )
