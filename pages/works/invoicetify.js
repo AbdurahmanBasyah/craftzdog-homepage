@@ -35,8 +35,7 @@ const Invoicetify = () => {
   const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_SPOTIFY_AUTH_ENDPOINT
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_SPOTIFY_RESPONSE_TYPE
 
-  const SCOPE =
-    'user-read-private user-read-email user-library-read user-read-recently-played user-top-read user-read-currently-playing user-read-playback-state user-modify-playback-state'
+  const SCOPE = 'user-read-private user-read-email user-library-read user-read-recently-played user-top-read user-read-currently-playing user-read-playback-state user-modify-playback-state'
 
   const [token, setToken] = useState('')
   const [data, setData] = useState(null)
@@ -140,6 +139,7 @@ const Invoicetify = () => {
 
   useEffect(() => {
     if (token) getSpotifyUser()
+    console.log(token);
   }, [token])
 
   const getUserTopTracks = () => {
@@ -153,6 +153,12 @@ const Invoicetify = () => {
         }
       )
       .then(res => {
+        if (!res.status === 200) {
+          return res.json().then(error => {
+            console.error("Error:", error);
+            throw new Error(`Spotify API error: ${error.error.message}`);
+          });
+        }
         setData(res.data)
         return res.data
       })

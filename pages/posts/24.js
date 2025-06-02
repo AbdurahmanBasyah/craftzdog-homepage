@@ -144,7 +144,7 @@ const Math24 = () => {
           text: `I got ${correctAnswer} correct answers in 24 Game with  ${Math.floor(
             (correctAnswer / 13) * 100
           )}% accuracy. My final score is ${finalScore}. Try to beat me!\n`,
-          url: 'https://abdurahmanbasyah.com/posts/24Game'
+          url: 'https://abdurrahmanbasyah.com/posts/24Game'
         })
         .then(() => console.log('Successful share'))
         .catch(error => console.log('Error sharing', error))

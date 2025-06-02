@@ -406,10 +406,10 @@ const KnightRiddle = () => {
         navigator.share({
           title: 'The Knight Riddle',
           text: text,
-          url: 'https://abdurahmanbasyah.com/posts/KnightRiddle/'
+          url: 'https://abdurrahmanbasyah.com/posts/KnightRiddle/'
         })
       } else {
-        text += 'https://abdurahmanbasyah.com/posts/KnightRiddle/'
+        text += 'https://abdurrahmanbasyah.com/posts/KnightRiddle/'
         // copy to clipboard
         navigator.clipboard.writeText(text)
         alert('Copied to clipboard!')
